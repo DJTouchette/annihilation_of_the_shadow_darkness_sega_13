@@ -8,13 +8,9 @@ function preload() {
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
   game.load.spritesheet('title', 'assets/title.png');
-  game.load.spritesheet('horizontal','assets/border/horizontal.png');
-  game.load.spritesheet('bottomLeft','assets/border/bottom_left.png');
-  game.load.spritesheet('bottomRight','assets/border/bottom_right.png');
-  game.load.spritesheet('topRight','assets/border/top_right.png');
-  game.load.spritesheet('topLeft','assets/border/top_left.png');
-  game.load.spritesheet('vertical','assets/border/vertical.png');
-  game.load.spritesheet('background', 'assets/border/paper.png');
+  // Loads all border assets (/public/js/hud/border.js)
+  loadBorder();
+  loadUnitFrame();
 
 }
 
@@ -27,7 +23,7 @@ function create() {
   game.add.sprite(95, 400, 'button');
 
   //Generates playerHUD
-  hudPlayer('Jon', 'Swordman');
+  hudPlayer('Jon', ['Swordman', 'Archer', 'Horseman']);
 
 
   // map

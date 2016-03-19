@@ -1,5 +1,21 @@
 
-function hudPlayer (player, unit) {
+// Loads all border assets
+function loadBorder () {
+  game.load.spritesheet('horizontal','assets/border/horizontal.png');
+  game.load.spritesheet('bottomLeft','assets/border/bottom_left.png');
+  game.load.spritesheet('bottomRight','assets/border/bottom_right.png');
+  game.load.spritesheet('topRight','assets/border/top_right.png');
+  game.load.spritesheet('topLeft','assets/border/top_left.png');
+  game.load.spritesheet('vertical','assets/border/vertical.png');
+  game.load.spritesheet('background', 'assets/border/paper.png');
+  game.load.spritesheet('box', 'assets/border/box.png');
+}
+
+
+
+// Puts boder in place
+function makeBorder () {
+
   var horizontalB = game.add.sprite(800, 584.5, 'horizontal');
   var horizontalT = game.add.sprite(800, -10, 'horizontal');
   var bottomLeft = game.add.sprite(803, 565, 'bottomLeft');
@@ -10,11 +26,6 @@ function hudPlayer (player, unit) {
   var verticalR = game.add.sprite(985, 20, 'vertical');
   var background = game.add.sprite(825, 8, 'background');
 
-
-  var title = game.add.sprite(814, 8, 'title');
-  var style = { font: "20px Arial", fill: "#ffffff",  align: "center" };
-
-
   horizontalT.scale.setTo(3, 2);
   horizontalB.scale.setTo(3, 2);
   verticalL.scale.setTo(2, 10);
@@ -24,12 +35,4 @@ function hudPlayer (player, unit) {
   background.scale.setTo(0.325, 1.14);
   topRight.scale.setTo(2);
   topLeft.scale.setTo(2);
-  title.scale.setTo(0.67);
-
-  var playerName = game.add.text(890, 12, player, style);
-  // playerName.anchor.set(0.5);
-
-  // player = game.add.text(900, 10, playerName, style);
-  // unitTitle = game.add.text(900, 30);
-  // unit = game.add.text(900, 50, unit, style);
 }
