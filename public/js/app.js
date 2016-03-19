@@ -1,12 +1,17 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 var score = 0;
 var scoreText;
 
+
+
 function preload() {
+  game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
-  game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+  game.load.spritesheet('title', 'assets/title.png');
+  game.load.spritesheet('horizontal','assets/border/horizontal.png');
+  game.load.spritesheet('vertical','assets/border/horizontal.png');
 }
 
 function create() {
@@ -15,11 +20,16 @@ function create() {
   game.physics.p2.setImpactEvents(true);
 
   game.add.sprite(0, 0, 'star');
+  game.add.sprite(95, 400, 'button');
+
+  //Generates playerHUD
+  hudPlayer('Jon', 'Swordman');
+
 
   // map
   map = game.add.tilemap('testMap');
   map.addTilesetImage('test_map');
-  
+
   background = map.createLayer('Tile Layer 1');
   backgroundOL = map.createLayer('overlays');
   collisionLayer = map.createLayer('collision');
@@ -71,5 +81,24 @@ function update() {
     player.body.velocity.y = 0;
     player.frame = 4;
   }
+
+}
+
+
+function up() {
+    console.log('button up', arguments);
+}
+
+function over() {
+    console.log('button over');
+}
+
+function out() {
+    console.log('button out');
+}
+
+function actionOnClick () {
+
+    // background.visible =! background.visible;
 
 }
