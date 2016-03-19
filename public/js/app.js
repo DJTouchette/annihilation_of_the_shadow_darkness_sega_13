@@ -3,15 +3,18 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, creat
 var score = 0;
 var scoreText;
 
-
-
 function preload() {
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
   game.load.spritesheet('title', 'assets/title.png');
   game.load.spritesheet('horizontal','assets/border/horizontal.png');
-  game.load.spritesheet('vertical','assets/border/horizontal.png');
+  game.load.spritesheet('bottomLeft','assets/border/bottom_left.png');
+  game.load.spritesheet('bottomRight','assets/border/bottom_right.png');
+  game.load.spritesheet('topRight','assets/border/top_right.png');
+  game.load.spritesheet('topLeft','assets/border/top_left.png');
+  game.load.spritesheet('vertical','assets/border/vertical.png');
+
 }
 
 function create() {
