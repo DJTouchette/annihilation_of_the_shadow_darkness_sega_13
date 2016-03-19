@@ -14,6 +14,7 @@ function preload() {
   game.load.spritesheet('topRight','assets/border/top_right.png');
   game.load.spritesheet('topLeft','assets/border/top_left.png');
   game.load.spritesheet('vertical','assets/border/vertical.png');
+  game.load.spritesheet('background', 'assets/border/paper.png');
 
 }
 

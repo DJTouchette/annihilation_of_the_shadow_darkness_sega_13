@@ -8,6 +8,8 @@ function hudPlayer (player, unit) {
   var topLeft = game.add.sprite(808, -17.8, 'topLeft');
   var verticalL = game.add.sprite(808, 20, 'vertical');
   var verticalR = game.add.sprite(985, 20, 'vertical');
+  var background = game.add.sprite(825, 8, 'background');
+
 
   var title = game.add.sprite(814, 8, 'title');
   var style = { font: "20px Arial", fill: "#ffffff",  align: "center" };
@@ -19,6 +21,7 @@ function hudPlayer (player, unit) {
   verticalR.scale.setTo(2, 10);
   bottomLeft.scale.setTo(2);
   bottomRight.scale.setTo(2);
+  background.scale.setTo(0.325, 1.14);
   topRight.scale.setTo(2);
   topLeft.scale.setTo(2);
   title.scale.setTo(0.67);
