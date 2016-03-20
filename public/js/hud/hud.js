@@ -1,9 +1,11 @@
 
 function hudPlayer (player, unit) {
-  makeBorder();
-  units(unit);
 
-  
+  makeBorder();
+  unitFrame();
+  displayUnits(unit);
+
+
   var title = game.add.sprite(814, 8, 'title');
   var style = { font: "20px Arial", fill: "#ffffff",  align: "center" };
 
@@ -15,4 +17,5 @@ function hudPlayer (player, unit) {
   // player = game.add.text(900, 10, playerName, style);
   // unitTitle = game.add.text(900, 30);
   // unit = game.add.text(900, 50, unit, style);
+
 }

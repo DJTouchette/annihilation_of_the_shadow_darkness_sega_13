@@ -10,6 +10,7 @@ function preload() {
   game.load.spritesheet('title', 'assets/title.png');
   // Loads all border assets (/public/js/hud/border.js)
   loadBorder();
+  // Loads Unit frame assets (/public/js/hud/unuts.js)
   loadUnitFrame();
 
 }
