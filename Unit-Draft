@@ -1,5 +1,5 @@
 Footman {
-  moral: 70,
+  morale: 70,
   troops: 100,
   attack: 20,
   defense: 20,
@@ -15,7 +15,7 @@ Armored {
 }
 
 Cavalry {
-  moral: 70,
+  morale: 70,
   troops: 40,
   attack: 30,
   defense: 10,
@@ -47,4 +47,8 @@ function attack(enemy, unit){
 function turn(group){
   for()---
 
+}
+
+function actionOnClick () {
+  
 }

@@ -1,14 +1,23 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 var score = 0;
 var scoreText;
 
 function preload() {
+  game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
   game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
   game.load.audio('battle', 'assets/battle.mp3');
+  game.load.spritesheet('title', 'assets/title.png');
+  // Loads all border assets (/public/js/hud/border.js)
+  loadBorder();
+  // Loads Unit frame assets (/public/js/hud/units.js)
+  loadUnitFrame();
+  //Loads start round btn (/public/js/hud/startrnd.js)
+  loadBtn();
+
 }
 
 
@@ -17,6 +26,18 @@ var music
 var sprite;
 var tween;
 //
+
+  game.add.sprite(0, 0, 'star');
+  game.add.sprite(95, 400, 'button');
+
+  // Player screen
+  //Generates playerHUD
+  // hudPlayer('Jon', ['Swordman', 'Archer', 'Horseman']);
+  // openentFrame('Jen', ['Swordman', 'Archer', 'Horseman']);
+  // placeBtn();
+
+  // Unit screen
+  unitBarMake(['Swordman', 'Archer', 'Horseman']);
 
 
 function create() {
@@ -28,6 +49,7 @@ function create() {
   // map
   map = game.add.tilemap('testMap');
   map.addTilesetImage('test_map');
+
   background = map.createLayer('Tile Layer 1');
   backgroundOL = map.createLayer('overlays');
   collisionLayer = map.createLayer('collision');
@@ -117,5 +139,24 @@ function update() {
     player.body.velocity.y = 0;
   }
   game.input.onDown.add(moveSprite, this);
+
+}
+
+
+function up() {
+    console.log('button up', arguments);
+}
+
+function over() {
+    console.log('button over');
+}
+
+function out() {
+    console.log('button out');
+}
+
+function actionOnClick () {
+
+    // background.visible =! background.visible;
 
 }
