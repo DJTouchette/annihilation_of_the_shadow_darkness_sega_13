@@ -25,10 +25,15 @@ function create() {
   game.add.sprite(0, 0, 'star');
   game.add.sprite(95, 400, 'button');
 
+  // Player screen
   //Generates playerHUD
-  hudPlayer('Jon', ['Swordman', 'Archer', 'Horseman']);
-  openentFrame('Jen', ['Swordman', 'Archer', 'Horseman']);
-  placeBtn();
+  // hudPlayer('Jon', ['Swordman', 'Archer', 'Horseman']);
+  // openentFrame('Jen', ['Swordman', 'Archer', 'Horseman']);
+  // placeBtn();
+
+  // Unit screen
+  unitBarMake(['Swordman', 'Archer', 'Horseman']);
+
 
 
   // map

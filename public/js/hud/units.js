@@ -15,7 +15,7 @@ function displayUnits (unit) {
   var styleTitle = { font: "18px Arial", fill: "#ffffff" };
   var title = game.add.text(890, 60, 'Units', styleTitle);
 
-  var styleUnit = { font: "15px Arial", fill: "#ffdb4d" };
+  var styleUnit = { font: "15px Arial", fill: "#FFFB00" };
 
   var position = [90, 120, 150];
   for (var i = 0; i < unit.length; i++) {

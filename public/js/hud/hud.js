@@ -5,9 +5,8 @@ function hudPlayer (player, unit) {
   unitFrame();
   displayUnits(unit);
 
-
   var title = game.add.sprite(814, 8, 'title');
-  var style = { font: "20px Arial", fill: "#ffffff",  align: "center" };
+  var style = { font: "20px Indie", fill: "#A0A2A3",  align: "center" };
 
   title.scale.setTo(0.67);
 
