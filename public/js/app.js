@@ -6,8 +6,9 @@ var marker;
 // var x;
 // var y;
 var canMove;
+var map;
 var tween;
-var tilegroup;
+var tileGroup;
 
 function preload() {
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
@@ -31,6 +32,8 @@ function create() {
   collisionLayer = map.createLayer('collision');
   map.setCollisionBetween(13, 27, true, 'collision');
   game.physics.arcade.enable(map, 'collision');
+  tileGroup = game.add.group();
+  map.createFromTiles([13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], null, 'star', collisionLayer, tileGroup);
 
 
   //player
@@ -73,7 +76,9 @@ function create() {
   down.input.enableSnap(48, 48, true, true);
   down.events.onDragStop.add(movePlayer, this);
 
-  game.physics.arcade.overlap(down, collisionLayer);
+  // game.physics.arcade.overlap(down, collisionLayer);
+
+  
 
   // map.setTileIndexCallback([13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], tileCollision, this, down);
 
@@ -82,24 +87,32 @@ function create() {
 
 function movePlayer(tile) {
 
-  if ( (Math.abs(Math.floor(player.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(player.y / 48) - background.getTileY(tile.y)) <= 4 )) {
+  if ( (Math.abs(Math.floor(player.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(player.y / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile)) {
   // tween = game.add.tween(player).to( { x: background.getTileX(pointer.x) * 48, y: background.getTileY(pointer.y) * 48}, 2000, Phaser.Easing.Linear.Out, true);
   // console.log(collisionLayer.getTileX(pointer.x), collisionLayer.getTileY(pointer.y));
   player.x = tile.x;
   player.y = tile.y;
+  console.log(tileCollision(tile));
   }
 
   // console.log(checkOverlap(player));
 }
 
-function tileCollision(tile, tiles) {
-  if (Phaser.Rectangle.intersects(tile.getBounds(), tiles.getBounds())) {
-    tile.input.enableDrag(false);
+function tileCollision(tile) {
+  for (var i = 0; i < tileGroup.children.length; i++) {
+    var a = tile.getBounds();
+    var b = tileGroup.children[i].getBounds();
+    if (Phaser.Rectangle.intersects(a, b) === true) {
+      return true;
+      break;
+    } else {
+      return false;
+    }
   }
 }
 
 function update() {
-
+  // console.log(tileCollision(down));
   // Phaser.Math.snapTo(player.body.x, 48);
   // Phaser.Math.snapTo(player.body.y, 48);
   // player controls
@@ -140,7 +153,6 @@ function update() {
   //   tile.drawRect(0, 0, 48, 48);
   //   canMove = true;
   // }
-  console.log(map.tiles())
 
 
 }
