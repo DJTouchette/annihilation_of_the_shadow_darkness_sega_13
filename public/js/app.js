@@ -9,12 +9,35 @@ game_state.main.prototype = {
     create: function() {
     	// Fuction called after 'preload' to setup the game
         this.hello_sprite = game.add.sprite(250, 300, 'hello');
+        var playerHealth = 100;
+        var testHealth = 100;
+        var hpBar1;
+
+        //Health bar
+        var barConfig = {
+          width: 20,
+          height: 100,
+          x: 5,
+          y: 100,
+          flipped: true
+        }
+
+        hpBar1 = new HealthBar(this.game, barConfig);
+        hpBar1.setFixedToCamera(true);
     },
 
     update: function() {
 		// Function called 60 times per second
         this.hello_sprite.angle += 1;
+
+        damageHealth(hpBar1);
     },
+
+    function damageHealth(bar){
+      playerHealth -= 10;
+      if(playerHealth < 0) playerHealth = 0;
+      bar.setPercent(playerHealth);
+    }
 };
 
 // Add and start the 'main' state to start the game
