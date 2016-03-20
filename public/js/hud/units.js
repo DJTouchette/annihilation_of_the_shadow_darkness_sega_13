@@ -6,6 +6,7 @@ function unitFrame() {
   var bottomRight = game.add.sprite(967, 200, 'bottomRightCorner');
   var bottomLeft = game.add.sprite(830, 200, 'bottomLeftCorner');
 
+
 }
 
 // Populates units frame. Takes in [array] of units.

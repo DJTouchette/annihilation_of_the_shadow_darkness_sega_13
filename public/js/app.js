@@ -12,6 +12,8 @@ function preload() {
   loadBorder();
   // Loads Unit frame assets (/public/js/hud/units.js)
   loadUnitFrame();
+  //Loads start round btn (/public/js/hud/startrnd.js)
+  loadBtn();
 
 }
 
@@ -26,6 +28,7 @@ function create() {
   //Generates playerHUD
   hudPlayer('Jon', ['Swordman', 'Archer', 'Horseman']);
   openentFrame('Jen', ['Swordman', 'Archer', 'Horseman']);
+  placeBtn();
 
 
   // map

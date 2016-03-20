@@ -1,6 +1,7 @@
 
 // Loads all border assets
 function loadBorder () {
+  
   game.load.spritesheet('horizontal','assets/border/horizontal.png');
   game.load.spritesheet('bottomLeft','assets/border/bottom_left.png');
   game.load.spritesheet('bottomRight','assets/border/bottom_right.png');
@@ -9,6 +10,7 @@ function loadBorder () {
   game.load.spritesheet('vertical','assets/border/vertical.png');
   game.load.spritesheet('background', 'assets/border/paper.png');
   game.load.spritesheet('box', 'assets/border/box.png');
+
 }
 
 
@@ -35,4 +37,5 @@ function makeBorder () {
   background.scale.setTo(0.325, 1.14);
   topRight.scale.setTo(2);
   topLeft.scale.setTo(2);
+
 }
