@@ -1,0 +1,108 @@
+{"frames": [
+
+{
+	"filename": "a.png",
+	"frame": {"x":1,"y":1,"w":19,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":2,"w":19,"h":47},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "b.png",
+	"frame": {"x":1,"y":50,"w":19,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":1,"w":19,"h":48},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "c.png",
+	"frame": {"x":1,"y":100,"w":21,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":21,"h":47},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "d.png",
+	"frame": {"x":1,"y":149,"w":21,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":21,"h":47},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "e.png",
+	"frame": {"x":1,"y":198,"w":22,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":3,"w":22,"h":46},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "f.png",
+	"frame": {"x":1,"y":246,"w":21,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":2,"w":21,"h":47},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "g.png",
+	"frame": {"x":1,"y":295,"w":19,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":19,"h":47},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "h.png",
+	"frame": {"x":1,"y":344,"w":19,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":1,"w":19,"h":48},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "i.png",
+	"frame": {"x":1,"y":394,"w":21,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":21,"h":47},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "j.png",
+	"frame": {"x":1,"y":443,"w":21,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":21,"h":46},
+	"sourceSize": {"w":25,"h":50}
+},
+{
+	"filename": "k.png",
+	"frame": {"x":1,"y":491,"w":22,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":2,"w":22,"h":46},
+	"sourceSize": {"w":25,"h":49}
+},
+{
+	"filename": "l.png",
+	"frame": {"x":1,"y":539,"w":21,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":1,"w":21,"h":47},
+	"sourceSize": {"w":25,"h":48}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "camus.png",
+	"format": "RGBA8888",
+	"size": {"w":24,"h":587},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:bd7668b2348defa0f9a35a29a18880d1:138f44486766c70db6a696c97c567bc5:be46f61b55c6c31bb3f243b96cfced8c$"
+}
+}
