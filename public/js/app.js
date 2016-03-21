@@ -13,6 +13,8 @@ var tileGroup;
 function preload() {
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
+  game.load.image('star', 'assets/star.png');
+  game.load.image('move', 'assets/move.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 }
 
@@ -37,7 +39,7 @@ function create() {
 
 
   //player
-  player = game.add.sprite(48, 48, 'dude');
+  player = game.add.sprite(96, 96, 'dude');
   player.anchor.setTo(0.5, 0.5);
   // game.physics.arcade.enable(player);
   
@@ -54,22 +56,25 @@ function create() {
   // game.input.onDown.add(movePlayer, this);
 
   // movement sprites
-  left = game.add.tileSprite(player.x - 48, player.y, 48, 48, 'star');
+  left = game.add.tileSprite(player.x - 48, player.y, 48, 48, 'move');
   left.anchor.setTo(0.5, 0.5);
   left.inputEnabled = true;
   left.input.enableDrag(true);
   left.input.enableSnap(48, 48, true, true);
-  right = game.add.tileSprite(player.x + 48, player.y, 48, 48, 'star');
+  left.events.onDragStop.add(movePlayer, this);
+  right = game.add.tileSprite(player.x + 48, player.y, 48, 48, 'move');
   right.anchor.setTo(0.5, 0.5);
   right.inputEnabled = true;
   right.input.enableDrag(true);
   right.input.enableSnap(48, 48, true, true);
-  up = game.add.tileSprite(player.x, player.y - 48, 48, 48, 'star');
+  right.events.onDragStop.add(movePlayer, this);
+  up = game.add.tileSprite(player.x, player.y - 48, 48, 48, 'move');
   up.anchor.setTo(0.5, 0.5);
   up.inputEnabled = true;
   up.input.enableDrag(true);
   up.input.enableSnap(48, 48, true, true);
-  down = game.add.tileSprite(player.x, player.y + 48, 48, 48, 'star');
+  up.events.onDragStop.add(movePlayer, this);
+  down = game.add.tileSprite(player.x, player.y + 48, 48, 48, 'move');
   down.anchor.setTo(0.5, 0.5);
   down.inputEnabled = true;
   down.input.enableDrag(true);
@@ -100,15 +105,18 @@ function movePlayer(tile) {
 
 function tileCollision(tile) {
   for (var i = 0; i < tileGroup.children.length; i++) {
+    console.log(tileGroup.children);
     var a = tile.getBounds();
     var b = tileGroup.children[i].getBounds();
     if (Phaser.Rectangle.intersects(a, b) === true) {
       return true;
-      break;
-    } else {
-      return false;
     }
   }
+  // return Phaser.Rectangle.intersects(tile.getBounds(), tileGroup.getBounds());
+  // tileGroup.children.every( function intersect(element, index, array) {
+  //   return !(Phaser.Rectangle.intersects(tile.getBounds(), element.getBounds()));
+  // });
+
 }
 
 function update() {
