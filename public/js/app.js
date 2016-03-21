@@ -12,7 +12,7 @@ function preload() {
 
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
-  game.load.image('green', 'assets/star.png');
+  game.load.image('green', 'assets/green.png');
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
   game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
   game.load.audio('battle', 'assets/battle.mp3');
@@ -36,17 +36,17 @@ function create() {
   var barConfigTop = {
     width: 20,
     height: 100,
-    x: 810,
+    x: 800,
     y: 530,
     flipped: true
   };
-  var barConfigBottom = {
-    width: 20,
-    height: 100,
-    x: 810,
-    y: 300,
-    flipped: true
-  };
+  // var barConfigBottom = {
+  //   width: 20,
+  //   height: 100,
+  //   x: 810,
+  //   y: 300,
+  //   flipped: true
+  // };
 
 // MUSIC START///////////////////////////////////
   music = game.add.audio('battle');
@@ -125,6 +125,7 @@ function createSide(x, y, group, sprite, frame_pos) {
   function createMoraleBars(){
     hpBarTop = new HealthBar(this.game, barConfigTop);
     hpBarTop.setFixedToCamera(true);
+    // hpBarTop.bringToTop();brings to top but erases the menu
     // hpBarBottom = new HealthBar(this.game, barConfigBottom);
     // hpBarBottom.setFixedToCamera(true);
   }
@@ -145,13 +146,12 @@ function createSide(x, y, group, sprite, frame_pos) {
   // player.addChild(graphics);
 
 createTroopBar(player);
-createMoraleBars()
 //HEALTH BAR END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Call Methods HERE//////////////
 createSide(150, 550, bottomSide, 'soldier', 4)
 createSide(150, 15, topSide, 'camus', 10)
-// createMoraleBars();
+createMoraleBars();
 //////////////////////////////////
 
 //MENU START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
