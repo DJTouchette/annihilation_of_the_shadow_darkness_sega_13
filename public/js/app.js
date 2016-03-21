@@ -1,4 +1,4 @@
-//Variables
+//VARIABLES START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var marker;
 var canMove;
@@ -7,9 +7,34 @@ var tween;
 var tileGroup;
 var music;
 var dragging;
+//ARMY MORALE BAR////////////////////
+var barConfigTop = {
+  width: 20,
+  height: 100,
+  x: 800,
+  y: 530,
+  flipped: true
+};
+// var barConfigBottom = {
+//   width: 20,
+//   height: 100,
+//   x: 810,
+//   y: 300,
+//   flipped: true
+// };
+/////////////////////////////////////
+//Unit Types////////////////////////
+var footman = {
+      troops: 100,
+      att: 50,
+      def: 5,
+      spd: 4,
+    };
+////////////////////////////////////
+//VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-//PRELOAD START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//PRELOAD START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function preload() {
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
@@ -28,33 +53,22 @@ function preload() {
   loadUnitFrame();
   //Loads start round btn (/public/js/hud/startrnd.js)
   loadBtn();
-//PRELOAD END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//PRELOAD END//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-//CREATE START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//CREATE START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function create() {
   //Variables
   var playerHealth = 100;
   var testHealth = 100;
   var hpBar1;
   var graphics;
-  var barConfigTop = {
-    width: 20,
-    height: 100,
-    x: 800,
-    y: 530,
-    flipped: true
-  };
-  // var barConfigBottom = {
-  //   width: 20,
-  //   height: 100,
-  //   x: 810,
-  //   y: 300,
-  //   flipped: true
-  // };
+
+
 // MUSIC START////////////////////////////////////
-  music = game.add.audio('battle');
-  music.play();
+  // music = game.add.audio('battle');
+  // music.play();
 // MUSIC END//////////////////////////////////////
 //MAP START///////////////////////////////////////
   game.physics.startSystem(Phaser.Physics.P2JS);
@@ -76,30 +90,35 @@ function create() {
   makeUnitBar(unit);
 //MENU END////////////////////////////////////////
 // //PLAYER START/////////////////////////////////
-  player = game.add.sprite(96, 96, 'camus');
-  player.anchor.setTo(0.5, 0.5);
-  player.inputEnabled = true;
-  player.events.onInputDown.add(playerTurn, this);
+  // player = game.add.sprite(96, 96, 'camus');
+  // player.anchor.setTo(0.5, 0.5);
+  // player.inputEnabled = true;
+  // player.events.onInputDown.add(playerTurn, this);
 //PLAYER END/////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
   topSide = game.add.group();
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
-createSide(150, 550, bottomSide, 'soldier', 4)
-createSide(150, 15, topSide, 'camus', 10)
-createMoraleBars();
-createTroopBar(player);
+  createSide(150, 550, bottomSide, 'soldier', 4)
+  createSide(150, 15, topSide, 'camus', 10)
+  createMoraleBars();
+  addStats(topSide, footman);
+
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
+//UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update(){
+//UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
+//RENDER START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function render () {
   game.debug.text('Tile X: ' + collisionLayer.getTileX(game.input.activePointer.worldX) * 48, 48, 69, 'rgb(0,0,0)');
   game.debug.text('Tile Y: ' + collisionLayer.getTileY(game.input.activePointer.worldY) * 48, 48, 48, 'rgb(0,0,0)');
+//RENDER END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 //FUNCTIONS///////////////////////////////////////////////////////////
@@ -108,9 +127,18 @@ function render () {
 function createSide(x, y, group, sprite, frame_pos) {
   for (var i = 0; i < 10; i ++) {
     soldier = group.create(x + (i * 60), y, sprite);
+    soldier.anchor.setTo(0.5, 0.5);
+    soldier.inputEnabled = true;
+    soldier.events.onInputDown.add(playerTurn, this);
     soldier.frame = frame_pos;
     createTroopBar(soldier);
   }  
+}
+
+function addStats(group, unitType){
+  for (var i = 0; i < group.length; i ++) {
+    group.children[i].stats = unitType
+  }
 }
 //Morale Bar//////////////////////////////////////////////////////
 function createMoraleBars(){
@@ -128,8 +156,8 @@ function createTroopBar(sprite){
   sprite.addChild(graphics);
 }
 ///Move Functions//////////////////////////////////////////////////////
-function playerTurn (player) {
-  down = game.add.tileSprite(player.x, player.y, 48, 48, 'movetile', 1);
+function playerTurn (unit) {
+  down = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
   down.anchor.setTo(0.5, 0.5);
   down.animations.add('redden', [0, 1], 1, false);
   down.inputEnabled = true;
