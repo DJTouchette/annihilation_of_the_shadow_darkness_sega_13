@@ -40,24 +40,32 @@ var footman = {
 
 //PRELOAD START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function preload() {
+//Map///////////////////////////////////////////////////
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
+////////////////////////////////////////////////////////
+//Tiles///////////////////////////////////////////////////
   game.load.image('green', 'assets/green.png');
   game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
+  game.load.image('move', 'assets/move.png');
+  game.load.image('cantmove', 'assets/cantmove.png');
+//////////////////////////////////////////////////////////
+//Units///////////////////////////////////////////////////
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
   game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
+//////////////////////////////////////////////////////////
+//Music///////////////////////////////////////////////////
   game.load.audio('battle', 'assets/battle.mp3');
+//////////////////////////////////////////////////////////
+//Menu///////////////////////////////////////////////////
   game.load.spritesheet('title', 'assets/title.png');
-  // game.load.image('move', 'assets/move.png');
-  // game.load.image('cantmove', 'assets/cantmove.png');
-  // game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
-
   // Loads all border assets (/public/js/hud/border.js)
   loadBorder();
   // Loads Unit frame assets (/public/js/hud/units.js)
   loadUnitFrame();
   //Loads start round btn (/public/js/hud/startrnd.js)
   loadBtn();
+//////////////////////////////////////////////////////////
 //PRELOAD END//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -103,7 +111,6 @@ createSide(150, 15, topSide, 'camus', 10);
 createMoraleBars();
 playerTurn(turn);
 addStats(topSide, footman);
-
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -135,7 +142,6 @@ function render () {
 /////////////////////////////////////////////////////////////////////
 //Create Sides//////////////////////////////////////////////////////
 function createSide(x, y, group, sprite, frame_pos) {
-
   for (var i = 0; i < 10; i ++) {
     soldier = group.create(x + (i * 60), y, sprite);
     soldier.anchor.setTo(0.5, 0.5);
