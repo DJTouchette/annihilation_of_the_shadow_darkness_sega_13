@@ -11,6 +11,8 @@ var mover;
 var unit;
 var turnSwitch;
 var turn = 0;
+var limitX;
+var limitY;
 //ARMY MORALE BAR////////////////////
 var barConfigTop = {
   width: 20,
@@ -36,7 +38,6 @@ var footman = {
     };
 ////////////////////////////////////
 //VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 //PRELOAD START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function preload() {
@@ -88,6 +89,7 @@ function create() {
   map = game.add.tilemap('testMap');
   map.addTilesetImage('test_map');
   background = map.createLayer('Tile Layer 1');
+  background.resizeWorld();
   backgroundOL = map.createLayer('overlays');
   collisionLayer = map.createLayer('collision');
   map.setCollisionBetween(13, 27, true, 'collision');
@@ -178,6 +180,8 @@ function playerTurn (i) {
     unit = allUnits[i];
     mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
     mover.anchor.setTo(0.5, 0.5);
+    limitX = unit.x;
+    limitY = unit.y;
     mover.animations.add('redden', [0, 1], 3, false);
     mover.inputEnabled = true;
     mover.input.enableDrag(true);
@@ -186,7 +190,7 @@ function playerTurn (i) {
 }
 
 function movePlayer(tile, sprite) {
-  if ( (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile)) {
+  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile) && !unitCollision(tile)) {
     unit.x = tile.x;
     unit.y = tile.y;
   } else {
@@ -198,9 +202,21 @@ function tileCollision(tile) {
   for (var i = 0; i < tileGroup.children.length; i++) {
     var a = tile.getBounds();
     var b = tileGroup.children[i].getBounds();
-    if (Phaser.Rectangle.intersects(a, b) === true) {
+    if (Phaser.Rectangle.intersects(a, b)) {
       return true;
     }
   }
 }
+
+function unitCollision(tile) {
+  for (var i = 0; i < allUnits.length; i++) {
+    var a = tile.getBounds();
+    var b = allUnits[i].getBounds();
+    if (Phaser.Rectangle.intersects(a, b)) {
+      return true;
+    }
+  }
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
