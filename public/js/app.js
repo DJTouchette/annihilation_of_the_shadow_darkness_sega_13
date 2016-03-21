@@ -26,11 +26,6 @@ function preload() {
 //PRELOAD END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-
-
-
-
-
 //CREATE START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function create() {
   //Variables
@@ -38,13 +33,21 @@ function create() {
   var testHealth = 100;
   var hpBar1;
   var graphics;
-  var barConfig = {
+  var barConfigTop = {
     width: 20,
     height: 100,
-    x: 800,
+    x: 810,
+    y: 530,
+    flipped: true
+  };
+  var barConfigBottom = {
+    width: 20,
+    height: 100,
+    x: 810,
     y: 300,
     flipped: true
   };
+
 // MUSIC START///////////////////////////////////
   music = game.add.audio('battle');
   music.play();
@@ -71,48 +74,87 @@ function create() {
   player.animations.add('right', [5, 6, 7, 8], 10, true);
 
   // Movement Sprites
+  //LEFT///////////////////////////////////////////////////////////////
   left = game.add.tileSprite(player.x - 48, player.y, 48, 48, 'green');
   left.anchor.setTo(0.5, 0.5);
   left.inputEnabled = true;
   left.input.enableDrag(true);
   left.input.enableSnap(48, 48, true, true);
+  //LEFT///////////////////////////////////////////////////////////////
+  //RIGHT///////////////////////////////////////////////////////////////
   right = game.add.tileSprite(player.x + 48, player.y, 48, 48, 'green');
   right.anchor.setTo(0.5, 0.5);
   right.inputEnabled = true;
   right.input.enableDrag(true);
   right.input.enableSnap(48, 48, true, true);
+  //RIGHT///////////////////////////////////////////////////////////////
+  //UP///////////////////////////////////////////////////////////////
   up = game.add.tileSprite(player.x, player.y - 48, 48, 48, 'green');
   up.anchor.setTo(0.5, 0.5);
   up.inputEnabled = true;
   up.input.enableDrag(true);
   up.input.enableSnap(48, 48, true, true);
   down = game.add.tileSprite(player.x, player.y + 48, 48, 48, 'green');
+  //UP///////////////////////////////////////////////////////////////
+  //DOWN///////////////////////////////////////////////////////////////
   down.anchor.setTo(0.5, 0.5);
   down.inputEnabled = true;
   down.input.enableDrag(true);
   down.input.enableSnap(48, 48, true, true);
   down.events.onDragStop.add(movePlayer, this);
+  //DOWN///////////////////////////////////////////////////////////////
+
 //PLAYER END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//OTHER SPRITES START//////////////////////////////////////////////////////////////////////////////////////
+  bottomSide = game.add.group();
+  topSide = game.add.group();
 
-//IHEALTH BAR START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  hpBar1 = new HealthBar(this.game, barConfig);
-  hpBar1.setFixedToCamera(true);
+function createSide(x, y, group, sprite, frame_pos) {
+  for (var i = 0; i < 10; i ++) {
+    soldier = group.create(x + (i * 60), y, sprite);
+    soldier.frame = frame_pos;
+    createTroopBar(soldier);
+  }  
+}
+
+//OTHER SPRITES END///////////////////////////////////////////////////////////////////////////////////////
+
+//HEALTH BAR START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Morale Bar
+  function createMoraleBars(){
+    hpBarTop = new HealthBar(this.game, barConfigTop);
+    hpBarTop.setFixedToCamera(true);
+    // hpBarBottom = new HealthBar(this.game, barConfigBottom);
+    // hpBarBottom.setFixedToCamera(true);
+  }
+
+  function createTroopBar(sprite){
+    graphics = this.game.add.graphics(-11, -6);
+    graphics.beginFill(0X00FF00);
+    graphics.drawRect(0, 0, 50, 10);
+    sprite.addChild(graphics);
+  }
+
+  //PLAYER HEALTH BAR
   // draw graphics
-  graphics = this.game.add.graphics(-25,-35);
-  // set a fill and line style
-  graphics.beginFill(0x00FF00);
-  graphics.drawRect(0, 0, 50, 10);
-  player.addChild(graphics);
+  // graphics = this.game.add.graphics(-25,-35);
+  // // set a fill and line style
+  // graphics.beginFill(0x00FF00);
+  // graphics.drawRect(0, 0, 50, 10);
+  // player.addChild(graphics);
+
+createTroopBar(player);
+createMoraleBars()
 //HEALTH BAR END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//MENU START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Call Methods HERE//////////////
+createSide(150, 550, bottomSide, 'soldier', 4)
+createSide(150, 15, topSide, 'camus', 10)
+// createMoraleBars();
+//////////////////////////////////
 
-  // Player screen
-  // Generates playerHUD
-  // makeHudPlayer('Jon', ['Swordman', 'Archer', 'Horseman']);
-  // makeSecondFrame(opponentText('Jen', ['Swordman', 'Archer', 'Horseman']) );
-  // startTurn();
+//MENU START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Unit screen
   var unit = {type: 'Horseman', 'Morale': 3, 'Atk': 5, 'Def': 2, 'Spd': 6, tile: {terrain: 'Grass', buff: ['Spd', -3]}};
@@ -133,13 +175,10 @@ function movePlayer(tile) {
 
   if ( (Math.abs(Math.floor(player.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(player.y / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile)) {
   // tween = game.add.tween(player).to( { x: background.getTileX(pointer.x) * 48, y: background.getTileY(pointer.y) * 48}, 2000, Phaser.Easing.Linear.Out, true);
-  // console.log(collisionLayer.getTileX(pointer.x), collisionLayer.getTileY(pointer.y));
   player.x = tile.x;
   player.y = tile.y;
-  console.log(tileCollision(tile));
   }
 
-  // console.log(checkOverlap(player));
 }
 
 function tileCollision(tile) {
