@@ -79,7 +79,7 @@ HealthBar.prototype.drawBackground = function() {
     this.bgSprite.anchor.set(0.5);
 
     if(this.flipped){
-        this.bgSprite.scale.y = -1; //original x
+        this.bgSprite.scale.x = -1;
     }
 };
 
@@ -90,20 +90,11 @@ HealthBar.prototype.drawHealthBar = function() {
     bmd.ctx.rect(0, 0, this.config.width, this.config.height);
     bmd.ctx.fill();
 
-    // original code
-    // this.barSprite = this.game.add.sprite(this.x - this.bgSprite.width/2, this.y, bmd);
-    // this.barSprite.anchor.y = 0.5;
-
-    // if(this.flipped){
-    //     this.barSprite.scale.x = -1;
-    // }
-
-    // play with the height
-    this.barSprite = this.game.add.sprite(this.x, this.y - this.bgSprite.height/2, bmd);
-    this.barSprite.anchor.x = 0.5;
+    this.barSprite = this.game.add.sprite(this.x - this.bgSprite.width/2, this.y, bmd);
+    this.barSprite.anchor.y = 0.5;
 
     if(this.flipped){
-        this.barSprite.scale.y = -1;
+        this.barSprite.scale.x = -1;
     }
 };
 
@@ -124,24 +115,10 @@ HealthBar.prototype.setPosition = function (x, y) {
 HealthBar.prototype.setPercent = function(newValue){
     if(newValue < 0) newValue = 0;
     if(newValue > 100) newValue = 100;
-    // Original source code
-    // var newWidth =  (newValue * this.config.width) / 100;
 
-    // this.setWidth(newWidth);
+    var newWidth =  (newValue * this.config.width) / 100;
 
-    // Set height
-    var newHeight =  (newValue * this.config.height) / 100;
-
-    this.setHeight(newHeight);
-};
-
-// setHeight
-HealthBar.prototype.setHeight = function(newHeight){
-    if(this.flipped) {
-        newHeight = -1 * newHeight;
-    }
-
-    this.game.add.tween(this.barSprite).to( { height: newHeight }, this.config.animationDuration, Phaser.Easing.Linear.None, true);
+    this.setWidth(newWidth);
 };
 
 HealthBar.prototype.setWidth = function(newWidth){
