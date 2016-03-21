@@ -93,4 +93,5 @@ function terrain (unit) {
 
 function click() {
   console.log('clicked');
+  turnSwitch = true;
 }
