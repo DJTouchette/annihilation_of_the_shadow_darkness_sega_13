@@ -1,5 +1,5 @@
 // Displays the unit frame
-function unitFrame() {
+function firstFrame(cb) {
 
   var leftCorner = game.add.sprite(830, 50, 'leftCorner');
   var rightCorner = game.add.sprite(962, 50, 'rightCorner');
@@ -9,7 +9,7 @@ function unitFrame() {
 
 }
 
-// Populates units frame. Takes in [array] of units.
+// Populates units frame. Takes in [array] of units or stats.
 function displayUnits (unit) {
 
   var styleTitle = { font: "18px Arial", fill: "#ffffff" };
@@ -17,7 +17,7 @@ function displayUnits (unit) {
 
   var styleUnit = { font: "15px Arial", fill: "#FFFB00" };
 
-  var position = [90, 120, 150];
+  var position = [90, 120, 150, 180];
   for (var i = 0; i < unit.length; i++) {
 
     game.add.text(840, position[i], unit[i], styleUnit);

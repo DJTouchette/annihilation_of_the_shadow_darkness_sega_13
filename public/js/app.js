@@ -27,12 +27,13 @@ function create() {
 
   // Player screen
   //Generates playerHUD
-  // hudPlayer('Jon', ['Swordman', 'Archer', 'Horseman']);
-  // openentFrame('Jen', ['Swordman', 'Archer', 'Horseman']);
-  // placeBtn();
+  // makeHudPlayer('Jon', ['Swordman', 'Archer', 'Horseman']);
+  // makeSecondFrame(opponentText('Jen', ['Swordman', 'Archer', 'Horseman']) );
+  // placeBtn('Start', 'green');
 
   // Unit screen
-  unitBarMake(['Swordman', 'Archer', 'Horseman']);
+  var unit = {type: 'Horseman', 'Morale': 3, 'Atk': 5, 'Def': 2, 'Spd': 6, tile: {terrain: 'Grass', buff: ['Spd', -3]}};
+  makeUnitBar(unit);
 
 
 

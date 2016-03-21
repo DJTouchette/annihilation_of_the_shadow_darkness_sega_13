@@ -1,7 +1,7 @@
 
 // Loads all border assets
 function loadBorder () {
-  
+
   game.load.spritesheet('horizontal','assets/border/horizontal.png');
   game.load.spritesheet('bottomLeft','assets/border/bottom_left.png');
   game.load.spritesheet('bottomRight','assets/border/bottom_right.png');

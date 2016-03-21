@@ -1,9 +1,8 @@
 
-function hudPlayer (player, unit) {
+function makeHudPlayer (player, unit) {
 
   makeBorder();
-  unitFrame();
-  displayUnits(unit);
+  firstFrame(displayUnits(unit));
 
   var title = game.add.sprite(814, 8, 'title');
   var style = { font: "20px Indie", fill: "#A0A2A3",  align: "center" };
