@@ -93,12 +93,6 @@ function create() {
   var unit = {type: 'Horseman', 'Morale': 3, 'Atk': 5, 'Def': 2, 'Spd': 6, tile: {terrain: 'Grass', buff: ['Spd', -3]}};
   makeUnitBar(unit);
 //MENU END////////////////////////////////////////
-// //PLAYER START/////////////////////////////////
-  // player = game.add.sprite(96, 96, 'camus');
-  // player.anchor.setTo(0.5, 0.5);
-  // player.inputEnabled = true;
-  // // player.events.onInputDown.add(playerTurn, this);
-//PLAYER END/////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
   topSide = game.add.group();
@@ -107,7 +101,6 @@ function create() {
 createSide(150, 550, bottomSide, 'soldier', 4);
 createSide(150, 15, topSide, 'camus', 10);
 createMoraleBars();
-createTroopBar(player);
 playerTurn(turn);
 addStats(topSide, footman);
 
@@ -147,7 +140,6 @@ function createSide(x, y, group, sprite, frame_pos) {
     soldier = group.create(x + (i * 60), y, sprite);
     soldier.anchor.setTo(0.5, 0.5);
     soldier.inputEnabled = true;
-    soldier.events.onInputDown.add(playerTurn, this);
     soldier.frame = frame_pos;
     createTroopBar(soldier);
     allUnits.push(soldier);
