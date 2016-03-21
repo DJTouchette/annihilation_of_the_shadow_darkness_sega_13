@@ -1,3 +1,5 @@
+// 'use strict'
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 var score = 0;
@@ -9,12 +11,15 @@ var canMove;
 var map;
 var tween;
 var tileGroup;
+var dragging;
 
 function preload() {
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
   game.load.image('star', 'assets/star.png');
   game.load.image('move', 'assets/move.png');
+  game.load.image('cantmove', 'assets/cantmove.png');
+  game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 }
 
@@ -36,7 +41,7 @@ function create() {
   game.physics.arcade.enable(map, 'collision');
   tileGroup = game.add.group();
   map.createFromTiles([13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], null, 'star', collisionLayer, tileGroup);
-
+  game.physics.arcade.enable(tileGroup);
 
   //player
   player = game.add.sprite(96, 96, 'dude');
@@ -56,32 +61,38 @@ function create() {
   // game.input.onDown.add(movePlayer, this);
 
   // movement sprites
-  left = game.add.tileSprite(player.x - 48, player.y, 48, 48, 'move');
-  left.anchor.setTo(0.5, 0.5);
-  left.inputEnabled = true;
-  left.input.enableDrag(true);
-  left.input.enableSnap(48, 48, true, true);
-  left.events.onDragStop.add(movePlayer, this);
-  right = game.add.tileSprite(player.x + 48, player.y, 48, 48, 'move');
-  right.anchor.setTo(0.5, 0.5);
-  right.inputEnabled = true;
-  right.input.enableDrag(true);
-  right.input.enableSnap(48, 48, true, true);
-  right.events.onDragStop.add(movePlayer, this);
-  up = game.add.tileSprite(player.x, player.y - 48, 48, 48, 'move');
-  up.anchor.setTo(0.5, 0.5);
-  up.inputEnabled = true;
-  up.input.enableDrag(true);
-  up.input.enableSnap(48, 48, true, true);
-  up.events.onDragStop.add(movePlayer, this);
-  down = game.add.tileSprite(player.x, player.y + 48, 48, 48, 'move');
+  // left = game.add.tileSprite(player.x - 48, player.y, 48, 48, 'movetile', 1);
+  // left.anchor.setTo(0.5, 0.5);
+  // left.inputEnabled = true;
+  // left.input.enableDrag(true);
+  // left.input.enableSnap(48, 48, true, true);
+  // left.events.onDragStop.add(movePlayer, this);
+  // right = game.add.tileSprite(player.x + 48, player.y, 48, 48, 'movetile', 1);
+  // right.anchor.setTo(0.5, 0.5);
+  // right.inputEnabled = true;
+  // right.input.enableDrag(true);
+  // right.input.enableSnap(48, 48, true, true);
+  // right.events.onDragStop.add(movePlayer, this);
+  // up = game.add.tileSprite(player.x, player.y - 48, 48, 48, 'movetile', 1);
+  // up.anchor.setTo(0.5, 0.5);
+  // up.inputEnabled = true;
+  // up.input.enableDrag(true);
+  // up.input.enableSnap(48, 48, true, true);
+  // up.events.onDragStop.add(movePlayer, this);
+  down = game.add.tileSprite(player.x, player.y, 48, 48, 'movetile', 1);
   down.anchor.setTo(0.5, 0.5);
   down.inputEnabled = true;
   down.input.enableDrag(true);
   down.input.enableSnap(48, 48, true, true);
   down.events.onDragStop.add(movePlayer, this);
+  // down.events.onDragStart.add(dragging);
+  // down.events.onDragStop.add(notDragging);
+  // game.physics.arcade.enable(down);
+  
 
-  // game.physics.arcade.overlap(down, collisionLayer);
+  
+
+  
 
   
 
@@ -90,78 +101,59 @@ function create() {
   
 }
 
-function movePlayer(tile) {
+// function movePlayer(tile) {
 
-  if ( (Math.abs(Math.floor(player.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(player.y / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile)) {
-  // tween = game.add.tween(player).to( { x: background.getTileX(pointer.x) * 48, y: background.getTileY(pointer.y) * 48}, 2000, Phaser.Easing.Linear.Out, true);
-  // console.log(collisionLayer.getTileX(pointer.x), collisionLayer.getTileY(pointer.y));
-  player.x = tile.x;
-  player.y = tile.y;
-  console.log(tileCollision(tile));
-  }
+//   if ( (Math.abs(Math.floor(player.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(player.y / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile)) {
+//   // tween = game.add.tween(player).to( { x: background.getTileX(pointer.x) * 48, y: background.getTileY(pointer.y) * 48}, 2000, Phaser.Easing.Linear.Out, true);
+//   // console.log(collisionLayer.getTileX(pointer.x), collisionLayer.getTileY(pointer.y));
+//   player.x = tile.x;
+//   player.y = tile.y;
+//   }
 
-  // console.log(checkOverlap(player));
-}
+//   // console.log(checkOverlap(player));
+// }
 
-function tileCollision(tile) {
-  for (var i = 0; i < tileGroup.children.length; i++) {
-    console.log(tileGroup.children);
-    var a = tile.getBounds();
-    var b = tileGroup.children[i].getBounds();
-    if (Phaser.Rectangle.intersects(a, b) === true) {
-      return true;
-    }
-  }
+// function tileCollision(tile) {
+//   for (var i = 0; i < tileGroup.children.length; i++) {
+//     var a = tile.getBounds();
+//     var b = tileGroup.children[i].getBounds();
+//     if (Phaser.Rectangle.intersects(a, b) === true) {
+//       // tile.loadTexture('cantmove');
+//       return true;
+//     }
+//   }
+// }
+
+// function dragging (){
+//   dragging = true;
+//   console.log(dragging);
+// }
+
+// function notDragging() {
+//   dragging = false;
+//   console.log(dragging);
+// }
+
+// function turnRed() {
+//   down.frame = 0;
+//   console.log(down.frame);
+// }
   // return Phaser.Rectangle.intersects(tile.getBounds(), tileGroup.getBounds());
   // tileGroup.children.every( function intersect(element, index, array) {
   //   return !(Phaser.Rectangle.intersects(tile.getBounds(), element.getBounds()));
   // });
 
-}
-
 function update() {
-  // console.log(tileCollision(down));
-  // Phaser.Math.snapTo(player.body.x, 48);
-  // Phaser.Math.snapTo(player.body.y, 48);
-  // player controls
-  // cursors = game.input.keyboard.createCursorKeys();
-  
-  // player.body.velocity.x = 0;
-  // player.body.velocity.y = 0;
 
-  // player walk
-  // if (cursors.left.isDown) {
-  //   player.body.moveLeft(48);
-  //   player.animations.play('left');
-  //   game.math.snapToFloor(player.x, 48, 0);
-  //   game.math.snapToFloor(player.y, 48, 0);
-  // } else if (cursors.right.isDown) {
-  //   player.body.moveRight(48);
-  //   player.animations.play('right');
-  //   game.math.snapToFloor(player.x, 48, 0);
-  //   game.math.snapToFloor(player.y, 48, 0);
+  // if (tileCollision(down)) {
+  //   down.frame = 0;
+  // } else {
+  //   down.frame = 1;
   // }
-
-  // if (cursors.up.isDown) {
-  //   player.body.moveUp(48);
-  //   player.animations.play('left');
-  //   game.math.snapToFloor(player.x, 48, 0);
-  //   game.math.snapToFloor(player.y, 48, 0);
-  // } else if (cursors.down.isDown) {
-  //   player.body.moveDown(48);
-  //   player.animations.play('left');
-  //   game.math.snapToFloor(player.x, 48, 0);
-  //   game.math.snapToFloor(player.y, 48, 0);
+  // if (Math.abs(Math.floor(player.x / 48) - background.getTileX(down.x)) + Math.abs(Math.floor(player.y / 48) - background.getTileY(down.y)) > 4 ) {
+  //   down.loadTexture('cantmove');
+  //   console.log('something');
   // }
-
-
-  // if ( (Math.abs(Math.floor(player.x / 48) - background.getTileX(pointer.x)) + Math.abs(Math.floor(player.y / 48) - background.getTileY(pointer.y)) <= 4 )) {
-  //   var tile = background.getTileXY(pointer.x, pointer.y)
-  //   tile.lineStyle(1, 0xffffff, 1);
-  //   tile.drawRect(0, 0, 48, 48);
-  //   canMove = true;
-  // }
-
 
 }
 
@@ -226,6 +218,47 @@ function update() {
 function render () {
   game.debug.text('Tile X: ' + collisionLayer.getTileX(game.input.activePointer.worldX) * 48, 48, 69, 'rgb(0,0,0)');
   game.debug.text('Tile Y: ' + collisionLayer.getTileY(game.input.activePointer.worldY) * 48, 48, 48, 'rgb(0,0,0)');
+}
+
+function movePlayer(tile) {
+
+  if ( (Math.abs(Math.floor(player.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(player.y / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile)) {
+  // tween = game.add.tween(player).to( { x: background.getTileX(pointer.x) * 48, y: background.getTileY(pointer.y) * 48}, 2000, Phaser.Easing.Linear.Out, true);
+  // console.log(collisionLayer.getTileX(pointer.x), collisionLayer.getTileY(pointer.y));
+  player.x = tile.x;
+  player.y = tile.y;
+  tile.frame = 1;
+  } else {
+    tile.frame = 0;
+  }
+
+  // console.log(checkOverlap(player));
+}
+
+function tileCollision(tile) {
+  for (var i = 0; i < tileGroup.children.length; i++) {
+    var a = tile.getBounds();
+    var b = tileGroup.children[i].getBounds();
+    if (Phaser.Rectangle.intersects(a, b) === true) {
+      // tile.frame = 0;
+      return true;
+    }
+  }
+}
+
+function dragging (){
+  dragging = true;
+  console.log(dragging);
+}
+
+function notDragging() {
+  dragging = false;
+  console.log(dragging);
+}
+
+function turnRed() {
+  down.frame = 0;
+  console.log(down.frame);
 }
 
 
