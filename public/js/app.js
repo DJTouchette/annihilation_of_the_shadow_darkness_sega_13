@@ -1,26 +1,32 @@
 //Variables
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-var marker;
-var canMove;
+// var marker;
+// var canMove;
 var map;
-var tween;
+// var tween;
 var tileGroup;
 var music;
-var dragging;
-
+var allUnits = [];
+// var dragging;
+var barConfigTop;
+var mover;
+var unit;
+var turnSwitch;
+var turn = 0;
 
 //PRELOAD START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function preload() {
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
   game.load.image('green', 'assets/green.png');
+  game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
   game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
   game.load.audio('battle', 'assets/battle.mp3');
   game.load.spritesheet('title', 'assets/title.png');
-  game.load.image('move', 'assets/move.png');
-  game.load.image('cantmove', 'assets/cantmove.png');
-  game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
+  // game.load.image('move', 'assets/move.png');
+  // game.load.image('cantmove', 'assets/cantmove.png');
+  // game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
 
   // Loads all border assets (/public/js/hud/border.js)
   loadBorder();
@@ -38,7 +44,7 @@ function create() {
   var testHealth = 100;
   var hpBar1;
   var graphics;
-  var barConfigTop = {
+  barConfigTop = {
     width: 20,
     height: 100,
     x: 800,
@@ -79,22 +85,36 @@ function create() {
   player = game.add.sprite(96, 96, 'camus');
   player.anchor.setTo(0.5, 0.5);
   player.inputEnabled = true;
-  player.events.onInputDown.add(playerTurn, this);
+  // player.events.onInputDown.add(playerTurn, this);
 //PLAYER END/////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
   topSide = game.add.group();
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
-createSide(150, 550, bottomSide, 'soldier', 4)
-createSide(150, 15, topSide, 'camus', 10)
+createSide(150, 550, bottomSide, 'soldier', 4);
+createSide(150, 15, topSide, 'camus', 10);
 createMoraleBars();
 createTroopBar(player);
+playerTurn(turn);
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 function update(){
+
+  if (turnSwitch) {
+    mover.kill();
+    turnSwitch = false;
+    if (turn < 19) {
+      turn += 1;
+    } else if (turn === 19) {
+      turn = 0;
+    }
+    playerTurn(turn);
+    console.log(turn);
+  }
+
 }
 
 function render () {
@@ -106,10 +126,14 @@ function render () {
 /////////////////////////////////////////////////////////////////////
 //Create Sides//////////////////////////////////////////////////////
 function createSide(x, y, group, sprite, frame_pos) {
+
   for (var i = 0; i < 10; i ++) {
     soldier = group.create(x + (i * 60), y, sprite);
+    soldier.anchor.setTo(0.5, 0.5);
+    soldier.inputEnabled = true;
     soldier.frame = frame_pos;
     createTroopBar(soldier);
+    allUnits.push(soldier);
   }  
 }
 //Morale Bar//////////////////////////////////////////////////////
@@ -128,20 +152,29 @@ function createTroopBar(sprite){
   sprite.addChild(graphics);
 }
 ///Move Functions//////////////////////////////////////////////////////
-function playerTurn (player) {
-  down = game.add.tileSprite(player.x, player.y, 48, 48, 'movetile', 1);
-  down.anchor.setTo(0.5, 0.5);
-  down.animations.add('redden', [0, 1], 1, false);
-  down.inputEnabled = true;
-  down.input.enableDrag(true);
-  down.input.enableSnap(48, 48, true, true);
-  down.events.onDragStop.add(movePlayer, this);
+function playerTurn (i) {
+  // cursors = game.input.keyboard.createCursorKeys();
+  // for (var i = 0; i < allUnits.length; i++) {
+    unit = allUnits[i];
+    mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
+    mover.anchor.setTo(0.5, 0.5);
+    mover.animations.add('redden', [0, 1], 3, false);
+    mover.inputEnabled = true;
+    mover.input.enableDrag(true);
+    mover.input.enableSnap(48, 48, true, true);
+    mover.events.onDragStop.add(movePlayer, this);
+    // if (turnSwitch) {
+    //   mover.kill();
+    //   turnSwitch = false;
+    //   continue;
+    // }
+  // }
 }
 
-function movePlayer(tile) {
-  if ( (Math.abs(Math.floor(player.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(player.y / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile)) {
-    player.x = tile.x;
-    player.y = tile.y;
+function movePlayer(tile, sprite) {
+  if ( (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile)) {
+    unit.x = tile.x;
+    unit.y = tile.y;
   } else {
     tile.animations.play('redden');
   }
