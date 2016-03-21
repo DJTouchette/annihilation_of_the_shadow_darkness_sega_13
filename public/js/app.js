@@ -46,7 +46,7 @@ function preload() {
   game.load.image('test_map', 'assets/test_map.png');
 ////////////////////////////////////////////////////////
 //Tiles///////////////////////////////////////////////////
-  game.load.image('green', 'assets/green.png');
+  game.load.image('wall', 'assets/.png');
   game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
   game.load.image('move', 'assets/move.png');
   game.load.image('cantmove', 'assets/cantmove.png');
@@ -74,9 +74,6 @@ function preload() {
 //CREATE START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function create() {
   //Variables
-  var playerHealth = 100;
-  var testHealth = 100;
-  var hpBar1;
   var graphics;
 
 // MUSIC START////////////////////////////////////
@@ -95,7 +92,7 @@ function create() {
   map.setCollisionBetween(13, 27, true, 'collision');
   game.physics.arcade.enable(map, 'collision');
   tileGroup = game.add.group();
-  map.createFromTiles([13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], null, 'green', collisionLayer, tileGroup);
+  map.createFromTiles([13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], null, 'wall', collisionLayer, tileGroup);
   game.physics.arcade.enable(tileGroup);
 // //MAP END////////////////////////////////////////
 //MENU START///////////////////////////////////////
