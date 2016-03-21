@@ -15,8 +15,9 @@ game_state.main.prototype = {
       var testHealth = 100;
       var hpBar1;
       var graphics;
+      var initialWidth;//Should be equal to a specific character's type width e.g. Horseman is 50, Archer is 60
 
-      //Health bar
+      // Morale 'big' bar
       var barConfig = {
         width: 20,
         height: 100,
@@ -31,14 +32,16 @@ game_state.main.prototype = {
       // draw graphics of individual morale bar for each army
       // army should be a sprite
       createBarIndividual(game, army);
-
+      // Initial width for the same type of character
+      initialWidth = getWidth(player);
+      // console.log("Initial width: " + initialWidth); //should be 50
     },
 
     update: function() {
       //decrease aggreagate bar
       damageHealth(moraleBar);
       //decrease individual bar
-      setBarPercent(game, army, newValue);
+      setBarPercent(game, army, newValue, initialWidth);
     },
 
     // bar is an instance of HealthBar
