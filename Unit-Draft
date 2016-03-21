@@ -1,0 +1,54 @@
+Footman {
+  morale: 70,
+  troops: 100,
+  attack: 20,
+  defense: 20,
+  speed: 2
+}
+
+Armored {
+  moral: 70,
+  troops: 50,
+  attack: 30,
+  defense: 40,
+  speed: 1
+}
+
+Cavalry {
+  morale: 70,
+  troops: 40,
+  attack: 30,
+  defense: 10,
+  speed: 3
+}
+
+Base Morale per unit is 70 and may be increased or decreased based on enemy/ally proximity
+
+Troops function as health
+Base Morale per unit is tied to
+- # of troops left / Max troops (50%)
+- Army Morale (50%)
+
+
+
+-Attacks on a unit will be 
+
+
+function attack(enemy, unit){
+  attRoll = unit.attack * Math.rand(1)
+  defRoll = unit.defense * Math.rand(1)
+  attack = (attRoll - defRoll) 
+  if (attack > 0){
+    enemy.health - attack;
+    return enemy.health;
+  }
+}
+
+function turn(group){
+  for()---
+
+}
+
+function actionOnClick () {
+  
+}

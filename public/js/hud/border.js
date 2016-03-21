@@ -10,6 +10,8 @@ function loadBorder () {
   game.load.spritesheet('vertical','assets/border/vertical.png');
   game.load.spritesheet('background', 'assets/border/paper.png');
   game.load.spritesheet('box', 'assets/border/box.png');
+  game.load.spritesheet('start', 'assets/start_turn.png');
+  game.load.spritesheet('end', 'assets/end_turn.png');
 
 }
 
@@ -18,8 +20,8 @@ function loadBorder () {
 // Puts boder in place
 function makeBorder () {
 
-  var horizontalB = game.add.sprite(800, 584.5, 'horizontal');
-  var horizontalT = game.add.sprite(800, -10, 'horizontal');
+  var horizontalB = game.add.sprite(808, 584.5, 'horizontal');
+  var horizontalT = game.add.sprite(810, -10, 'horizontal');
   var bottomLeft = game.add.sprite(803, 565, 'bottomLeft');
   var bottomRight = game.add.sprite(968, 565, 'bottomRight');
   var topRight = game.add.sprite(965, -15.8, 'topRight');

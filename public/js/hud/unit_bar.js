@@ -5,14 +5,27 @@ function makeUnitBar (unit) {
   firstFrame(unitStats(unit));
   unitStats(unit);
   makeSecondFrame(terrain(unit));
-  placeBtn('End', 'orange');
   title();
+  endTurn();
+  // console.log("i ran");
 
+}
+
+function endTurn () {
+
+  var endBtn = game.add.sprite(829, 550, 'end');
+  endBtn.inputEnabled = true;
+  endBtn.scale.setTo(0.9);
+  endBtn.inputEnabled = true;
+  endBtn.input.useHandCursor = true;
+  // Make button clickable add(this.function, this)
+  endBtn.events.onInputDown.add(this.click, this);
 }
 
 function title () {
 
   var title = game.add.sprite(814, 8, 'title');
+  // var mainTitle = game.add.sprite(0,0, 'title');
   var style = { font: "20px Indie", fill: "#A0A2A3",  align: "center" };
   var stats = game.add.text(890, 15, 'Stats', style);
   title.scale.setTo(0.67);
@@ -76,4 +89,8 @@ function terrain (unit) {
   // Other stat or marale
   game.add.text(935, position[2],['Spd', '+4'].join('  '), styleUnit );
 
+}
+
+function click() {
+  console.log('clicked');
 }

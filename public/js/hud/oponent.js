@@ -12,6 +12,7 @@ function opponentText (oponent, units) {
 
   var styleTitle = { font: "18px Indie", fill: "#ffffff" };
   var styleHeader = { font: "18px Indie", fill: "red" };
+  var styleUnit = { font: "15px Indie", fill: "#FFFB00" };
 
   var header = game.add.sprite(814, 243, 'title');
   header.scale.setTo(0.67);
@@ -19,8 +20,6 @@ function opponentText (oponent, units) {
   var headerTxt = game.add.text(870, 248, 'Opponent', styleHeader);
 
   var title = game.add.text(890, 310, oponent, styleTitle);
-
-  var styleUnit = { font: "15px Indie", fill: "#FFFB00" };
 
   var position = [340, 370, 400];
 

@@ -1,0 +1,108 @@
+{"frames": {
+
+"a.png":
+{
+	"frame": {"x":1,"y":147,"w":19,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":2,"w":19,"h":47},
+	"sourceSize": {"w":32,"h":50}
+},
+"b.png":
+{
+	"frame": {"x":43,"y":147,"w":17,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":1,"w":17,"h":48},
+	"sourceSize": {"w":32,"h":50}
+},
+"c.png":
+{
+	"frame": {"x":1,"y":196,"w":19,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":2,"w":19,"h":47},
+	"sourceSize": {"w":32,"h":50}
+},
+"d.png":
+{
+	"frame": {"x":1,"y":1,"w":22,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":2,"w":22,"h":47},
+	"sourceSize": {"w":32,"h":50}
+},
+"e.png":
+{
+	"frame": {"x":1,"y":99,"w":22,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":2,"w":22,"h":46},
+	"sourceSize": {"w":32,"h":50}
+},
+"f.png":
+{
+	"frame": {"x":25,"y":1,"w":22,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":2,"w":22,"h":47},
+	"sourceSize": {"w":32,"h":50}
+},
+"g.png":
+{
+	"frame": {"x":22,"y":147,"w":19,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":1,"w":19,"h":47},
+	"sourceSize": {"w":32,"h":50}
+},
+"h.png":
+{
+	"frame": {"x":43,"y":197,"w":17,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":1,"w":17,"h":48},
+	"sourceSize": {"w":32,"h":50}
+},
+"i.png":
+{
+	"frame": {"x":22,"y":196,"w":19,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":2,"w":19,"h":47},
+	"sourceSize": {"w":32,"h":50}
+},
+"j.png":
+{
+	"frame": {"x":1,"y":50,"w":22,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":1,"w":22,"h":47},
+	"sourceSize": {"w":32,"h":50}
+},
+"k.png":
+{
+	"frame": {"x":25,"y":99,"w":22,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":2,"w":22,"h":46},
+	"sourceSize": {"w":32,"h":49}
+},
+"l.png":
+{
+	"frame": {"x":25,"y":50,"w":22,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":1,"w":22,"h":47},
+	"sourceSize": {"w":32,"h":48}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "soldier.png",
+	"format": "RGBA8888",
+	"size": {"w":61,"h":246},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:716c9e4d7424b4fa4e67a2b905fa48bf:9732dcab5485fb475ce131d3e0108475:1365469667d93bb6b74b9d28a96b6600$"
+}
+}
