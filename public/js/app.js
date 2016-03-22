@@ -33,13 +33,14 @@ var barConfigTop = {
 // };
 /////////////////////////////////////
 //Unit Types////////////////////////
-var footman = {
-      type: 'footman',
-      troops: 100,
-      att: 50,
-      def: 5,
-      spd: 4,
-    };
+// var footman = {
+//       type: 'footman',
+//       troops: 100,
+//       att: 50,
+//       def: 5,
+//       spd: 4,
+//     };
+
 ////////////////////////////////////
 //VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -114,7 +115,16 @@ createSide(144, 528, bottomSide, 'soldier', 4);
 createSide(144, 48, topSide, 'camus', 10);
 createMoraleBars();
 playerTurn(turn);
-addStats(topSide, footman);
+addUnit(topSide);
+addUnit(bottomSide);
+
+
+//Unit Testing// 
+var one = topSide.children[0].unit;
+var two = bottomSide.children[0].unit;
+console.log(one.attack(two));
+console.log('one', one);
+console.log('two', two);
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -155,10 +165,8 @@ function createSide(x, y, group, sprite, frame_pos) {
   }  
 }
 
-function addStats(group, unitType){
-  for (var i = 0; i < group.length; i ++) {
-    group.children[i].stats = unitType
-  }
+function addUnit(group){
+    group.children[0].unit = new Footman();
 }
 //Morale Bar//////////////////////////////////////////////////////
 function createMoraleBars(){
