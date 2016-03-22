@@ -16,6 +16,8 @@ var limitY;
 var targetUnit;
 var canAttack;
 var unitColliding;
+var specialTile;
+var inGrass;
 //ARMY MORALE BAR////////////////////
 var barConfigTop = {
   width: 20,
@@ -98,7 +100,9 @@ function create() {
   map.setCollisionBetween(13, 27, true, 'collision');
   game.physics.arcade.enable(map, 'collision');
   tileGroup = game.add.group();
+  specialTile = game.add.group();
   map.createFromTiles([13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], null, 'wall', collisionLayer, tileGroup);
+  map.createFromTiles([1, 2, 4, 5, 7], null, 'wall', backgroundOL, specialTile);
   game.physics.arcade.enable(tileGroup);
 // //MAP END////////////////////////////////////////
 //MENU START///////////////////////////////////////
@@ -114,17 +118,19 @@ function create() {
 createSide(144, 528, bottomSide, 'soldier', 4);
 createSide(144, 48, topSide, 'camus', 10);
 createMoraleBars();
-playerTurn(turn);
 addUnit(topSide);
 addUnit(bottomSide);
+playerTurn(turn);
+
 
 
 //Unit Testing// 
-var one = topSide.children[0].unit;
-var two = bottomSide.children[0].unit;
-console.log(one.attack(two));
+var one = topSide.children[0];
+var two = bottomSide.children[0];
+// console.log(one.attack(two));
 console.log('one', one);
 console.log('two', two);
+console.log(one.x, one.y);
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -166,7 +172,9 @@ function createSide(x, y, group, sprite, frame_pos) {
 }
 
 function addUnit(group){
-    group.children[0].unit = new Footman();
+  for (var i = 0; i < group.length; i++) {
+    group.children[i].unit = new Footman();
+  }
 }
 //Morale Bar//////////////////////////////////////////////////////
 function createMoraleBars(){
@@ -196,6 +204,7 @@ function playerTurn (i) {
     mover.input.enableDrag(true);
     mover.input.enableSnap(48, 48, true, true);
     mover.events.onDragStop.add(movePlayer, this);
+    mover.events.onDragStop.add(unit.unit.moraleBuff, unit.unit);
 }
 
 function movePlayer(tile, sprite) {
@@ -215,7 +224,13 @@ function movePlayer(tile, sprite) {
       targetUnit = false;
     }
   }
-  console.log(targetUnit);
+  if (unitSpecialTile(unit)) {
+    unit.unit.tile = -2;
+  } else {
+    unit.unit.tile = 0;
+  }
+  console.log(unitSpecialTile(unit));
+  console.log(unit.unit.spd);
 }
 
 function tileCollision(tile) {
@@ -235,10 +250,21 @@ function unitCollision(tile) {
     if (Phaser.Rectangle.intersects(a, b)) {
       unitColliding = true;
       targetUnit = allUnits[i];
-      console.log(unitColliding);
       return allUnits[i];
     } else {
       unitColliding = false;
+    }
+  }
+}
+
+function unitSpecialTile(unit) {
+  // unit.unit.tile = 1;
+  for (var j = 0; j < specialTile.children.length; j++) {
+    var a = unit.getBounds();
+    var b = specialTile.children[j].getBounds;
+    if (Phaser.Rectangle.intersects(a, b)) {
+      // debugger
+      return true;    
     }
   }
 }

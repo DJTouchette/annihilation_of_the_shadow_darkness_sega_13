@@ -11,13 +11,13 @@ let morale = 100;
 // Making a unit class
 class Unit {
 
-  constructor (atk, spd, def, tile) {
+  constructor (atk, spd, def, tile = 0) {
 
     this.atk = atk;
     this.spd = spd;
     this.def = def;
     this.troops = 100;
-    this.tile = -3;
+    this.tile = tile;
 
     // These stats are used to reset stats, we should clean this up some how.
     // But it works.
@@ -82,16 +82,19 @@ class Unit {
 
       this.atk += 10;
       this.def += 10;
+      // this.spd += this.tile;
 
     } else if (morale >= 100) {
 
       this.atk += 8;
       this.def += 3;
+      // this.spd += this.tile;
 
     } else if (morale >= 80) {
 
       this.atk += 5;
       this.def += 3;
+      // this.spd += this.tile;
 
 
     } else if (morale >= 40 || morale <= 40) {
@@ -101,6 +104,7 @@ class Unit {
       this.spd += 1;
 
     }
+    this.spd += this.tile;
   }
 
   // Reset stats used by moraleBuff();
@@ -111,6 +115,7 @@ class Unit {
     this.spd = this.ogSpd;
 
   }
+
 
 }
 
