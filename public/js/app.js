@@ -31,6 +31,7 @@ var barConfigTop = {
 /////////////////////////////////////
 //Unit Types////////////////////////
 var footman = {
+      type: 'footman',
       troops: 100,
       att: 50,
       def: 5,
@@ -46,7 +47,7 @@ function preload() {
   game.load.image('test_map', 'assets/test_map.png');
 ////////////////////////////////////////////////////////
 //Tiles///////////////////////////////////////////////////
-  game.load.image('wall', 'assets/.png');
+  game.load.image('wall', 'assets/wall.png');
   game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
   game.load.image('move', 'assets/move.png');
   game.load.image('cantmove', 'assets/cantmove.png');
@@ -54,6 +55,7 @@ function preload() {
 //Units///////////////////////////////////////////////////
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
   game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
+  game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
 //////////////////////////////////////////////////////////
 //Music///////////////////////////////////////////////////
   game.load.audio('battle', 'assets/battle.mp3');
@@ -105,7 +107,7 @@ function create() {
   topSide = game.add.group();
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
-createSide(150, 550, bottomSide, 'soldier', 4);
+createSide(150, 550, bottomSide, 'cavalry', 1);
 createSide(150, 15, topSide, 'camus', 10);
 createMoraleBars();
 playerTurn(turn);

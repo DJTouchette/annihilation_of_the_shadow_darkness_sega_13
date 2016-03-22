@@ -1,0 +1,44 @@
+{"frames": {
+
+"a.png":
+{
+	"frame": {"x":27,"y":1,"w":34,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":3,"w":34,"h":52},
+	"sourceSize": {"w":40,"h":60}
+},
+"b.png":
+{
+	"frame": {"x":1,"y":1,"w":24,"h":53},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":4,"w":24,"h":53},
+	"sourceSize": {"w":40,"h":60}
+},
+"c.png":
+{
+	"frame": {"x":63,"y":1,"w":34,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":2,"w":34,"h":52},
+	"sourceSize": {"w":40,"h":60}
+},
+"d.png":
+{
+	"frame": {"x":99,"y":1,"w":24,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":3,"w":24,"h":52},
+	"sourceSize": {"w":40,"h":60}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "cavalry.png",
+	"format": "RGBA8888",
+	"size": {"w":124,"h":55},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:7fd07cd7f583380c6f45e3ec1ae8fc01:2548278edb8a81efae1192766972c1df:8808745394c850aca7ca52fec783f633$"
+}
+}
