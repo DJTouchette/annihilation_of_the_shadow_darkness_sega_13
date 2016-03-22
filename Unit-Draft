@@ -3,7 +3,7 @@ Footman {
   troops: 100,
   attack: 20,
   defense: 20,
-  speed: 2
+  speed: 2 math random
 }
 
 Armored {
@@ -31,13 +31,13 @@ Base Morale per unit is tied to
 
 
 
--Attacks on a unit will be 
+-Attacks on a unit will be
 
 
 function attack(enemy, unit){
   attRoll = unit.attack * Math.rand(1)
   defRoll = unit.defense * Math.rand(1)
-  attack = (attRoll - defRoll) 
+  attack = (attRoll - defRoll)
   if (attack > 0){
     enemy.health - attack;
     return enemy.health;
@@ -50,5 +50,5 @@ function turn(group){
 }
 
 function actionOnClick () {
-  
+
 }
