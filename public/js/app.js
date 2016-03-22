@@ -13,6 +13,9 @@ var turnSwitch;
 var turn = 0;
 var limitX;
 var limitY;
+var targetUnit;
+var canAttack;
+var unitColliding;
 //ARMY MORALE BAR////////////////////
 var barConfigTop = {
   width: 20,
@@ -127,7 +130,6 @@ function update(){
       turn = 0;
     }
     playerTurn(turn);
-    console.log(turn);
   }
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -189,12 +191,23 @@ function playerTurn (i) {
 }
 
 function movePlayer(tile, sprite) {
-  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile) && !unitCollision(tile)) {
+  unitCollision(tile);
+  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
+    targetUnit = false;
   } else {
-    tile.animations.play('redden');
+    if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) === 1 )) {
+      if (targetUnit.parent !== unit.parent) {
+        canAttack = true;
+        console.log('Go for it!');
+      }
+    } else {
+      tile.animations.play('redden');
+      targetUnit = false;
+    }
   }
+  console.log(targetUnit);
 }
 
 function tileCollision(tile) {
@@ -212,10 +225,21 @@ function unitCollision(tile) {
     var a = tile.getBounds();
     var b = allUnits[i].getBounds().inflate(0, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
-      return true;
+      unitColliding = true;
+      targetUnit = allUnits[i];
+      console.log(unitColliding);
+      return allUnits[i];
+    } else {
+      unitColliding = false;
     }
   }
 }
+
+// function attackRange(unit) {
+//   for (var i = 0; i < allUnits; i++) {
+//     if (getTileXY(pointer.x, pointer.y) === getTileXY(allUnits[i]))
+//   }
+// }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
