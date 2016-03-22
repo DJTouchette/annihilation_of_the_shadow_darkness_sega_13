@@ -116,6 +116,15 @@ class Unit {
 
   }
 
+  tileCheck() {
+    if (unitSpecialTile(unit)) {
+      this.tile = -2;
+    } else {
+      this.tile = 0;
+    }
+    console.log(unit.unit.spd);
+  }
+
 
 }
 

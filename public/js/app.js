@@ -139,6 +139,8 @@ console.log(one.x, one.y);
 function update(){
   if (turnSwitch) {
     mover.kill();
+    allUnits[turn].unit.tileCheck();
+    allUnits[turn].unit.moraleBuff();
     turnSwitch = false;
     if (turn < 19) {
       turn += 1;
@@ -195,6 +197,7 @@ function createTroopBar(sprite){
 
 function playerTurn (i) {
     unit = allUnits[i];
+    console.log(unit.unit.spd);
     mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
@@ -203,13 +206,14 @@ function playerTurn (i) {
     mover.inputEnabled = true;
     mover.input.enableDrag(true);
     mover.input.enableSnap(48, 48, true, true);
+    // mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
     mover.events.onDragStop.add(movePlayer, this);
-    mover.events.onDragStop.add(unit.unit.moraleBuff, unit.unit);
+    // mover.events.onDragStop.add(unit.unit.moraleBuff, unit.unit);
 }
 
 function movePlayer(tile, sprite) {
   unitCollision(tile);
-  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 4 ) && !tileCollision(tile) && (unitColliding === false)) {
+  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= unit.unit.spd ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
     targetUnit = false;
@@ -217,20 +221,22 @@ function movePlayer(tile, sprite) {
     if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) === 1 )) {
       if (targetUnit.parent !== unit.parent) {
         canAttack = true;
-        console.log('Go for it!');
+        unit.unit.attack(targetUnit.unit);
+        console.log(targetUnit.unit.troops);
+
+        turnSwitch = true;
       }
     } else {
       tile.animations.play('redden');
       targetUnit = false;
     }
   }
-  if (unitSpecialTile(unit)) {
-    unit.unit.tile = -2;
-  } else {
-    unit.unit.tile = 0;
-  }
-  console.log(unitSpecialTile(unit));
-  console.log(unit.unit.spd);
+  // if (unitSpecialTile(unit)) {
+  //   unit.unit.tile = -2;
+  // } else {
+  //   unit.unit.tile = 0;
+  // }
+  // console.log(unit.unit.spd);
 }
 
 function tileCollision(tile) {
@@ -261,13 +267,22 @@ function unitSpecialTile(unit) {
   // unit.unit.tile = 1;
   for (var j = 0; j < specialTile.children.length; j++) {
     var a = unit.getBounds();
-    var b = specialTile.children[j].getBounds;
+    var b = specialTile.children[j].getBounds().inflate(-4, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
       // debugger
       return true;    
     }
   }
 }
+
+// function tileCheck(unit) {
+//   if (unitSpecialTile(unit)) {
+//     unit.unit.tile = -2;
+//   } else {
+//     unit.unit.tile = 0;
+//   }
+//   console.log(unit.unit.spd);
+// }
 
 // function attackRange(unit) {
 //   for (var i = 0; i < allUnits; i++) {
