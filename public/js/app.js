@@ -19,6 +19,7 @@ var unitColliding;
 var specialTile;
 var inGrass;
 //ARMY MORALE BAR////////////////////
+var HpBarTop;
 var barConfigTop = {
   width: 20,
   height: 100,
@@ -44,6 +45,19 @@ var barConfigTop = {
 //     };
 
 ////////////////////////////////////
+
+
+
+
+      //** var initialWidth;//Should be equal to a specific character's type width e.g. Horseman is 50, Archer is 60
+
+
+      // // draw graphics of individual morale bar for each army
+      // // army should be a sprite
+      // //**createBarIndividual(game, army);
+      // // Initial width for the same type of character
+      // //**initialWidth = getWidth(player);
+      // console.log("Initial width: " + initialWidth); //should be 50
 //VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //PRELOAD START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,10 +141,7 @@ playerTurn(turn);
 //Unit Testing// 
 var one = topSide.children[0];
 var two = bottomSide.children[0];
-// console.log(one.attack(two));
-console.log('one', one);
-console.log('two', two);
-console.log(one.x, one.y);
+
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -149,6 +160,9 @@ function update(){
     }
     playerTurn(turn);
   }
+    //**   //decrease aggreagate bar
+    // damageHealth(moraleBar);
+    // //decrease individual bar
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -193,11 +207,18 @@ function createTroopBar(sprite){
   graphics.drawRect(0, 0, 46, 10);
   sprite.addChild(graphics);
 }
+
+//**
+function damageHealth(bar){
+  testHealth -= 10;
+  if(testHealth < 0) testHealth = 0;
+  bar.setPercent(testHealth);
+}
 ///Move Functions//////////////////////////////////////////////////////
 
 function playerTurn (i) {
     unit = allUnits[i];
-    console.log(unit.unit.spd);
+    // console.log(unit.unit.spd);
     mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
@@ -222,13 +243,14 @@ function movePlayer(tile, sprite) {
       if (targetUnit.parent !== unit.parent) {
         canAttack = true;
         unit.unit.attack(targetUnit.unit);
-        console.log(targetUnit.unit.troops);
+        // console.log(targetUnit.unit.troops);
 
         turnSwitch = true;
       }
     } else {
       tile.animations.play('redden');
       targetUnit = false;
+
     }
   }
   // if (unitSpecialTile(unit)) {
@@ -289,6 +311,5 @@ function unitSpecialTile(unit) {
 //     if (getTileXY(pointer.x, pointer.y) === getTileXY(allUnits[i]))
 //   }
 // }
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

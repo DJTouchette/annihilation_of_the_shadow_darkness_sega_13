@@ -56,13 +56,15 @@ class Unit {
     this.moraleBuff ();
 
     var atkRoll = this.atk * Math.random();
-    var defRoll = enemy.def * Math.random();
+    var defRoll = enemy.unit.def * Math.random();
     var dmg = (atkRoll - defRoll);
 
     if (dmg > 0) {
 
       this.armyMorale(3);
-      enemy.takeDmg(Math.floor (dmg) );
+      enemy.unit.takeDmg(Math.floor (dmg) );
+      setBarPercent(game, enemy, enemy.unit.troops, 46);
+
       return 1;
 
     } else {
