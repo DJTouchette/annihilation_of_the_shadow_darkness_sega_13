@@ -52,3 +52,9 @@ function turn(group){
 function actionOnClick () {
 
 }
+
+// Archer: low def, low atk, low spd, high atck range.
+// Infantry: med atk, med def, med spd.
+// horseman: high atk, high spd, shit def.
+// Armored: low atk, low spd, high def.
+// Morale starts at 100 goes to
