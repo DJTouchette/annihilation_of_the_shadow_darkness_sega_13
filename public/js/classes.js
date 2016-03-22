@@ -46,6 +46,12 @@ class Unit {
   // army morale.
   armyMorale (num) {
 
+    if (arguments.length === 0) {
+
+      return morale;
+
+    }
+
     return morale += num;
 
   }

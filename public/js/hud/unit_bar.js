@@ -1,6 +1,7 @@
-// Makes unit bar, Takes in unit object. Pattern ex (var unit = {type: 'Horseman', 'Morale': 3, 'Atk': 5, 'Def': 2, 'Spd': 6};).
+
 function makeUnitBar (unit) {
 
+  console.log('i ran');
   makeBorder();
   firstFrame(unitStats(unit));
   unitStats(unit);
@@ -34,37 +35,40 @@ function title () {
 }
 
 function unitStats (unit) {
-
+// debugger;
 var styleTitle = { font: "18px Arial", fill: "#ffffff" };
 
-if (unit.type === 'Swordman' || unit.type === 'Horseman' ) {
+if (unit.unit.constructor.name === 'Footman' || unit.unit.constructor.name === 'Horseman' ) {
 
-  game.add.text(868, 60, unit.type, styleTitle);
+  game.add.text(868, 60, unit.unit.constructor.name , styleTitle);
 
-} else if (unit.type === 'Archer'){
+} else if (unit.unit.constructor.name === 'Archer'){
 
-  game.add.text(883, 60, unit.type, styleTitle);
+  game.add.text(883, 60, unit.unit.constructor.name, styleTitle);
 
 }
 
 var styleUnit = { font: "15px Arial", fill: "#FFFB00" };
 
-game.add.text(840, 90, unit[0], styleUnit);
-game.add.text(970, 90, unit.atk, styleUnit);
-
 var position = [90, 120, 150, 180];
-var stats = ['Morale', 'Atk', 'Def', 'Spd' ];
 
-  for (var i = 0; i < 5; i++) {
+game.add.text(840, position[0], 'Morale', styleUnit);
+game.add.text(963, position[0], unit.unit.armyMorale(), styleUnit);
 
-    game.add.text(840, position[i], stats[i], styleUnit);
-    game.add.text(970, position[i], unit[stats[i]], styleUnit);
+game.add.text(840, position[1], 'Atk', styleUnit);
+game.add.text(970, position[1], unit.unit.atk, styleUnit);
 
-  }
+game.add.text(840, position[2], 'Def', styleUnit);
+game.add.text(970, position[2], unit.unit.def, styleUnit);
+
+game.add.text(840, position[3], 'Spd', styleUnit);
+game.add.text(975, position[3], unit.unit.spd, styleUnit);
+
 }
 
 function terrain (unit) {
 
+  unit.unit.moraleBuff();
   var styleTitle = { font: "18px Indie", fill: "#ffffff" };
   var styleHeader = { font: "18px Indie", fill: "yellow" };
 
@@ -79,19 +83,23 @@ function terrain (unit) {
 
   var position = [340, 370, 400];
 
-  game.add.text(840, position[0], unit.tile.terrain, styleUnit);
-  game.add.text(935, position[0], unit.tile.buff.join('   '), styleUnit);
+
+
+  game.add.text(840, position[0], 'Grass', styleUnit);
+  game.add.text(935, position[0], unit.unit.tile, styleUnit);
 
   // Need a morale function that decides on what stat is boosted.
   game.add.text(840, position[1], 'Morale', styleUnit);
-  game.add.text(935, position[1],['Def', '-1'].join('   '), styleUnit );
+  game.add.text(935, position[1],['Def', unit.unit.def - unit.unit.ogDef].join('   '), styleUnit );
 
   // Other stat or marale
-  game.add.text(935, position[2],['Spd', '+4'].join('  '), styleUnit );
+  game.add.text(935, position[2],['Spd', unit.unit.spd - unit.unit.ogSpd].join('  '), styleUnit );
 
 }
 
 function click() {
+
   console.log('clicked');
   turnSwitch = true;
+
 }

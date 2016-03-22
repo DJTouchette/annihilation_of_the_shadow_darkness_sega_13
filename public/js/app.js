@@ -108,7 +108,7 @@ function create() {
 //MENU START///////////////////////////////////////
   // Unit screen
   var unit = {type: 'Horseman', 'Morale': 3, 'Atk': 5, 'Def': 2, 'Spd': 6, tile: {terrain: 'Grass', buff: ['Spd', -3]}};
-  makeUnitBar(unit);
+  // makeUnitBar(unit);
 //MENU END////////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
@@ -124,9 +124,9 @@ playerTurn(turn);
 
 
 
-//Unit Testing// 
-var one = topSide.children[0];
-var two = bottomSide.children[0];
+//Unit Testing//
+var one = topSide.children[0].unit;
+var two = bottomSide.children[0].unit;
 // console.log(one.attack(two));
 console.log('one', one);
 console.log('two', two);
@@ -168,7 +168,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     soldier.frame = frame_pos;
     createTroopBar(soldier);
     allUnits.push(soldier);
-  }  
+  }
 }
 
 function addUnit(group){
@@ -195,6 +195,8 @@ function createTroopBar(sprite){
 
 function playerTurn (i) {
     unit = allUnits[i];
+    makeUnitBar(unit);
+    // debugger;
     mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
@@ -264,7 +266,7 @@ function unitSpecialTile(unit) {
     var b = specialTile.children[j].getBounds;
     if (Phaser.Rectangle.intersects(a, b)) {
       // debugger
-      return true;    
+      return true;
     }
   }
 }
