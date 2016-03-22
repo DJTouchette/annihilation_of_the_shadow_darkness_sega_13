@@ -107,15 +107,6 @@ class Unit {
     this.spd += this.tile;
   }
 
-  // Reset stats used by moraleBuff();
-  statReset () {
-
-    this.atk = this.ogAtk;
-    this.def = this.ogDef;
-    this.spd = this.ogSpd;
-
-  }
-
   tileCheck() {
     if (unitSpecialTile(unit)) {
       this.tile = -2;
@@ -125,6 +116,14 @@ class Unit {
     console.log(unit.unit.spd);
   }
 
+  // Reset stats used by moraleBuff();
+  statReset () {
+
+    this.atk = this.ogAtk;
+    this.def = this.ogDef;
+    this.spd = this.ogSpd;
+
+  }
 
 }
 

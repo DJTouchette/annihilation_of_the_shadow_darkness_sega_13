@@ -117,9 +117,11 @@ function create() {
 //Call Create Functions HERE//////////////////
 createSide(144, 528, bottomSide, 'soldier', 4);
 createSide(144, 48, topSide, 'camus', 10);
+sortUnits();
 createMoraleBars();
-addUnit(topSide);
-addUnit(bottomSide);
+// addUnit(topSide);
+// addUnit(bottomSide);
+// console.log(allUnits);
 playerTurn(turn);
 
 
@@ -141,6 +143,7 @@ function update(){
     mover.kill();
     allUnits[turn].unit.tileCheck();
     allUnits[turn].unit.moraleBuff();
+    
     turnSwitch = false;
     if (turn < 19) {
       turn += 1;
@@ -148,6 +151,7 @@ function update(){
       turn = 0;
     }
     playerTurn(turn);
+    console.log(allUnits[turn].unit);
   }
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -163,20 +167,55 @@ function render () {
 /////////////////////////////////////////////////////////////////////
 //Create Sides//////////////////////////////////////////////////////
 function createSide(x, y, group, sprite, frame_pos) {
-  for (var i = 0; i < 10; i ++) {
-    soldier = group.create(x + (i * 48), y, sprite);
-    soldier.anchor.setTo(-0.25, 0);
-    soldier.inputEnabled = true;
-    soldier.frame = frame_pos;
-    createTroopBar(soldier);
+  for (var i = 0; i < 4; i ++) {
+    soldier = group.create((144 + x) + (48 * i), y, sprite);
+    // soldier.anchor.setTo(-0.25, 0);
+    // soldier.inputEnabled = true;
+    // soldier.frame = frame_pos;
+    // createTroopBar(soldier);
+    soldier.unit = new Footman();
     allUnits.push(soldier);
-  }  
+  }
+  for (var j = 0; j < 2; j++) {
+    archer = group.create((x + 96) + (j * 240), y, sprite);
+    // archer.anchor.setTo(-0.25, 0);
+    // archer.inputEnabled = true;
+    // archer.frame = frame_pos;
+    // createTroopBar(archer);
+    archer.unit = new Archer();
+    allUnits.push(archer);
+  }
+  for (var f = 0; f < 2; f++) {
+    armored = group.create((48 + x) + (f * 336), y, sprite);
+    armored.unit = new Armored();
+    allUnits.push(armored);
+  }
+  for (var e = 0; e < 2; e++) {
+    horseman = group.create(x + (e * 432), y, sprite);
+    horseman.unit = new Horseman();
+    allUnits.push(horseman);
+  }
+  for (var i = 0; i < allUnits.length; i++) {
+    dude = allUnits[i];
+    dude.anchor.setTo(-0.25, 0);
+    dude.inputEnabled = true;
+    dude.frame = frame_pos
+    createTroopBar(dude);  
+  }
 }
 
-function addUnit(group){
-  for (var i = 0; i < group.length; i++) {
-    group.children[i].unit = new Footman();
-  }
+function sortUnits(){
+  // for (var i = 0; i < allUnits.length; i++) {
+  //   dude = allUnits[i];
+  //   dude.anchor.setTo(-0.25, 0);
+  //   dude.inputEnabled = true;
+  //   dude.frame = frame_pos
+  //   createTroopBar(dude);  
+  // }
+  allUnits.sort(function compare (a, b) {
+    return b.unit.spd - a.unit.spd;
+  });
+  // console.log(allUnits);
 }
 //Morale Bar//////////////////////////////////////////////////////
 function createMoraleBars(){
@@ -206,9 +245,9 @@ function playerTurn (i) {
     mover.inputEnabled = true;
     mover.input.enableDrag(true);
     mover.input.enableSnap(48, 48, true, true);
-    // mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
+    mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
     mover.events.onDragStop.add(movePlayer, this);
-    // mover.events.onDragStop.add(unit.unit.moraleBuff, unit.unit);
+    mover.events.onDragStop.add(unit.unit.moraleBuff, unit.unit);
 }
 
 function movePlayer(tile, sprite) {
