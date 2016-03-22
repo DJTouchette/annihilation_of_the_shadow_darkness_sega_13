@@ -107,8 +107,8 @@ function create() {
   topSide = game.add.group();
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
-createSide(150, 550, bottomSide, 'cavalry', 1);
-createSide(150, 15, topSide, 'camus', 10);
+createSide(144, 528, bottomSide, 'soldier', 4);
+createSide(144, 48, topSide, 'camus', 10);
 createMoraleBars();
 playerTurn(turn);
 addStats(topSide, footman);
@@ -144,8 +144,8 @@ function render () {
 //Create Sides//////////////////////////////////////////////////////
 function createSide(x, y, group, sprite, frame_pos) {
   for (var i = 0; i < 10; i ++) {
-    soldier = group.create(x + (i * 60), y, sprite);
-    soldier.anchor.setTo(0.5, 0.5);
+    soldier = group.create(x + (i * 48), y, sprite);
+    soldier.anchor.setTo(-0.25, 0);
     soldier.inputEnabled = true;
     soldier.frame = frame_pos;
     createTroopBar(soldier);
@@ -168,9 +168,9 @@ function createMoraleBars(){
 }
 
 function createTroopBar(sprite){
-  graphics = this.game.add.graphics(-11, -6);
+  graphics = this.game.add.graphics(1, -11);
   graphics.beginFill(0X00FF00);
-  graphics.drawRect(0, 0, 50, 10);
+  graphics.drawRect(0, 0, 46, 10);
   sprite.addChild(graphics);
 }
 ///Move Functions//////////////////////////////////////////////////////
@@ -178,7 +178,7 @@ function createTroopBar(sprite){
 function playerTurn (i) {
     unit = allUnits[i];
     mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
-    mover.anchor.setTo(0.5, 0.5);
+    // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
     limitY = unit.y;
     mover.animations.add('redden', [0, 1], 3, false);
@@ -200,7 +200,7 @@ function movePlayer(tile, sprite) {
 function tileCollision(tile) {
   for (var i = 0; i < tileGroup.children.length; i++) {
     var a = tile.getBounds();
-    var b = tileGroup.children[i].getBounds();
+    var b = tileGroup.children[i].getBounds().inflate(-4, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
       return true;
     }
@@ -210,7 +210,7 @@ function tileCollision(tile) {
 function unitCollision(tile) {
   for (var i = 0; i < allUnits.length; i++) {
     var a = tile.getBounds();
-    var b = allUnits[i].getBounds();
+    var b = allUnits[i].getBounds().inflate(0, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
       return true;
     }
