@@ -4,6 +4,7 @@ $(function() {
 
 $('body').on('click', function () {
     socket.emit('pop');
+    socket.emit('turnChange');
 });
 
 socket.on('SOMEONE_POPPED', function () {
@@ -19,3 +20,9 @@ socket.on('SOMEONE_POPPED', function () {
 function changeShit () {
   $('h1').css('color', 'red');
 }
+
+socket.on('turnChange',  function (user) {
+
+  console.log(user);
+
+});

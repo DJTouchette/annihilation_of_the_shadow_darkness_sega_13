@@ -7,7 +7,18 @@ function makeUnitBar (unit) {
   unitStats(unit);
   makeSecondFrame(terrain(unit));
   title();
-  endTurn();
+  socket.on('bottomSide', function () {
+
+    endTurn();
+
+  });
+
+  socket.on('topSide', function () {
+
+    waiting();
+
+  });
+
   // console.log("i ran");
 
 }
@@ -21,6 +32,14 @@ function endTurn () {
   endBtn.input.useHandCursor = true;
   // Make button clickable add(this.function, this)
   endBtn.events.onInputDown.add(this.click, this);
+
+
+}
+
+function waiting () {
+
+  var msg = game.add.sprite(829, 550, 'title');
+
 }
 
 function title () {

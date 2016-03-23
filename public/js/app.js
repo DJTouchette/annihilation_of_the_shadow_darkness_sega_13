@@ -117,6 +117,7 @@ function create() {
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
   topSide = game.add.group();
+
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
 createSide(144, 528, bottomSide, 'soldier', 4);
