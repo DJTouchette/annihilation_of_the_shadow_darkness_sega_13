@@ -3,13 +3,18 @@ var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+var user = [];
+var id = 0;
+
 
 app.get('/', function(req, res){
   res.sendfile('views/index.html');
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+  var newId = id += 1;
+  user.push(newId);
+  console.log('a user connected' + ' ' + 'Id:' + ' ' + newId);
   socket.on('disconnect', function(msg){
     console.log('user disconnected');
   });
