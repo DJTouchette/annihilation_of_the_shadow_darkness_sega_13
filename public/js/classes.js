@@ -123,7 +123,14 @@ class Unit {
     } else {
       this.tile = 0;
     }
-    // console.log(unit.unit.spd);
+    // if (unitRangeTile(unit)) {
+    //   this.rng = 5;
+    // } else {
+    //   this.rng = this.ogRng;
+    // }
+    // // console.log(unit.unit.spd);
+    // console.log(this.rng);
+    // console.log(unitRangeTile(unit));
   }
 
   // Reset stats used by moraleBuff();
@@ -132,7 +139,19 @@ class Unit {
     this.atk = this.ogAtk;
     this.def = this.ogDef;
     this.spd = this.ogSpd;
+    this.rng = this.ogRng;
 
+  }
+
+  rangeTileCheck() {
+    if (unitRangeTile(unit)) {
+      this.rng = 5;
+    } else {
+      this.rng = this.ogRng;
+    }
+    // console.log(unit.unit.spd);
+    console.log(this.rng);
+    console.log(unitRangeTile(unit));
   }
 
 }
