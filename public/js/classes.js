@@ -56,14 +56,14 @@ class Unit {
     this.moraleBuff ();
 
     var atkRoll = this.atk * Math.random();
-    var defRoll = enemy.unit.def * Math.random();
+    var defRoll = enemy.def * Math.random();
     var dmg = (atkRoll - defRoll);
 
     if (dmg > 0) {
 
       this.armyMorale(3);
-      enemy.unit.takeDmg(Math.floor (dmg) );
-      setBarPercent(game, enemy, enemy.unit.troops, 46);
+      enemy.takeDmg(Math.floor (dmg) );
+      // setBarPercent(game, enemy, enemy.troops, 46);
 
       return 1;
 
@@ -115,7 +115,7 @@ class Unit {
     } else {
       this.tile = 0;
     }
-    console.log(unit.unit.spd);
+    // console.log(unit.unit.spd);
   }
 
   // Reset stats used by moraleBuff();

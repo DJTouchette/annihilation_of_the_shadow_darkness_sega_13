@@ -116,7 +116,7 @@ HealthBar.prototype.setPercent = function(newValue){
     if(newValue < 0) newValue = 0;
     if(newValue > 100) newValue = 100;
 
-    var newWidth =  (newValue * this.config.width) / 100;
+    var newWidth =  (newValue * this.config.width) / 120;
 
     this.setWidth(newWidth);
 };
