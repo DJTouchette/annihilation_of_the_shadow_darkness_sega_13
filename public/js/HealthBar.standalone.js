@@ -115,8 +115,8 @@ HealthBar.prototype.setPosition = function (x, y) {
 HealthBar.prototype.setPercent = function(newValue){
     if(newValue < 0) newValue = 0;
     if(newValue > 100) newValue = 100;
-
-    var newWidth =  (newValue * this.config.width) / 120;
+    // TODO: decide on maximum morale 100 or 120
+    var newWidth =  (newValue * this.config.width) / 100;
 
     this.setWidth(newWidth);
 };

@@ -19,14 +19,20 @@ var unitColliding;
 var specialTile;
 var inGrass;
 //ARMY MORALE BAR////////////////////
-var HpBarTop;
+var hpBarTop;
 var barConfigTop = {
-  width: 20,
-  height: 100,
+  width: 100,
+  height: 20,
   x: 800,
   y: 530,
-  flipped: true
+  bg: {
+    color: '#0047b3'
+    },
+  bar: {
+    color: '#ff3300'
+  },
 };
+
 // var barConfigBottom = {
 //   width: 20,
 //   height: 100,
@@ -141,15 +147,15 @@ playerTurn(turn);
 //Unit Testing// 
 var one = bottomSide.children[0];
 var two = topSide.children[0];
-one.unit.attack(two)
-console.log('one', one.unit);
-console.log('two', two.unit);
-one.unit.attack(two)
-console.log('one', one.unit);
-console.log('two', two.unit);
-one.unit.attack(two)
-console.log('one', one.unit);
-console.log('two', two.unit);
+// one.unit.attack(two)
+// console.log('one', one.unit);
+// console.log('two', two.unit);
+// one.unit.attack(two)
+// console.log('one', one.unit);
+// console.log('two', two.unit);
+// one.unit.attack(two)
+// console.log('one', one.unit);
+// console.log('two', two.unit);
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -204,6 +210,8 @@ function addUnit(group){
 function createMoraleBars(){
   hpBarTop = new HealthBar(this.game, barConfigTop);
   hpBarTop.setFixedToCamera(true);
+  // Set the push and pull morale bar in 50% (start from the middle)
+  hpBarTop.setPercent(50);
   // hpBarTop.bringToTop();brings to top but erases the menu
   // hpBarBottom = new HealthBar(this.game, barConfigBottom);
   // hpBarBottom.setFixedToCamera(true);
@@ -217,11 +225,43 @@ function createTroopBar(sprite){
 }
 
 //**
-// function damageHealth(bar){
-//   testHealth -= 10;
-//   if(testHealth < 0) testHealth = 0;
-//   bar.setPercent(testHealth);
-// }
+// accept group bottomside or topside
+function damageMoraleLeft(){
+  // testHealth -= 10 / group.children.length;
+  // if(testHealth < 0) testHealth = 0;
+  // bar.setPercent(testHealth);
+
+  // group argument is the attacking group
+  var startingMorale = morale / 2;
+  console.log(startingMorale);
+  var damage = 10; // or other number
+  var totalUnit = 1 //group.children.length;
+  var decreaseMorale = damage / totalUnit;
+  if (decreaseMorale < 0) decreaseMorale = 0; // Game ended?
+  var newMorale = startingMorale - decreaseMorale;
+  // Change the bar
+  hpBarTop.setPercent(newMorale);
+
+}
+
+// damageMoraleRight should reflect damageMoraleLeft
+function damageMoraleRight(group){
+  // testHealth -= 10 / group.children.length;
+  // if(testHealth < 0) testHealth = 0;
+  // bar.setPercent(testHealth);
+
+  // group argument is the attacking group
+  var startingMorale = morale / 2;
+  console.log(startingMorale);
+  var damage = 10; // or other number
+  var totalUnit = group.children.length;
+  var decreaseMorale = damage / totalUnit;
+  if (decreaseMorale > 100) decreaseMorale = 100; // Game ended?
+  var newMorale = startingMorale + decreaseMorale;
+  // Change the bar
+  hpBarTop.setPercent(newMorale);
+
+}
 ///Move Functions//////////////////////////////////////////////////////
 
 function playerTurn (i) {
@@ -254,6 +294,9 @@ function movePlayer(tile, sprite) {
         setBarPercent(game, targetUnit, targetUnit.unit.troops);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
+
+        // increase / decrease morale
+        damageMoraleLeft();
         turnSwitch = true;
       }
     } else {

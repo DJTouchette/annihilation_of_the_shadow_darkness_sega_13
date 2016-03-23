@@ -13,18 +13,18 @@ function setBarPercent(game, army, troopCount){
   if(troopCount < 0) {troopCount = 0}
   newWidth = (troopCount / 100);
   getGraph = army.getChildAt(0);
-  getGraph.width = newWidth;
+  // getGraph.width = newWidth;
   // console.log(getGraph.width);
 
   // call setBarIndividual
-  // setBarIndividual(game, newWidth, getGraph);
+  setBarIndividual(game, newWidth, getGraph);
 }
 
 // // The graphics transition
-// function setBarIndividual(game, newWidth, getGraph){
-//   // console.log("The graphics width is:" + getGraph.width);
-//   game.add.tween(getGraph).to( { width: newWidth }, 200, Phaser.Easing.Linear.None, true);
-// }
+function setBarIndividual(game, newWidth, getGraph){
+  // console.log("The graphics width is:" + getGraph.width);
+  game.add.tween(getGraph).to( { width: newWidth }, 200, Phaser.Easing.Linear.None, true);
+}
 
 // Get original width / overall total morale
 function getWidth(armySprite) {
