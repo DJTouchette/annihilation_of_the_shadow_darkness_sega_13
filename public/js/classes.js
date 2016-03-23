@@ -69,8 +69,6 @@ class Unit {
 
       this.armyMorale(3);
       enemy.takeDmg(Math.floor (dmg) );
-      // setBarPercent(game, enemy, enemy.troops, 46);
-
       return 1;
 
     } else {
@@ -121,7 +119,6 @@ class Unit {
     } else {
       this.tile = 0;
     }
-    // console.log(unit.unit.spd);
   }
 
   // Reset stats used by moraleBuff();
@@ -178,20 +175,3 @@ class Armored extends Unit {
   }
 
 }
-
-// Some driver code
-// let footman = new Footman();
-// let archer = new Archer();
-// let horseman = new Horseman();
-// let armored = new Armored();
-//
-//
-// for (let i = 0; i < 10; i ++) {
-//
-//   console.log(archer.troops);
-//   console.log();
-//   footman.attack(archer);
-//   console.log();
-//   console.log(archer.troops);
-//
-// }
