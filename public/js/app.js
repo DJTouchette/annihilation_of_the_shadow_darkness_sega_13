@@ -22,7 +22,7 @@ var inGrass;
 var hpBarTop;
 var barConfigTop = {
   width: 100,
-  height: 20,
+  height: 30,
   x: 905,
   y: 530,
   bg: {
@@ -32,8 +32,9 @@ var barConfigTop = {
     color: '#ff3300'
   },
 };
-var startingMorale = morale / 2; //should create starting morale for each group
-console.log("Starting morale for each group is:",startingMorale);
+var startingMoraleBottom = morale / 2; //should create starting morale for each group
+var startingMoraleUp = morale / 2;
+console.log("Starting morale for each group is:",startingMoraleUp, startingMoraleBottom);
 // var barConfigBottom = {
 //   width: 20,
 //   height: 100,
@@ -229,54 +230,70 @@ function createTroopBar(sprite){
 
 //**
 // accept group bottomside or topside
-function damageMoraleLeft(group){
-  // testHealth -= 10 / group.children.length;
-  // if(testHealth < 0) testHealth = 0;
-  // bar.setPercent(testHealth);
-
+function damageMorale(group){
   // group argument is the attacking group
   // starting morale is overall morale (100) divided by 2
-  // var startingMorale = morale / 2;
-  // console.log(startingMorale);
+
   var moralValue = 100; // or other number
   console.log(group.name + " has " + group.children.length + " children");
   var totalUnit = group.children.length;
-  var decreaseMorale = moralValue / totalUnit;
-  startingMorale -= decreaseMorale;
-  var newMorale = startingMorale;
-  if (newMorale <= 0) {
-    newMorale = 0; // Game ended?
-    console.log("Game ended!");
-  }
-  console.log("Blue now is:", newMorale);
-  // Change the bar
-  hpBarTop.setPercent(newMorale);
+  var changeMorale = moralValue / totalUnit; // 100/10 = 10;
 
+  if(group.name == "bottomside"){
+    // bottomside attacks upside
+    // change bar, bottom side should increase
+    console.log("Before attack, up morale is:", startingMoraleUp);
+    startingMoraleUp -= changeMorale;
+    console.log("After attack, Up becomes", startingMoraleUp);
+    startingMoraleBottom += changeMorale;
+    console.log("Bottom Becomes", startingMoraleBottom);
+    if(startingMoraleUp <= 0){
+      startingMoraleUp = 0;
+      console.log("Blue wins");
+    }
+    hpBarTop.setPercent(startingMoraleUp);
+    console.log("after bottom attacked, up morale now:", startingMoraleUp);
+  }
+  else if(group.name == "topside"){
+    // topside attacks bottom
+    // change bar, up side should increase
+    console.log("Before attack, bottom morale is:", startingMoraleBottom);
+    startingMoraleBottom -= changeMorale;
+    console.log("After attack, Bottom becomes", startingMoraleBottom);
+    startingMoraleUp += changeMorale;
+    console.log("Up becomes", startingMoraleUp);
+    if(startingMoraleBottom >= 100){
+      startingMoraleBottom = 100;
+      console.log("Red wins");
+    }
+    hpBarTop.setPercent(startingMoraleUp);
+    console.log("after up attacked, bottom morale now:", startingMoraleBottom);
+  }
 }
 
 // damageMoraleRight should reflect damageMoraleLeft
-function damageMoraleRight(group){
-  // testHealth -= 10 / group.children.length;
-  // if(testHealth < 0) testHealth = 0;
-  // bar.setPercent(testHealth);
+// function damageMoraleRight(group){
+//   // testHealth -= 10 / group.children.length;
+//   // if(testHealth < 0) testHealth = 0;
+//   // bar.setPercent(testHealth);
 
-  // group argument is the attacking group
-  // var startingMorale = morale / 2;
-  // console.log(startingMorale);
-  var moralValue = 100; // or other number
-  console.log(group.name + " has " + group.children.length + " children");
-  var totalUnit = group.children.length;
-  var increaseMorale = moralValue / totalUnit;
-  var newMorale = startingMorale + increaseMorale;
-  if (newMorale >= 100) {
-    newMorale = 100; // Game ended?
-    console.log("Game ended! Red wins");
-  }
-  console.log("Red now is:", newMorale);
-  // Change the bar
-  hpBarTop.setPercent(newMorale);
+//   // group argument is the attacking group
+//   // var startingMorale = morale / 2;
+//   // console.log(startingMorale);
+//   var moralValue = 100; // or other number
+//   console.log(group.name + " has " + group.children.length + " children");
+//   var totalUnit = group.children.length;
+//   var increaseMorale = moralValue / totalUnit;
+//   var newMorale = startingMorale + increaseMorale;
+//   if (newMorale >= 100) {
+//     newMorale = 100; // Game ended?
+//     console.log("Game ended! Red wins");
+//   }
+//   console.log("Red now is:", newMorale);
+//   // Change the bar
+//   hpBarTop.setPercent(newMorale);
 
-}
+// }
 ///Move Functions//////////////////////////////////////////////////////
 
 function playerTurn (i) {
@@ -309,18 +326,11 @@ function movePlayer(tile, sprite) {
           setBarPercent(game, targetUnit, targetUnit.unit.troops);
           // console.log('target unit :', targetUnit);
           // console.log('target troops:', targetUnit.unit.troops)
-          console.log("The parent is: ", unit.parent);
-
+          //console.log("The parent is: ", unit.parent);
 
           // increase or decrease morale based on group
-          if(unit.parent.name == "bottomside"){
-            damageMoraleLeft(unit.parent);
-            console.log("Bottom side!");
-          }
-          else if (unit.parent.name == "topside"){
-            damageMoraleRight(unit.parent);
-            console.log("Top side!");
-          }
+          console.log(unit.parent.name + "turn now");
+          damageMorale(unit.parent);
         }
         turnSwitch = true;
       }
