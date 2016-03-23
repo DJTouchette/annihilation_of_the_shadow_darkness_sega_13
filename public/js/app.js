@@ -32,7 +32,8 @@ var barConfigTop = {
     color: '#ff3300'
   },
 };
-
+var startingMorale = morale / 2; //should create starting morale for each group
+console.log("Starting morale for each group is:",startingMorale);
 // var barConfigBottom = {
 //   width: 20,
 //   height: 100,
@@ -232,13 +233,19 @@ function damageMoraleLeft(){
   // bar.setPercent(testHealth);
 
   // group argument is the attacking group
-  var startingMorale = morale / 2;
-  console.log(startingMorale);
+  // starting morale is overall morale (100) divided by 2
+  // var startingMorale = morale / 2;
+  // console.log(startingMorale);
   var damage = 10; // or other number
   var totalUnit = 1 //group.children.length;
   var decreaseMorale = damage / totalUnit;
-  if (decreaseMorale < 0) decreaseMorale = 0; // Game ended?
-  var newMorale = startingMorale - decreaseMorale;
+  startingMorale -= decreaseMorale;
+  var newMorale = startingMorale;
+  if (newMorale <= 0) {
+    newMorale = 0; // Game ended?
+    console.log("Game ended!");
+  }
+  console.log("New morale now is:", newMorale);
   // Change the bar
   hpBarTop.setPercent(newMorale);
 
@@ -251,8 +258,8 @@ function damageMoraleRight(group){
   // bar.setPercent(testHealth);
 
   // group argument is the attacking group
-  var startingMorale = morale / 2;
-  console.log(startingMorale);
+  // var startingMorale = morale / 2;
+  // console.log(startingMorale);
   var damage = 10; // or other number
   var totalUnit = group.children.length;
   var decreaseMorale = damage / totalUnit;
@@ -290,13 +297,15 @@ function movePlayer(tile, sprite) {
     if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) === 1 )) {
       if (targetUnit.parent !== unit.parent) {
         canAttack = true;
-        unit.unit.attack(targetUnit.unit);
-        setBarPercent(game, targetUnit, targetUnit.unit.troops);
-        // console.log('target unit :', targetUnit);
-        // console.log('target troops:', targetUnit.unit.troops)
+        if (unit.unit.attack(targetUnit.unit)){
+          setBarPercent(game, targetUnit, targetUnit.unit.troops);
+          // console.log('target unit :', targetUnit);
+          // console.log('target troops:', targetUnit.unit.troops)
 
-        // increase / decrease morale
-        damageMoraleLeft();
+          // increase / decrease morale based on group
+          damageMoraleLeft();
+          console.log("Big morale decreased");
+        }
         turnSwitch = true;
       }
     } else {

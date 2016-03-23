@@ -69,7 +69,8 @@ class Unit {
 
     } else {
 
-      console.log('Swing and a miss');
+      console.log('Swing and a miss, morale bar will not change');
+      return 0;
 
     }
 
