@@ -1,5 +1,6 @@
 //VARIABLES START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, mainMenu: mainMenu, create: create, update: update });
 // var marker;
 // var canMove;
 var map;
@@ -92,6 +93,9 @@ function preload() {
 //PRELOAD END//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
+function mainMenu () {
+  console.log('Main Menu');
+}
 
 //CREATE START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function create() {
@@ -122,7 +126,6 @@ function create() {
 //MENU START///////////////////////////////////////
   // Unit screen
   var unit = {type: 'Horseman', 'Morale': 3, 'Atk': 5, 'Def': 2, 'Spd': 6, tile: {terrain: 'Grass', buff: ['Spd', -3]}};
-  makeUnitBar(unit);
 //MENU END////////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
@@ -138,18 +141,10 @@ playerTurn(turn);
 
 
 
-//Unit Testing// 
-var one = bottomSide.children[0];
-var two = topSide.children[0];
-one.unit.attack(two)
-console.log('one', one.unit);
-console.log('two', two.unit);
-one.unit.attack(two)
-console.log('one', one.unit);
-console.log('two', two.unit);
-one.unit.attack(two)
-console.log('one', one.unit);
-console.log('two', two.unit);
+
+//Unit Testing//
+var one = topSide.children[0].unit;
+var two = bottomSide.children[0].unit;
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -192,7 +187,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     soldier.frame = frame_pos;
     createTroopBar(soldier);
     allUnits.push(soldier);
-  }  
+  }
 }
 
 function addUnit(group){
@@ -226,7 +221,7 @@ function createTroopBar(sprite){
 
 function playerTurn (i) {
     unit = allUnits[i];
-    // console.log(unit.unit.spd);
+    makeUnitBar(unit);
     mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
@@ -301,7 +296,7 @@ function unitSpecialTile(unit) {
     var b = specialTile.children[j].getBounds().inflate(-4, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
       // debugger
-      return true;    
+      return true;
     }
   }
 }
