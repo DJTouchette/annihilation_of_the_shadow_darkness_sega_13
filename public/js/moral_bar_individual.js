@@ -12,7 +12,7 @@
 function setBarPercent(game, army, troopCount){
   if(troopCount <= 0) {
     setBarIndividual(game, 0, getGraph);
-    // army.loadTexture('grave');
+    army.loadTexture('grave');
     // army.anchor.setTo(0.05, 0.2);
     army.unit.dead = true;
   }

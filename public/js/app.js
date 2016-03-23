@@ -1,10 +1,7 @@
 //VARIABLES START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, mainMenu: mainMenu, create: create, update: update });
-// var marker;
-// var canMove;
 var map;
-// var tween;
 var tileGroup;
 var music;
 var allUnits = [];
@@ -55,9 +52,6 @@ function preload() {
 //PRELOAD END//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-function mainMenu () {
-  console.log('Main Menu');
-}
 
 //CREATE START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function create() {
@@ -96,9 +90,6 @@ sortUnits()
 playerTurn(turn);
 //Create Functions CALLED////////////////////
 
-// one = bottomSide.children[1];
-// one.loadTexture('grave');
-// one.anchor.setTo(0.05, 0.2);
 
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -260,14 +251,16 @@ function unitCollision(tile) {
 }
 
 function unitSpecialTile(unit) {
-  // unit.unit.tile = 1;
   for (var j = 0; j < specialTile.children.length; j++) {
     var a = unit.getBounds();
     var b = specialTile.children[j].getBounds().inflate(-4, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
-      // debugger
       return true;
     }
   }
+}
+
+function mainMenu () {
+  console.log('Main Menu');
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
