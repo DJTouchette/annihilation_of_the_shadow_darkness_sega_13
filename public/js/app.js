@@ -192,7 +192,7 @@ function createSide(x, y, group, sprite, frame_pos) {
 
 function addUnit(group){
   for (var i = 0; i < group.length; i++) {
-    group.children[i].unit = new Archer();
+    group.children[i].unit = new Footman();
   }
 }
 //Morale Bar//////////////////////////////////////////////////////
@@ -242,7 +242,7 @@ function movePlayer(tile, sprite) {
     unit.y = tile.y;
     targetUnit = false;
   } else {
-    if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) === 1 )) {
+    if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= unit.unit.rng )) {
       if (targetUnit.parent !== unit.parent) {
         canAttack = true;
         unit.unit.attack(targetUnit.unit);
@@ -254,20 +254,8 @@ function movePlayer(tile, sprite) {
       tile.animations.play('redden');
       targetUnit = false;
       }
-    }
-    if (unit.unit.constructor.name === 'Archer' && (unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= 3 )) {
-      if (targetUnit.parent !== unit.parent) {
-        canAttack = true;
-        unit.unit.attack(targetUnit.unit);
-        setBarPercent(game, targetUnit, targetUnit.unit.troops);
-        console.log('target unit :', targetUnit);
-        console.log('target troops:', targetUnit.unit.troops)
-        turnSwitch = true;
-      }
     } else {
       tile.animations.play('redden');
-      targetUnit = false;
-
     }
   }
   // if (unitSpecialTile(unit)) {
