@@ -1,5 +1,6 @@
 //VARIABLES START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, mainMenu: mainMenu, create: create, update: update });
 // var marker;
 // var canMove;
 var map;
@@ -78,6 +79,9 @@ function preload() {
 //PRELOAD END//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
+function mainMenu () {
+  console.log('Main Menu');
+}
 
 //CREATE START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function create() {
@@ -196,7 +200,6 @@ function createTroopBar(sprite){
 function playerTurn (i) {
     unit = allUnits[i];
     makeUnitBar(unit);
-    // debugger;
     mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
