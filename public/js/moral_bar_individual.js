@@ -11,14 +11,13 @@
 // e.g. Total moral = 100, damage = 10, new width = 100 - 10 = 90
 function setBarPercent(game, army, troopCount){
   if(troopCount <= 0) {
-    army.kill();
+    setBarIndividual(game, 0, getGraph);
+    // army.loadTexture('grave');
+    // army.anchor.setTo(0.05, 0.2);
+    army.unit.dead = true;
   }
   newWidth = (troopCount / 100);
   getGraph = army.getChildAt(0);
-  getGraph.width = newWidth;
-  // console.log(getGraph.width);
-
-  // call setBarIndividual
   setBarIndividual(game, newWidth, getGraph);
 }
 

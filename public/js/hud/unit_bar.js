@@ -38,7 +38,7 @@ function unitStats (unit) {
 // debugger;
 var styleTitle = { font: "18px Arial", fill: "#ffffff" };
 
-if (unit.unit.constructor.name === 'Footman' || unit.unit.constructor.name === 'Horseman' ) {
+if (unit.unit.constructor.name === 'Footman' || unit.unit.constructor.name === 'Horseman' || unit.unit.constructor.name === 'Armored' ) {
 
   game.add.text(868, 60, unit.unit.constructor.name , styleTitle);
 

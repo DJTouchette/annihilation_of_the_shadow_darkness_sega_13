@@ -19,46 +19,7 @@ var canAttack;
 var unitColliding;
 var specialTile;
 var inGrass;
-//ARMY MORALE BAR////////////////////
-var HpBarTop;
-var barConfigTop = {
-  width: 20,
-  height: 100,
-  x: 800,
-  y: 530,
-  flipped: true
-};
-// var barConfigBottom = {
-//   width: 20,
-//   height: 100,
-//   x: 810,
-//   y: 300,
-//   flipped: true
-// };
-/////////////////////////////////////
-//Unit Types////////////////////////
-// var footman = {
-//       type: 'footman',
-//       troops: 100,
-//       att: 50,
-//       def: 5,
-//       spd: 4,
-//     };
 
-////////////////////////////////////
-
-
-
-
-      //** var initialWidth;//Should be equal to a specific character's type width e.g. Horseman is 50, Archer is 60
-
-
-      // // draw graphics of individual morale bar for each army
-      // // army should be a sprite
-      // //**createBarIndividual(game, army);
-      // // Initial width for the same type of character
-      // //**
-      // console.log("Initial width: " + initialWidth); //should be 50
 //VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //PRELOAD START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +38,7 @@ function preload() {
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
   game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
   game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
+  game.load.spritesheet('grave', 'assets/units/grave.png', 46, 46);
 //////////////////////////////////////////////////////////
 //Music///////////////////////////////////////////////////
   game.load.audio('battle', 'assets/battle.mp3');
@@ -123,10 +85,6 @@ function create() {
   map.createFromTiles([1, 2, 4, 5, 7], null, 'wall', backgroundOL, specialTile);
   game.physics.arcade.enable(tileGroup);
 // //MAP END////////////////////////////////////////
-//MENU START///////////////////////////////////////
-  // Unit screen
-  var unit = {type: 'Horseman', 'Morale': 3, 'Atk': 5, 'Def': 2, 'Spd': 6, tile: {terrain: 'Grass', buff: ['Spd', -3]}};
-//MENU END////////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
   topSide = game.add.group();
@@ -134,18 +92,14 @@ function create() {
 //Call Create Functions HERE//////////////////
 createSide(144, 528, bottomSide, 'soldier', 4);
 createSide(144, 48, topSide, 'camus', 10);
-createMoraleBars();
-addUnit(topSide);
-addUnit(bottomSide);
+sortUnits()
 playerTurn(turn);
-
-
-
-
-//Unit Testing//
-var one = topSide.children[0].unit;
-var two = bottomSide.children[0].unit;
 //Create Functions CALLED////////////////////
+
+// one = bottomSide.children[1];
+// one.loadTexture('grave');
+// one.anchor.setTo(0.05, 0.2);
+
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -163,9 +117,6 @@ function update(){
     }
     playerTurn(turn);
   }
-    //**   //decrease aggreagate bar
-    // damageHealth(moraleBar);
-    // //decrease individual bar
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -179,30 +130,63 @@ function render () {
 //FUNCTIONS///////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 //Create Sides//////////////////////////////////////////////////////
+
 function createSide(x, y, group, sprite, frame_pos) {
-  for (var i = 0; i < 10; i ++) {
-    soldier = group.create(x + (i * 48), y, sprite);
+  for (var i = 0; i < 4; i ++) {
+    soldier = group.create((144 + x) + (48 * i), y, sprite);
+    soldier.unit = new Footman();
+    soldier.unit.dead = false;
     soldier.anchor.setTo(-0.25, 0);
     soldier.inputEnabled = true;
     soldier.frame = frame_pos;
-    createTroopBar(soldier);
+    createTroopBar(soldier);  
     allUnits.push(soldier);
+  }
+  for (var j = 0; j < 2; j++) {
+    archer = group.create((x + 96) + (j * 240), y, sprite);
+    archer.unit = new Archer();
+    archer.unit.dead = false;
+    archer.anchor.setTo(-0.25, 0);
+    archer.inputEnabled = true;
+    archer.frame = frame_pos;
+    createTroopBar(archer);  
+    allUnits.push(archer);
+  }
+  for (var f = 0; f < 2; f++) {
+    armored = group.create((48 + x) + (f * 336), y, sprite);
+    armored.unit = new Armored();
+    armored.unit.dead = false;
+    armored.anchor.setTo(-0.25, 0);
+    armored.inputEnabled = true;
+    armored.frame = frame_pos;
+    createTroopBar(armored);  
+    allUnits.push(armored);
+  }
+  for (var e = 0; e < 2; e++) {
+    horseman = group.create(x + (e * 432), y, sprite);
+    horseman.unit = new Horseman();
+    horseman.unit.dead = false;
+    horseman.anchor.setTo(-0.25, 0);
+    horseman.inputEnabled = true;
+    horseman.frame = frame_pos;
+    createTroopBar(horseman);  
+    allUnits.push(horseman);
   }
 }
 
-function addUnit(group){
-  for (var i = 0; i < group.length; i++) {
-    group.children[i].unit = new Footman();
-  }
+function setSprite(sprite){
+  sprite.anchor.setTo(-0.25, 0);
+  sprite.inputEnabled = true;
+  sprite.frame = frame_pos;
+  createTroopBar(sprite);
+}
+
+function sortUnits(){
+  allUnits.sort(function compare (a, b) {
+    return b.unit.spd - a.unit.spd;
+  });
 }
 //Morale Bar//////////////////////////////////////////////////////
-function createMoraleBars(){
-  hpBarTop = new HealthBar(this.game, barConfigTop);
-  hpBarTop.setFixedToCamera(true);
-  // hpBarTop.bringToTop();brings to top but erases the menu
-  // hpBarBottom = new HealthBar(this.game, barConfigBottom);
-  // hpBarBottom.setFixedToCamera(true);
-}
 
 function createTroopBar(sprite){
   graphics = this.game.add.graphics(1, -11);
@@ -211,28 +195,22 @@ function createTroopBar(sprite){
   sprite.addChild(graphics);
 }
 
-//**
-// function damageHealth(bar){
-//   testHealth -= 10;
-//   if(testHealth < 0) testHealth = 0;
-//   bar.setPercent(testHealth);
-// }
 ///Move Functions//////////////////////////////////////////////////////
 
 function playerTurn (i) {
     unit = allUnits[i];
+    if (unit.unit.dead === true){
+      turnSwitch = true;
+    }
     makeUnitBar(unit);
     mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
-    // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
     limitY = unit.y;
     mover.animations.add('redden', [0, 1], 3, false);
     mover.inputEnabled = true;
     mover.input.enableDrag(true);
     mover.input.enableSnap(48, 48, true, true);
-    // mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
     mover.events.onDragStop.add(movePlayer, this);
-    // mover.events.onDragStop.add(unit.unit.moraleBuff, unit.unit);
 }
 
 function movePlayer(tile, sprite) {
@@ -247,8 +225,6 @@ function movePlayer(tile, sprite) {
         canAttack = true;
         unit.unit.attack(targetUnit.unit);
         setBarPercent(game, targetUnit, targetUnit.unit.troops);
-        // console.log('target unit :', targetUnit);
-        // console.log('target troops:', targetUnit.unit.troops)
         turnSwitch = true;
       }
     } else {
@@ -257,12 +233,6 @@ function movePlayer(tile, sprite) {
 
     }
   }
-  // if (unitSpecialTile(unit)) {
-  //   unit.unit.tile = -2;
-  // } else {
-  //   unit.unit.tile = 0;
-  // }
-  // console.log(unit.unit.spd);
 }
 
 function tileCollision(tile) {
@@ -300,20 +270,4 @@ function unitSpecialTile(unit) {
     }
   }
 }
-
-// function tileCheck(unit) {
-//   if (unitSpecialTile(unit)) {
-//     unit.unit.tile = -2;
-//   } else {
-//     unit.unit.tile = 0;
-//   }
-//   console.log(unit.unit.spd);
-// }
-
-// function attackRange(unit) {
-//   for (var i = 0; i < allUnits; i++) {
-//     if (getTileXY(pointer.x, pointer.y) === getTileXY(allUnits[i]))
-//   }
-// }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
