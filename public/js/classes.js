@@ -11,11 +11,12 @@ let morale = 100;
 // Making a unit class
 class Unit {
 
-  constructor (atk, spd, def, tile = 0) {
+  constructor (atk, spd, def, rng, tile = 0) {
 
     this.atk = atk;
     this.spd = spd;
     this.def = def;
+    this.rng = rng;
     this.troops = 100;
     this.tile = tile;
 
@@ -24,6 +25,7 @@ class Unit {
     this.ogAtk = atk;
     this.ogSpd = spd;
     this.ogDef = def;
+    this.ogRng = rng;
 
   }
 
@@ -127,7 +129,19 @@ class Unit {
     this.atk = this.ogAtk;
     this.def = this.ogDef;
     this.spd = this.ogSpd;
+    this.rng = this.ogRng;
 
+  }
+
+  rangeTileCheck() {
+    if (unitRangeTile(unit)) {
+      this.rng = 5;
+    } else {
+      this.rng = this.ogRng;
+    }
+    // console.log(unit.unit.spd);
+    console.log(this.rng);
+    console.log(unitRangeTile(unit));
   }
 
 }
@@ -135,9 +149,9 @@ class Unit {
 //Creates a footman class that inherits from unit
 class Footman extends Unit {
 
-  constructor (atk, spd, def, tile) {
+  constructor (atk, spd, def, rng, tile) {
 
-    super(50, 4, 10, tile);
+    super(50, 4, 10, 1, tile);
 
   }
 
@@ -146,9 +160,9 @@ class Footman extends Unit {
 //Creates a archer class that inherits from unit
 class Archer extends Unit {
 
-  constructor (atk, spd, def, tile) {
+  constructor (atk, spd, def, rng, tile) {
 
-    super(45, 3, 7, tile);
+    super(45, 3, 7, 3, tile);
 
   }
 
@@ -157,9 +171,9 @@ class Archer extends Unit {
 //Creates a Horseman class that inherits from unit
 class Horseman extends Unit {
 
-  constructor (atk, spd, def, tile) {
+  constructor (atk, spd, def, rng, tile) {
 
-    super(60, 6, 5, tile);
+    super(60, 6, 5, 1, tile);
 
   }
 
@@ -168,9 +182,9 @@ class Horseman extends Unit {
 //Creates a Armored class that inherits from unit
 class Armored extends Unit {
 
-  constructor (atk, spd, def, tile) {
+  constructor (atk, spd, def, rng, tile) {
 
-    super(45, 2, 15, tile);
+    super(45, 2, 15, 1, tile);
 
   }
 

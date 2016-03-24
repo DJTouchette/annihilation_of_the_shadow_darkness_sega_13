@@ -1,6 +1,6 @@
 //VARIABLES START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, mainMenu: mainMenu, create: create, update: update });
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, mainMenu: mainMenu, create: create, update: update, render: render });
 var map;
 var tileGroup;
 var music;
@@ -16,7 +16,7 @@ var canAttack;
 var unitColliding;
 var specialTile;
 var inGrass;
-
+var rangeTile;
 //VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //PRELOAD START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,8 +75,10 @@ function create() {
   game.physics.arcade.enable(map, 'collision');
   tileGroup = game.add.group();
   specialTile = game.add.group();
+  rangeTile = game.add.group();
   map.createFromTiles([13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], null, 'wall', collisionLayer, tileGroup);
   map.createFromTiles([1, 2, 4, 5, 7], null, 'wall', backgroundOL, specialTile);
+  map.createFromTiles([8], null, 'cantmove', backgroundOL, rangeTile);
   game.physics.arcade.enable(tileGroup);
 // //MAP END////////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
@@ -113,8 +115,8 @@ function update(){
 
 //RENDER START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function render () {
-  game.debug.text('Tile X: ' + collisionLayer.getTileX(game.input.activePointer.worldX) * 48, 48, 69, 'rgb(0,0,0)');
-  game.debug.text('Tile Y: ' + collisionLayer.getTileY(game.input.activePointer.worldY) * 48, 48, 48, 'rgb(0,0,0)');
+  game.debug.text('Tile X: ' + collisionLayer.getTileX(game.input.activePointer.worldX), 48, 69, 'rgb(0,0,0)');
+  game.debug.text('Tile Y: ' + collisionLayer.getTileY(game.input.activePointer.worldY), 48, 48, 'rgb(0,0,0)');
 //RENDER END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -206,22 +208,24 @@ function playerTurn (i) {
 
 function movePlayer(tile, sprite) {
   unitCollision(tile);
+  unit.unit.rangeTileCheck();
   if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= unit.unit.spd ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
     targetUnit = false;
   } else {
-    if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) === 1 )) {
+    if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= unit.unit.rng )) {
       if (targetUnit.parent !== unit.parent) {
         canAttack = true;
         unit.unit.attack(targetUnit.unit);
         setBarPercent(game, targetUnit, targetUnit.unit.troops);
         turnSwitch = true;
+      } else {
+      tile.animations.play('redden');
+      targetUnit = false;
       }
     } else {
       tile.animations.play('redden');
-      targetUnit = false;
-
     }
   }
 }
@@ -259,6 +263,23 @@ function unitSpecialTile(unit) {
     }
   }
 }
+
+
+
+function unitRangeTile(unit) {
+  if (unit.unit.constructor.name === 'Archer') {
+    for (var i = 0; i < rangeTile.children.length; i++) {
+      var a = unit.getBounds();
+      var b = rangeTile.children[i].getBounds();
+      if (Phaser.Rectangle.intersects(a, b)) {
+        return true;
+      }
+    }
+  } else {
+    return false;
+  }
+}
+///Menu Function//////////////////////////////////////////////////////
 
 function mainMenu () {
   console.log('Main Menu');
