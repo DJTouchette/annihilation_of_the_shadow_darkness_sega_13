@@ -1,3 +1,4 @@
+// var socket = io();
 
 function makeUnitBar (unit) {
 
@@ -7,8 +8,9 @@ function makeUnitBar (unit) {
   unitStats(unit);
   makeSecondFrame(terrain(unit));
   title();
-  endTurn();
+
   // console.log("i ran");
+  // socket.emit('bottomSide');
 
 }
 
@@ -20,7 +22,15 @@ function endTurn () {
   endBtn.inputEnabled = true;
   endBtn.input.useHandCursor = true;
   // Make button clickable add(this.function, this)
-  endBtn.events.onInputDown.add(this.click, this);
+  endBtn.events.onInputDown.add(click);
+
+
+}
+
+function waiting () {
+
+  var msg = game.add.sprite(829, 550, 'title');
+
 }
 
 function title () {
@@ -99,6 +109,7 @@ function terrain (unit) {
 
 function click() {
 
+  window.socket.emit('bottomSide');
   console.log('clicked');
   turnSwitch = true;
 

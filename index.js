@@ -11,27 +11,59 @@ app.get('/', function(req, res){
 });
 
   io.on('connection', function(socket){
-    console.log(user.length);
     id += 1;
-    if (id < 3){
 
-      user.push(socket.conn.id);
+    console.log(user.length);
+
+    if (id < 3){
+      socket.user = id;
+      user.push(socket.user);
       socket.join('game');
-      console.log('a user connected' + ' ' + 'Id:' + ' ' + id);
+
+      socket.in('game').emit('bottomSide');
+
+       if (id === 2) {
+
+        socket.to(socket).emit('topSide');
+
+      }
+
+      console.log('a user connected' + ' ' + 'Id:' + ' ' + socket.user);
 
     } else {
       socket.disconnect(socket);
       console.log('fuck off');
     }
+
     socket.on('disconnect', function(msg){
       console.log('user disconnected');
     });
+
     socket.on('pop', function() {
       // socket.broadcast.emit("SOMEONE_POPPED");
       socket.in('game').emit('SOMEONE_POPPED');
       console.log("haaaay");
     });
+
+    socket.on('turnChange', function () {
+
+      socket.in('game').emit('turnChange', socket.user);
+
+    });
+
+    socket.on('bottomSide', function () {
+
+      socket.in('game').emit('bottomSide');
+
+    });
+
+
+
   });
+
+
+
+
 
 
 

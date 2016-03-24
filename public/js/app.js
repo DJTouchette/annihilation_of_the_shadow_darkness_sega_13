@@ -84,6 +84,7 @@ function create() {
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
   topSide = game.add.group();
+
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
 createSide(144, 528, bottomSide, 'soldier', 4);
@@ -91,7 +92,6 @@ createSide(144, 48, topSide, 'camus', 10);
 sortUnits()
 playerTurn(turn);
 //Create Functions CALLED////////////////////
-
 
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
