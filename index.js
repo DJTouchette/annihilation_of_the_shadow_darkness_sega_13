@@ -46,9 +46,10 @@ app.get('/', function(req, res){
     });
 
 
-    socket.on('spriteIndex', function (i) {
+    socket.on('spriteMoved', function (unit) {
 
-      socket.in('game').emit('index', i);
+      socket.in('game').emit('spriteClass', unit);
+
 
     });
 
@@ -58,17 +59,9 @@ app.get('/', function(req, res){
 
     });
 
-    socket.on('spritexy', function (xy) {
-
-      socket.in('game').emit('spriteMoved', xy);
-      console.log(xy);
-
-    });
 
 
   });
-
-
 
 
 

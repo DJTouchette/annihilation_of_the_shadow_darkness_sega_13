@@ -110,8 +110,8 @@ function terrain (unit) {
 
 function click() {
 
-  window.socket.emit('endTurn');
   console.log('clicked');
   turnSwitch = true;
+  window.socket.emit('endTurn');
 
 }

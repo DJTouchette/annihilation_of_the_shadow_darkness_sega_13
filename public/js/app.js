@@ -100,7 +100,7 @@ playerTurn(turn);
 function update(){
   if (turnSwitch) {
     mover.kill();
-    allUnits[turn].unit.tileCheck();
+    // allUnits[turn].unit.tileCheck();
     allUnits[turn].unit.moraleBuff();
     turnSwitch = false;
     if (turn < 19) {
@@ -178,6 +178,13 @@ function sortUnits(){
   allUnits.sort(function compare (a, b) {
     return b.unit.spd - a.unit.spd;
   });
+
+  for (var i = 0; i < allUnits.length; i ++) {
+
+    allUnits[i].unit.index = i;
+
+  }
+
 }
 //Morale Bar//////////////////////////////////////////////////////
 
@@ -200,25 +207,34 @@ function playerTurn (i) {
     mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
     limitX = unit.x;
     limitY = unit.y;
+    unit.unit.x = unit.x;
+    unit.unit.y = unit.y;
+    window.socket.emit('spriteMoved', unit.unit);
     mover.animations.add('redden', [0, 1], 3, false);
     mover.inputEnabled = true;
     mover.input.enableDrag(true);
     mover.input.enableSnap(48, 48, true, true);
     mover.events.onDragStop.add(movePlayer, this);
-    window.socket.emit('spriteIndex', i);
+
+}
+
+function playerTurnComputer (i) {
+
+    console.log('Units loooog: ' + allUnits[i]);
+
 
 
 }
 
 
+
 function movePlayer(tile, sprite) {
   unitCollision(tile);
-  unit.unit.rangeTileCheck();
+  // unit.unit.rangeTileCheck();
   if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= unit.unit.spd ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
     targetUnit = false;
-    window.socket.emit('spritexy', [unit.x, unit.y]);
   } else {
     if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= unit.unit.rng )) {
       if (targetUnit.parent !== unit.parent) {
@@ -235,6 +251,8 @@ function movePlayer(tile, sprite) {
     }
   }
 }
+
+
 
 function tileCollision(tile) {
   for (var i = 0; i < tileGroup.children.length; i++) {

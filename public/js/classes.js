@@ -189,3 +189,24 @@ class Armored extends Unit {
   }
 
 }
+
+
+// var footmanStats = {
+//
+//   atk: 50,
+//   spd: 4,
+//   def: 10,
+//   rng: 1,
+//   tile:0
+//
+// };
+//
+// var archerStats = {
+//
+//   atk: 50,
+//   spd: 4,
+//   def: 10,
+//   rng: 1,
+//   tile:0
+//
+// };
