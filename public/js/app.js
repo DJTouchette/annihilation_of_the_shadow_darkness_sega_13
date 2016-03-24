@@ -398,6 +398,7 @@ function movePlayer(tile, sprite) {
         setBarPercent(game, targetUnit, targetUnit.unit.troops);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
+        damageMorale(unit.parent, targetUnit.unit.troops);
         tile.animations.play('redden');
         turnSwitch = true;
       } else {
