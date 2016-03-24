@@ -33,7 +33,7 @@ function preload() {
 //////////////////////////////////////////////////////////
 //Units///////////////////////////////////////////////////
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
-  game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
+  game.load.atlasJSONHash('camus', 'assets/units/red.png', 'assets/units/red.json');
   game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
   game.load.spritesheet('grave', 'assets/units/grave.png', 46, 46);
 //////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ function create() {
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
 createSide(144, 528, bottomSide, 'soldier', 4);
-createSide(144, 48, topSide, 'camus', 10);
+createSide(144, 48, topSide, 'camus', 7);
 sortUnits()
 playerTurn(turn);
 //Create Functions CALLED////////////////////
