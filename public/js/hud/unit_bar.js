@@ -63,6 +63,7 @@ var styleUnit = { font: "15px Arial", fill: "#FFFB00" };
 
 var position = [90, 120, 150, 180];
 
+
 game.add.text(840, position[0], 'Morale', styleUnit);
 game.add.text(963, position[0], unit.unit.armyMorale(), styleUnit);
 
