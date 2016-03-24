@@ -293,7 +293,7 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
   console.log("Change morale up before", changeMorale);
   // startingMoraleUp to change
 
-  if(changeMorale === 0 || changeMorale === 5){
+  if(changeMorale === 0 || changeMorale >= 5){
     // make morale up equal to morale calculation
     changeMorale = troopMoralDestroyed;
 
@@ -302,10 +302,6 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
     // previousMorale = troopMoralDestroyed;
     console.log("enter 1");
-  }
-  else if(enemyTroops === 0) {
-    changeMorale = 5;
-    console.log("enter 2");
   }
   else{
     // console.log("Previous morale", previousMorale);
@@ -325,6 +321,11 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
     
     changeMorale = Math.abs(troopMoralDestroyed);
     console.log("enter 3 ends");
+  }
+  // bonus morale if kill a unit????
+  if(enemyTroops === 0) {
+    changeMorale += 5;
+    console.log("enter 2");
   }
   return changeMorale;
 }
