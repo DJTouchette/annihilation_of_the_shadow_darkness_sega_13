@@ -89,7 +89,7 @@ function create() {
 //Call Create Functions HERE//////////////////
 createSide(144, 528, bottomSide, 'soldier', 4);
 createSide(144, 48, topSide, 'camus', 10);
-sortUnits()
+sortUnits();
 playerTurn(turn);
 //Create Functions CALLED////////////////////
 
@@ -132,7 +132,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     soldier.anchor.setTo(-0.25, 0);
     soldier.inputEnabled = true;
     soldier.frame = frame_pos;
-    createTroopBar(soldier);  
+    createTroopBar(soldier);
     allUnits.push(soldier);
   }
   for (var j = 0; j < 2; j++) {
@@ -142,7 +142,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     archer.anchor.setTo(-0.25, 0);
     archer.inputEnabled = true;
     archer.frame = frame_pos;
-    createTroopBar(archer);  
+    createTroopBar(archer);
     allUnits.push(archer);
   }
   for (var f = 0; f < 2; f++) {
@@ -152,7 +152,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     armored.anchor.setTo(-0.25, 0);
     armored.inputEnabled = true;
     armored.frame = frame_pos;
-    createTroopBar(armored);  
+    createTroopBar(armored);
     allUnits.push(armored);
   }
   for (var e = 0; e < 2; e++) {
@@ -162,7 +162,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     horseman.anchor.setTo(-0.25, 0);
     horseman.inputEnabled = true;
     horseman.frame = frame_pos;
-    createTroopBar(horseman);  
+    createTroopBar(horseman);
     allUnits.push(horseman);
   }
 }
@@ -204,8 +204,12 @@ function playerTurn (i) {
     mover.input.enableDrag(true);
     mover.input.enableSnap(48, 48, true, true);
     mover.events.onDragStop.add(movePlayer, this);
+    window.socket.emit('spriteIndex', i);
+
+
 }
 
+var num = 0;
 function movePlayer(tile, sprite) {
   unitCollision(tile);
   unit.unit.rangeTileCheck();
@@ -213,6 +217,9 @@ function movePlayer(tile, sprite) {
     unit.x = tile.x;
     unit.y = tile.y;
     targetUnit = false;
+    console.log(num += 1);
+    // console.log(unit.x);
+    // window.socket.emit('spriteMove', unit.x);
   } else {
     if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= unit.unit.rng )) {
       if (targetUnit.parent !== unit.parent) {

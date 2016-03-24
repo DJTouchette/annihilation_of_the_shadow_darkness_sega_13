@@ -14,7 +14,7 @@ function makeUnitBar (unit) {
 
 }
 
-function endTurn () {
+function endTurn (cb) {
 
   var endBtn = game.add.sprite(829, 550, 'end');
   endBtn.inputEnabled = true;
@@ -29,7 +29,8 @@ function endTurn () {
 
 function waiting () {
 
-  var msg = game.add.sprite(829, 550, 'title');
+    var msg = game.add.sprite(829, 550, 'title');
+    return msg;
 
 }
 
@@ -109,7 +110,7 @@ function terrain (unit) {
 
 function click() {
 
-  window.socket.emit('bottomSide');
+  window.socket.emit('endTurn');
   console.log('clicked');
   turnSwitch = true;
 

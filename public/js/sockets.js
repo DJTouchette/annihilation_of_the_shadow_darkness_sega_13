@@ -18,21 +18,21 @@ function changeShit () {
   $('h1').css('color', 'red');
 }
 
-socket.on('turnChange',  function (user) {
 
-  console.log(user);
-
-});
-
-socket.on('bottomSide', function () {
+socket.on('turnChange', function (msg) {
 
   endTurn();
-  console.log('end turn');
 
 });
 
-socket.on('topSide', function () {
+socket.on('waiting', function () {
 
-  waiting();
+  var msg = waiting();
+
+});
+
+socket.on ('index', function (i) {
+
+  console.log(allUnits[i]);
 
 });
