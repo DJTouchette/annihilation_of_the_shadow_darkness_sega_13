@@ -17,6 +17,16 @@ var unitColliding;
 var specialTile;
 var inGrass;
 var rangeTile;
+var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.png'}, {position: 'bottomLeft', path: 'assets/border/bottom_left.png'},
+ {position: 'bottomRight', path: 'assets/border/bottom_right.png'},
+ {position: 'topRight', path: 'assets/border/top_right.png'},
+ {position: 'topLeft', path: 'assets/border/top_left.png'},
+ {position: 'vertical', path: 'assets/border/vertical.png'},
+ {position: 'background', path: 'assets/border/paper.png'},
+ {position: 'box', path: 'assets/border/box.png'},
+ {position: 'start', path: 'assets/start_turn.png'},
+ {position: 'end', path: 'assets/end_turn.png'}
+ ];
 //VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //PRELOAD START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +54,7 @@ function preload() {
 //Menu///////////////////////////////////////////////////
   game.load.spritesheet('title', 'assets/title.png');
   // Loads all border assets (/public/js/hud/border.js)
-  loadBorder();
+  loadBorder(spritesBorder);
   // Loads Unit frame assets (/public/js/hud/units.js)
   loadUnitFrame();
   //Loads start round btn (/public/js/hud/startrnd.js)

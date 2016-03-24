@@ -1,5 +1,5 @@
 var socket = io();
-var updateUnit = [];
+
 
 $(function() {
 
@@ -22,8 +22,6 @@ function changeShit () {
 
 socket.on('turnChange', function () {
 
-    // playerTurnComputer (updateUnit[0]);
-    console.log(updateUnit);
     updateUnit = [];
     endTurn();
 

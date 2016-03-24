@@ -1,19 +1,17 @@
 
 // Loads all border assets
-function loadBorder () {
 
-  game.load.spritesheet('horizontal','assets/border/horizontal.png');
-  game.load.spritesheet('bottomLeft','assets/border/bottom_left.png');
-  game.load.spritesheet('bottomRight','assets/border/bottom_right.png');
-  game.load.spritesheet('topRight','assets/border/top_right.png');
-  game.load.spritesheet('topLeft','assets/border/top_left.png');
-  game.load.spritesheet('vertical','assets/border/vertical.png');
-  game.load.spritesheet('background', 'assets/border/paper.png');
-  game.load.spritesheet('box', 'assets/border/box.png');
-  game.load.spritesheet('start', 'assets/start_turn.png');
-  game.load.spritesheet('end', 'assets/end_turn.png');
+function loadBorder (border) {
+
+  for (var i = 0; i < border.length; i++) {
+
+      game.load.spritesheet(spritesBorder[i].position, spritesBorder[i].path);
+
+  }
+
 
 }
+
 
 
 
