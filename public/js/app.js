@@ -67,16 +67,16 @@ function preload() {
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
 ////////////////////////////////////////////////////////
+//Units///////////////////////////////////////////////////
+  game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
+  game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
+  game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
+//////////////////////////////////////////////////////////
 //Tiles///////////////////////////////////////////////////
   game.load.image('wall', 'assets/wall.png');
   game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
   game.load.image('move', 'assets/move.png');
   game.load.image('cantmove', 'assets/cantmove.png');
-//////////////////////////////////////////////////////////
-//Units///////////////////////////////////////////////////
-  game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
-  game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
-  game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
 //////////////////////////////////////////////////////////
 //Music///////////////////////////////////////////////////
   game.load.audio('battle', 'assets/battle.mp3');
@@ -122,6 +122,14 @@ function create() {
   map.createFromTiles([13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], null, 'wall', collisionLayer, tileGroup);
   map.createFromTiles([1, 2, 4, 5, 7], null, 'wall', backgroundOL, specialTile);
   game.physics.arcade.enable(tileGroup);
+  mover = game.add.tileSprite(20, 20, 48, 48, 'movetile', 1);
+  mover.animations.add('redden', [0, 1], 3, false);
+  mover.inputEnabled = true;
+  mover.input.enableDrag(true);
+  mover.input.enableSnap(48, 48, true, true);
+  // mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
+  mover.events.onDragStop.add(movePlayer, this);
+  // mover.events.onDragStop.add(unit.unit.moraleBuff, unit.unit);
 // //MAP END////////////////////////////////////////
 //MENU START///////////////////////////////////////
   // Unit screen
@@ -142,6 +150,7 @@ playerTurn(turn);
 
 
 
+
 //Unit Testing//
 var one = topSide.children[0].unit;
 var two = bottomSide.children[0].unit;
@@ -152,7 +161,7 @@ var two = bottomSide.children[0].unit;
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update(){
   if (turnSwitch) {
-    mover.kill();
+    // mover.kill();
     allUnits[turn].unit.tileCheck();
     allUnits[turn].unit.moraleBuff();
     turnSwitch = false;
@@ -222,17 +231,12 @@ function createTroopBar(sprite){
 function playerTurn (i) {
     unit = allUnits[i];
     makeUnitBar(unit);
-    mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
+    mover.x = unit.x
+    mover.y = unit.y
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
     limitY = unit.y;
-    mover.animations.add('redden', [0, 1], 3, false);
-    mover.inputEnabled = true;
-    mover.input.enableDrag(true);
-    mover.input.enableSnap(48, 48, true, true);
-    // mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
-    mover.events.onDragStop.add(movePlayer, this);
-    // mover.events.onDragStop.add(unit.unit.moraleBuff, unit.unit);
+
 }
 
 function movePlayer(tile, sprite) {
@@ -249,13 +253,16 @@ function movePlayer(tile, sprite) {
         setBarPercent(game, targetUnit, targetUnit.unit.troops);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
+        tile.animations.play('redden');
         turnSwitch = true;
       }
     } else {
-      tile.animations.play('redden');
       targetUnit = false;
-
+      tile.animations.play('redden');
+      tile.x = unit.x;
+      tile.y = unit.y;
     }
+
   }
   // if (unitSpecialTile(unit)) {
   //   unit.unit.tile = -2;
