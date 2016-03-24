@@ -266,6 +266,8 @@ function movePlayer(tile, sprite) {
         canAttack = true;
         unit.unit.attack(targetUnit.unit);
         setBarPercent(game, targetUnit, targetUnit.unit.troops);
+        damageMorale(unit.parent, targetUnit.unit.troops);
+        window.socket.emit('moraleChange', unit.unit.index );
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
