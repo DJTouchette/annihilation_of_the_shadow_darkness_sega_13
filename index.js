@@ -39,10 +39,9 @@ app.get('/', function(req, res){
       console.log("haaaay");
     });
 
-    socket.on('endTurn', function (msg) {
+    socket.on('endTurn', function () {
 
-      socket.in('game').emit('turnChange', msg);
-      console.log(msg);
+      socket.in('game').emit('turnChange');
 
     });
 
@@ -56,6 +55,13 @@ app.get('/', function(req, res){
     socket.on('waiting', function () {
 
       socket.in('game').emit('waiting');
+
+    });
+
+    socket.on('spritexy', function (xy) {
+
+      socket.in('game').emit('spriteMoved', xy);
+      console.log(xy);
 
     });
 

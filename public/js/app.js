@@ -191,6 +191,7 @@ function createTroopBar(sprite){
 ///Move Functions//////////////////////////////////////////////////////
 
 function playerTurn (i) {
+
     unit = allUnits[i];
     if (unit.unit.dead === true){
       turnSwitch = true;
@@ -209,7 +210,7 @@ function playerTurn (i) {
 
 }
 
-var num = 0;
+
 function movePlayer(tile, sprite) {
   unitCollision(tile);
   unit.unit.rangeTileCheck();
@@ -217,9 +218,7 @@ function movePlayer(tile, sprite) {
     unit.x = tile.x;
     unit.y = tile.y;
     targetUnit = false;
-    console.log(num += 1);
-    // console.log(unit.x);
-    // window.socket.emit('spriteMove', unit.x);
+    window.socket.emit('spritexy', [unit.x, unit.y]);
   } else {
     if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= unit.unit.rng )) {
       if (targetUnit.parent !== unit.parent) {

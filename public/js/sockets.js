@@ -36,3 +36,9 @@ socket.on ('index', function (i) {
   console.log(allUnits[i]);
 
 });
+
+socket.on ('spriteMoved', function (xy) {
+
+console.log(xy);
+
+});
