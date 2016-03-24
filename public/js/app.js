@@ -32,6 +32,7 @@ var barConfigTop = {
     color: '#ff3300'
   },
 };
+//***
 // starting morale is overall morale (100) divided by 2
 var startingMoraleBottom = 50; //should create starting morale for each group
 var startingMoraleUp = 50;
