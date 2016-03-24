@@ -23,8 +23,8 @@ var hpBarTop;
 var barConfigTop = {
   width: 100,
   height: 30,
-  x: 905,
-  y: 530,
+  x: 60,
+  y: 20,
   bg: {
     color: '#0047b3'
     },
@@ -120,8 +120,9 @@ function create() {
 // //MAP END////////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
+  bottomSide.name = 'bottomside';
   topSide = game.add.group();
-
+  topSide.name = 'topside';
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
 createSide(144, 528, bottomSide, 'soldier', 4);
@@ -235,7 +236,6 @@ function createTroopBar(sprite){
   graphics.drawRect(0, 0, 46, 10);
   sprite.addChild(graphics);
 }
-
 
 // ***
 // accept group bottomside or topside
@@ -364,24 +364,16 @@ function movePlayer(tile, sprite) {
           setBarPercent(game, targetUnit, targetUnit.unit.troops);
           damageMorale(unit.parent, targetUnit.unit.troops);
         }
-        // console.log('target unit :', targetUnit);
-        // console.log('target troops:', targetUnit.unit.troops)
         tile.animations.play('redden');
         turnSwitch = true;
       }
     } else {
-      targetUnit = false;
-      tile.animations.play('redden');
-      tile.x = unit.x;
-      tile.y = unit.y;
+        targetUnit = false;
+        tile.animations.play('redden');
+        tile.x = unit.x;
+        tile.y = unit.y;
       }
   }
-  // if (unitSpecialTile(unit)) {
-  //   unit.unit.tile = -2;
-  // } else {
-  //   unit.unit.tile = 0;
-  // }
-  // console.log(unit.unit.spd);
 }
 
 function tileCollision(tile) {
