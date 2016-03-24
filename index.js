@@ -49,8 +49,16 @@ app.get('/', function(req, res){
 
       socket.in('game').emit('turnChange', socket.user);
 
+    });
+
+    socket.on('bottomSide', function () {
+
+      socket.in('game').emit('bottomSide');
 
     });
+
+
+
   });
 
 

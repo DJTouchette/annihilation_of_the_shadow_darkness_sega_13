@@ -133,9 +133,9 @@ playerTurn(turn);
 var one = topSide.children[0].unit;
 var two = bottomSide.children[0].unit;
 // console.log(one.attack(two));
-console.log('one', one);
-console.log('two', two);
-console.log(one.x, one.y);
+// console.log('one', one);
+// console.log('two', two);
+// console.log(one.x, one.y);
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
