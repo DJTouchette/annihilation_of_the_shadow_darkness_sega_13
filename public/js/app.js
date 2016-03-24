@@ -24,19 +24,20 @@ function preload() {
 //Map///////////////////////////////////////////////////
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
-////////////////////////////////////////////////////////
-//Tiles///////////////////////////////////////////////////
   game.load.image('wall', 'assets/wall.png');
   game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
   game.load.image('move', 'assets/move.png');
   game.load.image('cantmove', 'assets/cantmove.png');
 //////////////////////////////////////////////////////////
+
 //Units///////////////////////////////////////////////////
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
   game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
   game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
   game.load.spritesheet('grave', 'assets/units/grave.png', 46, 46);
 //////////////////////////////////////////////////////////
+
+
 //Music///////////////////////////////////////////////////
   game.load.audio('battle', 'assets/battle.mp3');
 //////////////////////////////////////////////////////////
@@ -80,6 +81,14 @@ function create() {
   map.createFromTiles([1, 2, 4, 5, 7], null, 'wall', backgroundOL, specialTile);
   map.createFromTiles([8], null, 'cantmove', backgroundOL, rangeTile);
   game.physics.arcade.enable(tileGroup);
+  mover = game.add.tileSprite(20, 20, 48, 48, 'movetile', 1);
+  mover.animations.add('redden', [0, 1], 3, false);
+  mover.inputEnabled = true;
+  mover.input.enableDrag(true);
+  mover.input.enableSnap(48, 48, true, true);
+  // mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
+  mover.events.onDragStop.add(movePlayer, this);
+  // mover.events.onDragStop.add(unit.unit.moraleBuff, unit.unit);
 // //MAP END////////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
@@ -91,6 +100,12 @@ createSide(144, 528, bottomSide, 'soldier', 4);
 createSide(144, 48, topSide, 'camus', 10);
 sortUnits();
 playerTurn(turn);
+
+
+
+
+
+
 //Create Functions CALLED////////////////////
 
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,9 +114,10 @@ playerTurn(turn);
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update(){
   if (turnSwitch) {
-    mover.kill();
-    // allUnits[turn].unit.tileCheck();
+    // mover.kill();
+    allUnits[turn].unit.tileCheck();
     allUnits[turn].unit.moraleBuff();
+
     turnSwitch = false;
     if (turn < 19) {
       turn += 1;
@@ -204,25 +220,18 @@ function playerTurn (i) {
       turnSwitch = true;
     }
     makeUnitBar(unit);
-    mover = game.add.tileSprite(unit.x, unit.y, 48, 48, 'movetile', 1);
+    mover.x = unit.x;
+    mover.y = unit.y;
+    // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
     limitY = unit.y;
-    unit.unit.x = unit.x;
-    unit.unit.y = unit.y;
-    window.socket.emit('spriteMoved', unit.unit);
-    mover.animations.add('redden', [0, 1], 3, false);
-    mover.inputEnabled = true;
-    mover.input.enableDrag(true);
-    mover.input.enableSnap(48, 48, true, true);
-    mover.events.onDragStop.add(movePlayer, this);
+    // window.socket.emit('spriteMoved', unit.unit);
 
 }
 
 function playerTurnComputer (i) {
 
     console.log('Units loooog: ' + allUnits[i]);
-
-
 
 }
 
@@ -234,6 +243,10 @@ function movePlayer(tile, sprite) {
   if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= unit.unit.spd ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
+    unit.unit.x = unit.x;
+    unit.unit.y = unit.y;
+    window.socket.emit('spriteMoved', unit.unit);
+    console.log(unit);
     targetUnit = false;
   } else {
     if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= unit.unit.rng )) {
@@ -241,14 +254,22 @@ function movePlayer(tile, sprite) {
         canAttack = true;
         unit.unit.attack(targetUnit.unit);
         setBarPercent(game, targetUnit, targetUnit.unit.troops);
+        // console.log('target unit :', targetUnit);
+        // console.log('target troops:', targetUnit.unit.troops)
+        tile.animations.play('redden');
         turnSwitch = true;
       } else {
       tile.animations.play('redden');
       targetUnit = false;
       }
     } else {
+      targetUnit = false;
       tile.animations.play('redden');
+      tile.x = unit.x;
+      tile.y = unit.y;
+
     }
+
   }
 }
 

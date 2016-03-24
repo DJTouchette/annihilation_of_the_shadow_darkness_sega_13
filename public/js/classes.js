@@ -19,6 +19,9 @@ class Unit {
     this.rng = rng;
     this.troops = 100;
     this.tile = tile;
+    this.x = 0;
+    this.y = 0;
+
 
     // These stats are used to reset stats, we should clean this up some how.
     // But it works.

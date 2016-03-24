@@ -36,12 +36,12 @@ socket.on('waiting', function () {
 });
 
 socket.on ('spriteClass', function (unit) {
-  unit.index = unit.index -1;
+  // unit.index = unit.index -1;
   // console.log('this is turn:' + turn);
   console.log(unit);
   allUnits[unit.index].x = unit.x;
   allUnits[unit.index].y = unit.y;
-  // turnSwitch = true;
+  turnSwitch = true;
 
 
 });
