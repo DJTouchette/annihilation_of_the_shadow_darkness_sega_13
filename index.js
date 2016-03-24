@@ -59,6 +59,15 @@ app.get('/', function(req, res){
 
     });
 
+    socket.on('barChange', function (params) {
+
+      socket.in('game').emit('setBar', params);
+      console.log(params);
+
+    });
+
+
+
 
 
   });

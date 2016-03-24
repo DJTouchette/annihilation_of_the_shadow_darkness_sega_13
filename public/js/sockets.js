@@ -50,3 +50,9 @@ socket.on ('spriteClass', function (unit) {
 
 
 });
+
+socket.on ('setBar', function (params) {
+
+  setBarPercent(game, allUnits[params[0]], params[1]);
+
+});

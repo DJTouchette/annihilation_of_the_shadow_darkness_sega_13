@@ -17,36 +17,6 @@ var unitColliding;
 var specialTile;
 var inGrass;
 var rangeTile;
-
-//ARMY MORALE BAR////////////////////
-var hpBarTop;
-var barConfigTop = {
-  width: 100,
-  height: 30,
-  x: 60,
-  y: 20,
-  bg: {
-    color: '#0047b3'
-    },
-  bar: {
-    color: '#ff3300'
-  },
-};
-//***
-// starting morale is overall morale (100) divided by 2
-var startingMoraleBottom = 50; //should create starting morale for each group
-var startingMoraleUp = 50;
-var previousMoraleUp = 0;
-var previousMoraleBottom = 0;
-var changeMoraleUp = 0;
-var changeMoraleBottom = 0;
-// var barConfigBottom = {
-//   width: 20,
-//   height: 100,
-//   x: 810,
-//   y: 300,
-//   flipped: true
-// };
 var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.png'}, {position: 'bottomLeft', path: 'assets/border/bottom_left.png'},
  {position: 'bottomRight', path: 'assets/border/bottom_right.png'},
  {position: 'topRight', path: 'assets/border/top_right.png'},
@@ -57,6 +27,8 @@ var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.pn
  {position: 'start', path: 'assets/start_turn.png'},
  {position: 'end', path: 'assets/end_turn.png'}
  ];
+
+
 //VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //PRELOAD START/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,18 +36,20 @@ function preload() {
 //Map///////////////////////////////////////////////////
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
-////////////////////////////////////////////////////////
-//Units///////////////////////////////////////////////////
-  game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
-  game.load.atlasJSONHash('camus', 'assets/units/red.png', 'assets/units/red.json');
-  game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
-//////////////////////////////////////////////////////////
-//Tiles///////////////////////////////////////////////////
   game.load.image('wall', 'assets/wall.png');
   game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
   game.load.image('move', 'assets/move.png');
   game.load.image('cantmove', 'assets/cantmove.png');
 //////////////////////////////////////////////////////////
+
+//Units///////////////////////////////////////////////////
+  game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
+  game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
+  game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
+  game.load.spritesheet('grave', 'assets/units/grave.png', 46, 46);
+//////////////////////////////////////////////////////////
+
+
 //Music///////////////////////////////////////////////////
   game.load.audio('battle', 'assets/battle.mp3');
 //////////////////////////////////////////////////////////
@@ -130,16 +104,20 @@ function create() {
 // //MAP END////////////////////////////////////////
 //OTHER SPRITES START///////////////////////////
   bottomSide = game.add.group();
-  bottomSide.name = 'bottomside';
   topSide = game.add.group();
-  topSide.name = 'topside';
+
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
 createSide(144, 528, bottomSide, 'soldier', 4);
-createSide(144, 48, topSide, 'camus', 7);
-createMoraleBars();
+createSide(144, 48, topSide, 'camus', 10);
 sortUnits();
 playerTurn(turn);
+
+
+
+
+
+
 //Create Functions CALLED////////////////////
 
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,16 +216,6 @@ function sortUnits(){
 }
 //Morale Bar//////////////////////////////////////////////////////
 
-function createMoraleBars(){
-  hpBarTop = new HealthBar(this.game, barConfigTop);
-  hpBarTop.setFixedToCamera(true);
-  // Set the push and pull morale bar in 50% (start from the middle)
-  hpBarTop.setPercent(50);
-  // hpBarTop.bringToTop();brings to top but erases the menu
-  // hpBarBottom = new HealthBar(this.game, barConfigBottom);
-  // hpBarBottom.setFixedToCamera(true);
-}
-
 function createTroopBar(sprite){
   graphics = this.game.add.graphics(1, -11);
   graphics.beginFill(0X00FF00);
@@ -255,105 +223,7 @@ function createTroopBar(sprite){
   sprite.addChild(graphics);
 }
 
-// ***
-// accept group bottomside or topside
-function damageMorale(group, enemyTroops){
-  // group argument is the attacking group
-  var moralValue = 50; 
-  console.log("Troops destroyed:", 100 - enemyTroops);
-  var totalUnit = group.children.length;
-  var unitLife = moralValue / totalUnit; //each unit contributes 5 morale, so total 50 morale for each army
-  // more enemyTroops means more morale change
-  var moraleCalculation = ((100 - enemyTroops) / 100) * unitLife;
-  console.log("Enemy troops morale change:", moraleCalculation);
-
-  if(group.name == "bottomside"){
-    // bottomside attacks topside
-    // change bar, bottom side should increase
-    console.log("Before attack, up morale is:", startingMoraleUp);
-    // previousMoraleUp = moraleCalculation; // Previous morale after attacking up/red
-    changeMoraleUp = troopMoraleCalc(enemyTroops, moraleCalculation, changeMoraleUp, "bottomside");
-
-    console.log("Change morale is:", changeMoraleUp);
-    startingMoraleUp -= changeMoraleUp;
-    console.log("After attack, Up becomes", startingMoraleUp);
-    startingMoraleBottom += changeMoraleUp;
-    console.log("Bottom Becomes", startingMoraleBottom);
-    if(startingMoraleBottom >= 100){
-      startingMoraleBottom = 100;
-      console.log("Blue wins");
-    }
-    hpBarTop.setPercent(startingMoraleUp);
-    console.log("after bottom attacked, up morale now:", startingMoraleUp);
-  }
-  else if(group.name == "topside"){
-    // topside attacks bottom
-    // change bar, up side should increase
-    console.log("Before attack, bottom morale is:", startingMoraleBottom);
-    // previousMoraleBottom = moraleCalculation; // Previous morale after attacking bottom/blue
-    changeMoraleBottom = troopMoraleCalc(enemyTroops, moraleCalculation, changeMoraleBottom, "topside");
-
-    console.log("Change morale is:", changeMoraleBottom);
-    startingMoraleBottom -= changeMoraleBottom;
-    console.log("After attack, Bottom becomes", startingMoraleBottom);
-    startingMoraleUp += changeMoraleBottom;
-    console.log("Up becomes", startingMoraleUp);
-    if(startingMoraleUp >= 100){
-      startingMoraleUp = 100;
-      console.log("Red wins");
-    }
-    hpBarTop.setPercent(startingMoraleUp);
-    console.log("after up attacked, bottom morale now:", startingMoraleBottom);
-  }
-}
-
-// ***
-// Troop checker if troop is 0, 
-//   then change morale is 5 which is equal to 1 sprite
-//   50 morale = 10 units
-// If changeMorale is 5, then 1 sprite was previously killed
-function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
-  console.log("Change morale up before", changeMorale);
-  // startingMoraleUp to change
-
-  if(changeMorale === 0 || changeMorale >= 5){
-    // make morale up equal to morale calculation
-    changeMorale = troopMoralDestroyed;
-
-    if(group === "bottomside") previousMoraleUp = troopMoralDestroyed;
-    if(group === "topside") previousMoraleBottom = troopMoralDestroyed;
-
-    // previousMorale = troopMoralDestroyed;
-    console.log("enter 1");
-  }
-  else{
-    // console.log("Previous morale", previousMorale);
-    // save the previous morale
-    var before = troopMoralDestroyed;
-    if(group === "bottomside"){
-      console.log("enter 3 bottomside");
-      troopMoralDestroyed -= previousMoraleUp;
-      previousMoraleUp = before
-    }
-
-    if(group === "topside"){
-      console.log("enter 3 topside");
-      troopMoralDestroyed -= previousMoraleBottom;
-      previousMoraleBottom = before;
-    }
-    
-    changeMorale = Math.abs(troopMoralDestroyed);
-    console.log("enter 3 ends");
-  }
-  // bonus morale if kill a unit????
-  if(enemyTroops === 0) {
-    changeMorale += 5;
-    console.log("enter 2");
-  }
-  return changeMorale;
-}
 ///Move Functions//////////////////////////////////////////////////////
-
 
 function playerTurn (i) {
 
@@ -396,6 +266,7 @@ function movePlayer(tile, sprite) {
         canAttack = true;
         unit.unit.attack(targetUnit.unit);
         setBarPercent(game, targetUnit, targetUnit.unit.troops);
+        window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
         tile.animations.play('redden');
