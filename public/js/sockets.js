@@ -1,4 +1,5 @@
 var socket = io();
+var updateUnit = [];
 
 $(function() {
 
@@ -18,21 +19,36 @@ function changeShit () {
   $('h1').css('color', 'red');
 }
 
-socket.on('turnChange',  function (user) {
 
-  console.log(user);
+socket.on('turnChange', function () {
 
-});
-
-socket.on('bottomSide', function () {
-
-  endTurn();
-  console.log('end turn');
+    // playerTurnComputer (updateUnit[0]);
+    console.log(updateUnit);
+    updateUnit = [];
+    endTurn();
 
 });
 
-socket.on('topSide', function () {
+socket.on('waiting', function () {
 
-  waiting();
+  var msg = waiting();
+
+});
+
+socket.on ('spriteClass', function (unit) {
+  var UnitArr = allUnits[unit.index];
+  // unit.index = unit.index -1;
+  // console.log('this is turn:' + turn);
+  console.log(unit);
+
+  UnitArr.x = unit.x;
+  UnitArr.y = unit.y;
+  UnitArr.atk = unit.atk;
+  UnitArr.def = unit.def;
+  UnitArr.spd = unit.spd;
+  UnitArr.troops = unit.troops;
+
+  turnSwitch = true;
+
 
 });

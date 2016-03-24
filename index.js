@@ -20,13 +20,7 @@ app.get('/', function(req, res){
       user.push(socket.user);
       socket.join('game');
 
-      socket.in('game').emit('bottomSide');
-
-       if (id === 2) {
-
-        socket.to(socket).emit('topSide');
-
-      }
+      socket.in('game').emit('turnChange');
 
       console.log('a user connected' + ' ' + 'Id:' + ' ' + socket.user);
 
@@ -45,23 +39,29 @@ app.get('/', function(req, res){
       console.log("haaaay");
     });
 
-    socket.on('turnChange', function () {
+    socket.on('endTurn', function () {
 
-      socket.in('game').emit('turnChange', socket.user);
+      socket.in('game').emit('turnChange');
 
     });
 
-    socket.on('bottomSide', function () {
 
-      socket.in('game').emit('bottomSide');
+    socket.on('spriteMoved', function (unit) {
+
+      socket.in('game').emit('spriteClass', unit);
+
+
+    });
+
+    socket.on('waiting', function () {
+
+      socket.in('game').emit('waiting');
 
     });
 
 
 
   });
-
-
 
 
 

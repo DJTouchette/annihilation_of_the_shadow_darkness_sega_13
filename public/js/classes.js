@@ -19,6 +19,9 @@ class Unit {
     this.rng = rng;
     this.troops = 100;
     this.tile = tile;
+    this.x = 0;
+    this.y = 0;
+
 
     // These stats are used to reset stats, we should clean this up some how.
     // But it works.
@@ -189,3 +192,24 @@ class Armored extends Unit {
   }
 
 }
+
+
+// var footmanStats = {
+//
+//   atk: 50,
+//   spd: 4,
+//   def: 10,
+//   rng: 1,
+//   tile:0
+//
+// };
+//
+// var archerStats = {
+//
+//   atk: 50,
+//   spd: 4,
+//   def: 10,
+//   rng: 1,
+//   tile:0
+//
+// };

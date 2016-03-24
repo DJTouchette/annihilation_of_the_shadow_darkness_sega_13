@@ -141,6 +141,7 @@ function update(){
     // mover.kill();
     allUnits[turn].unit.tileCheck();
     allUnits[turn].unit.moraleBuff();
+
     turnSwitch = false;
     if (turn < 19) {
       turn += 1;
@@ -171,7 +172,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     soldier.anchor.setTo(-0.25, 0);
     soldier.inputEnabled = true;
     soldier.frame = frame_pos;
-    createTroopBar(soldier);  
+    createTroopBar(soldier);
     allUnits.push(soldier);
   }
   for (var j = 0; j < 2; j++) {
@@ -181,7 +182,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     archer.anchor.setTo(-0.25, 0);
     archer.inputEnabled = true;
     archer.frame = frame_pos;
-    createTroopBar(archer);  
+    createTroopBar(archer);
     allUnits.push(archer);
   }
   for (var f = 0; f < 2; f++) {
@@ -191,7 +192,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     armored.anchor.setTo(-0.25, 0);
     armored.inputEnabled = true;
     armored.frame = frame_pos;
-    createTroopBar(armored);  
+    createTroopBar(armored);
     allUnits.push(armored);
   }
   for (var e = 0; e < 2; e++) {
@@ -201,7 +202,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     horseman.anchor.setTo(-0.25, 0);
     horseman.inputEnabled = true;
     horseman.frame = frame_pos;
-    createTroopBar(horseman);  
+    createTroopBar(horseman);
     allUnits.push(horseman);
   }
 }
@@ -217,6 +218,13 @@ function sortUnits(){
   allUnits.sort(function compare (a, b) {
     return b.unit.spd - a.unit.spd;
   });
+
+  for (var i = 0; i < allUnits.length; i ++) {
+
+    allUnits[i].unit.index = i;
+
+  }
+
 }
 //Morale Bar//////////////////////////////////////////////////////
 
@@ -336,45 +344,68 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 }
 ///Move Functions//////////////////////////////////////////////////////
 
+
 function playerTurn (i) {
+
     unit = allUnits[i];
     if (unit.unit.dead === true){
       turnSwitch = true;
     }
     makeUnitBar(unit);
-    mover.x = unit.x
-    mover.y = unit.y
+    mover.x = unit.x;
+    mover.y = unit.y;
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
     limitY = unit.y;
+    // window.socket.emit('spriteMoved', unit.unit);
+
 }
+
+function playerTurnComputer (i) {
+
+    console.log('Units loooog: ' + allUnits[i]);
+
+}
+
 
 
 function movePlayer(tile, sprite) {
   unitCollision(tile);
+  // unit.unit.rangeTileCheck();
   if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= unit.unit.spd ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
+    unit.unit.x = unit.x;
+    unit.unit.y = unit.y;
+    window.socket.emit('spriteMoved', unit.unit);
+    console.log(unit);
     targetUnit = false;
   } else {
-    if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) === 1 )) {
+    if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= unit.unit.rng )) {
       if (targetUnit.parent !== unit.parent) {
         canAttack = true;
-        if (unit.unit.attack(targetUnit.unit)){
-          setBarPercent(game, targetUnit, targetUnit.unit.troops);
-          damageMorale(unit.parent, targetUnit.unit.troops);
-        }
+        unit.unit.attack(targetUnit.unit);
+        setBarPercent(game, targetUnit, targetUnit.unit.troops);
+        // console.log('target unit :', targetUnit);
+        // console.log('target troops:', targetUnit.unit.troops)
         tile.animations.play('redden');
         turnSwitch = true;
+      } else {
+      tile.animations.play('redden');
+      targetUnit = false;
       }
     } else {
-        targetUnit = false;
-        tile.animations.play('redden');
-        tile.x = unit.x;
-        tile.y = unit.y;
-      }
+      targetUnit = false;
+      tile.animations.play('redden');
+      tile.x = unit.x;
+      tile.y = unit.y;
+
+    }
+
   }
 }
+
+
 
 function tileCollision(tile) {
   for (var i = 0; i < tileGroup.children.length; i++) {
