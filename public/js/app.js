@@ -32,9 +32,6 @@ var barConfigTop = {
     color: '#ff3300'
   },
 };
-var startingMoraleBottom = morale / 2; //should create starting morale for each group
-var startingMoraleUp = morale / 2;
-console.log("Starting morale for each group is:",startingMoraleUp, startingMoraleBottom);
 // var barConfigBottom = {
 //   width: 20,
 //   height: 100,
@@ -228,27 +225,35 @@ function createTroopBar(sprite){
   sprite.addChild(graphics);
 }
 
-//**
+//***
 // accept group bottomside or topside
-function damageMorale(group){
+function damageMorale(group, enemyTroops){
   // group argument is the attacking group
   // starting morale is overall morale (100) divided by 2
+  var startingMoraleBottom = 50; //should create starting morale for each group
+  var startingMoraleUp = 50;
 
-  var moralValue = 100; // or other number
-  console.log(group.name + " has " + group.children.length + " children");
+  var moralValue = 50; 
+  console.log("Troops destroyed:", 100 - enemyTroops);
   var totalUnit = group.children.length;
-  var changeMorale = moralValue / totalUnit; // 100/10 = 10;
+  console.log(group.name + " has " + group.children.length + " children");
+  var unitLife = moralValue / totalUnit; //each unit contributes 5 morale, so total 50 morale for each army
+  // var changeMorale = ((100 - enemyTroops) / 100) * unitLife;
+  var container;
+  var changeMorale = troopsZero(container, enemyTroops, unitLife);
+  console.log("Change morale is:", changeMorale);
 
   if(group.name == "bottomside"){
     // bottomside attacks upside
     // change bar, bottom side should increase
     console.log("Before attack, up morale is:", startingMoraleUp);
+    // startingMoraleUp to change
     startingMoraleUp -= changeMorale;
     console.log("After attack, Up becomes", startingMoraleUp);
     startingMoraleBottom += changeMorale;
     console.log("Bottom Becomes", startingMoraleBottom);
-    if(startingMoraleUp <= 0){
-      startingMoraleUp = 0;
+    if(startingMoraleBottom >= 100){
+      startingMoraleBottom = 100;
       console.log("Blue wins");
     }
     hpBarTop.setPercent(startingMoraleUp);
@@ -262,8 +267,8 @@ function damageMorale(group){
     console.log("After attack, Bottom becomes", startingMoraleBottom);
     startingMoraleUp += changeMorale;
     console.log("Up becomes", startingMoraleUp);
-    if(startingMoraleBottom >= 100){
-      startingMoraleBottom = 100;
+    if(startingMoraleUp >= 100){
+      startingMoraleUp = 100;
       console.log("Red wins");
     }
     hpBarTop.setPercent(startingMoraleUp);
@@ -271,29 +276,15 @@ function damageMorale(group){
   }
 }
 
-// damageMoraleRight should reflect damageMoraleLeft
-// function damageMoraleRight(group){
-//   // testHealth -= 10 / group.children.length;
-//   // if(testHealth < 0) testHealth = 0;
-//   // bar.setPercent(testHealth);
-
-//   // group argument is the attacking group
-//   // var startingMorale = morale / 2;
-//   // console.log(startingMorale);
-//   var moralValue = 100; // or other number
-//   console.log(group.name + " has " + group.children.length + " children");
-//   var totalUnit = group.children.length;
-//   var increaseMorale = moralValue / totalUnit;
-//   var newMorale = startingMorale + increaseMorale;
-//   if (newMorale >= 100) {
-//     newMorale = 100; // Game ended?
-//     console.log("Game ended! Red wins");
-//   }
-//   console.log("Red now is:", newMorale);
-//   // Change the bar
-//   hpBarTop.setPercent(newMorale);
-
-// }
+function troopsZero(changeMorale, troops, unitLife){
+  if(troops === 0){
+    changeMorale = 5;
+  }
+  else{
+    changeMorale = ((100 - troops) / 100) * unitLife;
+  }
+  return changeMorale;
+}
 ///Move Functions//////////////////////////////////////////////////////
 
 function playerTurn (i) {
@@ -330,7 +321,7 @@ function movePlayer(tile, sprite) {
 
           // increase or decrease morale based on group
           console.log(unit.parent.name + "turn now");
-          damageMorale(unit.parent);
+          damageMorale(unit.parent, targetUnit.unit.troops);
         }
         turnSwitch = true;
       }
