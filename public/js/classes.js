@@ -76,6 +76,7 @@ class Unit {
     } else {
 
       console.log('Swing and a miss');
+      return 0;
 
     }
 
