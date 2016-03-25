@@ -11,6 +11,7 @@ var turnSwitch;
 var turn = 0;
 var limitX;
 var limitY;
+var menu;
 var targetUnit;
 var canAttack;
 var unitColliding;
@@ -64,6 +65,7 @@ function preload() {
 //Map///////////////////////////////////////////////////
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
+  game.load.image('menu', 'assets/background_image.png');
 ////////////////////////////////////////////////////////
 //Units///////////////////////////////////////////////////
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
@@ -135,11 +137,12 @@ function create() {
   topSide.name = 'topside';
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
+mainMenu();
 createSide(144, 528, bottomSide, 'soldier', 4);
 createSide(144, 48, topSide, 'camus', 7);
-createMoraleBars();
+// createMoraleBars();
 sortUnits();
-playerTurn(turn);
+// playerTurn(turn);
 //Create Functions CALLED////////////////////
 
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -470,6 +473,14 @@ function unitRangeTile(unit) {
 ///Menu Function//////////////////////////////////////////////////////
 
 function mainMenu () {
-  console.log('Main Menu');
+  menu = game.add.image(0, 0, 'menu');
+  menu.inputEnabled = true;
+  menu.events.onInputDown.add(startGame, this);
+}
+
+function startGame() {
+  menu.destroy();
+  createMoraleBars();
+  playerTurn(turn);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
