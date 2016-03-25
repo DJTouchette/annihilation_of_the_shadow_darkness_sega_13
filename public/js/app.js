@@ -85,7 +85,7 @@ function preload() {
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
   game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
   game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
-  game.load.spritesheet('grave', 'assets/units/grave.png', 46, 46);
+  game.load.image('grave', 'assets/units/grave.png', 46, 46);
 //////////////////////////////////////////////////////////
 
 
@@ -199,6 +199,10 @@ function update(endBtn){
   //   break;
     
   // }
+  // if (allUnits[turn].unit.dead === true){
+  //   turnSwitch = true;
+  // }
+
   if (blueWins && allUnits[turn].parent.name === 'topside') {
     victoryScreen();
     window.socket.emit('defeat');
@@ -410,10 +414,10 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 function playerTurn (i) {
 
     unit = allUnits[i];
-    if (unit.unit.dead === true){
+    makeUnitBar(unit);
+    if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
     }
-    makeUnitBar(unit);
     mover.x = unit.x;
     mover.y = unit.y;
     // mover.anchor.setTo(0.5, 0.5);
@@ -447,14 +451,15 @@ function movePlayer(tile, sprite) {
       if (targetUnit.parent.name !== unit.parent.name) {
         canAttack = true;
         unit.unit.attack(targetUnit.unit);
-        setBarPercent(game, targetUnit, targetUnit.unit.troops);
+        if (!targetUnit.unit.dead) {
+          setBarPercent(game, targetUnit, targetUnit.unit.troops);
+        }
         damageMorale(unit.parent, targetUnit.unit.troops);
         window.socket.emit('moraleChange', [unit.unit.index, targetUnit.unit.troops]  );
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
-        console.log('target unit :', targetUnit);
-        console.log('target troops:', targetUnit.unit.troops)
+        // console.log('target unit :', targetUnit);
+        // console.log('target troops:', targetUnit.unit.troops)
         damageMorale(unit.parent, targetUnit.unit.troops);
-        startingMoraleUp = 100;
         tile.animations.play('redden');
 
         turnSwitch = true;
