@@ -20,10 +20,8 @@ app.get('/', function(req, res){
       user.push(socket.user);
       socket.join('game');
 
-      socket.in('game').emit('turnChange');
-
+      // socket.in('game').emit('turnChange', id);
       console.log('a user connected' + ' ' + 'Id:' + ' ' + socket.user);
-
     } else {
       socket.disconnect(socket);
       console.log('fuck off');
@@ -39,9 +37,10 @@ app.get('/', function(req, res){
       console.log("haaaay");
     });
 
-    socket.on('endTurn', function () {
-
-      socket.in('game').emit('turnChange');
+    socket.on('endTurn', function (currentGroup) {
+      console.log('endTurn started by User ' + socket.user)
+      var currentPlayer = socket.user
+      socket.in('game').emit('turnChange', currentPlayer, currentGroup);
 
     });
 
@@ -59,7 +58,10 @@ app.get('/', function(req, res){
 
     });
 
-
+    socket.on('checkUser', function() {
+      console.log('USER IS: ' + socket.user);
+      socket.in('game').emit('thisUser', socket.user)
+    });
 
   });
 

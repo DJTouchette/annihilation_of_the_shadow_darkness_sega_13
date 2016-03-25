@@ -2,12 +2,17 @@
 
 function makeUnitBar (unit) {
 
-  console.log('i ran');
   makeBorder();
   firstFrame(unitStats(unit));
   unitStats(unit);
   makeSecondFrame(terrain(unit));
   title();
+  endBtn = game.add.sprite(829, 550, 'end');
+  endBtn.scale.setTo(0.9);
+  endBtn.inputEnabled = true;
+  endBtn.input.useHandCursor = true;
+  endBtn.events.onInputDown.add(click);
+
 
   // console.log("i ran");
   // socket.emit('bottomSide');
@@ -15,16 +20,29 @@ function makeUnitBar (unit) {
 }
 
 function endTurn (cb) {
+  // console.log('inside endTurn lastGroup: ', lastGroupCalled)
+  // console.log('inside endTurn currentGroup: ', currentGroup)
+  // endBtn = game.add.sprite(829, 550, 'end');
+  // endBtn = game.add.sprite(829, 550, 'waiting')
+  // endBtn.scale.setTo(0.9);
+  // endBtn.inputEnabled = true;
+  // endBtn.input.useHandCursor = true;
+  // Make button clickable add(this.function, this)
+  // endBtn.events.onInputDown.add(click);
+}
 
-  var endBtn = game.add.sprite(829, 550, 'end');
-  endBtn.inputEnabled = true;
-  endBtn.scale.setTo(0.9);
+function disableBtn () {
+  endBtn.loadTexture('waiting');
+  endBtn.inputEnabled = false;
+  endBtn.input.useHandCursor = false;
+  console.log('Disabled');
+}
+
+function enableBtn() {
+  endBtn.loadTexture('end');
   endBtn.inputEnabled = true;
   endBtn.input.useHandCursor = true;
-  // Make button clickable add(this.function, this)
-  endBtn.events.onInputDown.add(click);
-
-
+  console.log('Enabled');
 }
 
 function waiting () {
@@ -110,9 +128,8 @@ function terrain (unit) {
 }
 
 function click() {
-
+  console.log('Current Group: ', currentGroup);
   console.log('clicked');
   turnSwitch = true;
-  window.socket.emit('endTurn');
-
+  window.socket.emit('endTurn', currentGroup);
 }

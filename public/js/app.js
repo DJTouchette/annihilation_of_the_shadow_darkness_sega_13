@@ -17,6 +17,9 @@ var unitColliding;
 var specialTile;
 var inGrass;
 var rangeTile;
+var currentGroup;
+///Test///
+var endBtn //Change to a sprite in the create
 
 //ARMY MORALE BAR////////////////////
 var hpBarTop;
@@ -81,6 +84,7 @@ function preload() {
 //////////////////////////////////////////////////////////
 //Menu///////////////////////////////////////////////////
   game.load.spritesheet('title', 'assets/title.png');
+  game.load.image('waiting', 'assets/waiting.png')
   // Loads all border assets (/public/js/hud/border.js)
   loadBorder(spritesBorder);
   // Loads Unit frame assets (/public/js/hud/units.js)
@@ -96,7 +100,6 @@ function preload() {
 function create() {
   //Variables
   var graphics;
-
 // MUSIC START////////////////////////////////////
   // music = game.add.audio('battle');
   // music.play();
@@ -140,6 +143,8 @@ createSide(144, 48, topSide, 'camus', 7);
 createMoraleBars();
 sortUnits();
 playerTurn(turn);
+// endTurn();
+
 //Create Functions CALLED////////////////////
 
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,11 +152,10 @@ playerTurn(turn);
 
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update(){
-  if (turnSwitch) {
+  if (turnSwitch === true) {
     // mover.kill();
     allUnits[turn].unit.tileCheck();
     allUnits[turn].unit.moraleBuff();
-
     turnSwitch = false;
     if (turn < 19) {
       turn += 1;
@@ -356,11 +360,11 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
 
 function playerTurn (i) {
-
     unit = allUnits[i];
     if (unit.unit.dead === true){
       turnSwitch = true;
     }
+    currentGroup = unit.parent.name
     makeUnitBar(unit);
     mover.x = unit.x;
     mover.y = unit.y;

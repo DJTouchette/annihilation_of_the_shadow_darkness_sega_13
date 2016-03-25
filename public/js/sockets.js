@@ -3,10 +3,10 @@ var socket = io();
 
 $(function() {
 
-$('body').on('click', function () {
-    socket.emit('pop');
-    socket.emit('turnChange');
-});
+// $('body').on('click', function () {
+//     socket.emit('pop');
+//     socket.emit('turnChange');
+// });
 
 socket.on('SOMEONE_POPPED', function () {
   $('h1').css('color', 'red');
@@ -20,11 +20,21 @@ function changeShit () {
 }
 
 
-socket.on('turnChange', function () {
-
+socket.on('turnChange', function (currentPlayer, currentGroup) {
     updateUnit = [];
-    endTurn();
-
+    console.log('turnChange started by User ' + currentPlayer)
+    console.log('Current Group is :' + currentGroup)
+    if (currentPlayer === 1 && currentGroup === 'bottomside'){
+      disableBtn();
+    }else if (currentPlayer === 1 && currentGroup === 'topside'){
+      enableBtn();
+    }
+    else if(currentPlayer === 2 && currentGroup === 'topside'){
+      disableBtn();
+    }
+    else if (currentPlayer === 2 && currentGroup === 'bottomside'){
+      enableBtn();
+    }
 });
 
 socket.on('waiting', function () {
