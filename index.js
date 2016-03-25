@@ -59,6 +59,18 @@ app.get('/', function(req, res){
 
     });
 
+    socket.on('victory', function() {
+
+      socket.in('game').emit('win');
+
+    });
+
+    socket.on('defeat', function() {
+
+      socket.in('game').emit('lose');
+
+    });
+
 
 
   });

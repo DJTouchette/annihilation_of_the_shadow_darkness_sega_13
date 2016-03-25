@@ -33,6 +33,18 @@ socket.on('waiting', function () {
 
 });
 
+socket.on('win', function() {
+
+  victoryScreen();
+
+});
+
+socket.on('lose', function(){
+
+  defeatScreen();
+
+});
+
 socket.on ('spriteClass', function (unit) {
   var UnitArr = allUnits[unit.index];
   // unit.index = unit.index -1;

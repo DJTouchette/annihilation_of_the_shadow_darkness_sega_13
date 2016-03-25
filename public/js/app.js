@@ -18,6 +18,9 @@ var unitColliding;
 var specialTile;
 var inGrass;
 var rangeTile;
+var endGame;
+var redWins;
+var blueWins;
 
 //ARMY MORALE BAR////////////////////
 var hpBarTop;
@@ -66,6 +69,8 @@ function preload() {
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
   game.load.image('menu', 'assets/background_image.png');
+  game.load.image('victory', 'assets/victory.png');
+  game.load.image('defeat', 'assets/defeat.png');
 ////////////////////////////////////////////////////////
 //Units///////////////////////////////////////////////////
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
@@ -162,6 +167,36 @@ function update(){
       turn = 0;
     }
     playerTurn(turn);
+  }
+
+  // switch (endGame) {
+  //   case "red":
+  //     if (allUnits[turn].parent.name === 'topside') {
+  //       victoryScreen();
+  //       window.socket.emit('defeat');
+  //     } else {
+  //       defeatScreen();
+  //       window.socket.emit('victory');
+  //     }
+  //     break;
+  //   case "blue":
+  //     if (allUnits[turn].parent.name === 'bottomside') {
+  //       victorScreen();
+  //       window.socket.emit('defeat');
+  //     } else {
+  //       defeatScreen();
+  //       window.socket.emit('victory');
+  //     }
+  //   break;
+    
+  // }
+  if (blueWins && allUnits[turn].parent.name === 'topside') {
+    victoryScreen();
+    window.socket.emit('defeat');
+  }
+  if (redWins && allUnits[turn].parent.name === 'bottomside') {
+    victoryScreen();
+    window.socket.emit('defeat');
   }
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -285,6 +320,9 @@ function damageMorale(group, enemyTroops){
     if(startingMoraleBottom >= 100){
       startingMoraleBottom = 100;
       console.log("Blue wins");
+      gameEnd = true;
+      blueWins = true;
+      redWins = false;
     }
     hpBarTop.setPercent(startingMoraleUp);
     console.log("after bottom attacked, up morale now:", startingMoraleUp);
@@ -304,6 +342,9 @@ function damageMorale(group, enemyTroops){
     if(startingMoraleUp >= 100){
       startingMoraleUp = 100;
       console.log("Red wins");
+      gameEnd = true;
+      redWins = true;
+      blueWins = false;
     }
     hpBarTop.setPercent(startingMoraleUp);
     console.log("after up attacked, bottom morale now:", startingMoraleBottom);
@@ -385,7 +426,7 @@ function playerTurnComputer (i) {
 function movePlayer(tile, sprite) {
   unitCollision(tile);
   // unit.unit.rangeTileCheck();
-  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= unit.unit.spd ) && !tileCollision(tile) && (unitColliding === false)) {
+  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
     unit.unit.x = unit.x;
@@ -402,7 +443,9 @@ function movePlayer(tile, sprite) {
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
         damageMorale(unit.parent, targetUnit.unit.troops);
+        startingMoraleUp = 100;
         tile.animations.play('redden');
+
         turnSwitch = true;
       } else {
       tile.animations.play('redden');
@@ -478,9 +521,29 @@ function mainMenu () {
   menu.events.onInputDown.add(startGame, this);
 }
 
+function victoryScreen() {
+  // hpBarTop.kill();
+  mover.kill();
+  winScreen = game.add.image(0, 0, 'victory');
+  winScreen.inputEnabled = true;
+  winScreen.events.onInputDown.add(restartGame, this);
+}
+
+function defeatScreen() {
+  // hpBarTop.destroy();
+  mover.kill();
+  loseScreen = game.add.image(0, 0, 'defeat');
+  loseScreen.inputEnabled = true;
+  loseScreen.events.onInputDown.add(restartGame, this);
+}
+
 function startGame() {
   menu.destroy();
   createMoraleBars();
   playerTurn(turn);
+}
+
+function restartGame() {
+  window.location.reload(false);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
