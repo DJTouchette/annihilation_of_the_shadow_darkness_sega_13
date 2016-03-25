@@ -11,6 +11,7 @@ var turnSwitch;
 var turn = 0;
 var limitX;
 var limitY;
+var menu;
 var targetUnit;
 var canAttack;
 var unitColliding;
@@ -59,6 +60,15 @@ function preload() {
 //Map///////////////////////////////////////////////////
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
+  game.load.image('menu', 'assets/background_image.png');
+////////////////////////////////////////////////////////
+//Units///////////////////////////////////////////////////
+  game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
+  game.load.atlasJSONHash('camus', 'assets/units/red.png', 'assets/units/red.json');
+  game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
+//////////////////////////////////////////////////////////
+//Tiles///////////////////////////////////////////////////
+
   game.load.image('wall', 'assets/wall.png');
   game.load.spritesheet('movetile', 'assets/movetile.png', 48, 48);
   game.load.image('move', 'assets/move.png');
@@ -135,15 +145,12 @@ function create() {
 
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
+mainMenu();
 createSide(144, 528, bottomSide, 'soldier', 4);
+
 createSide(144, 48, topSide, 'camus', 10);
 sortUnits();
 playerTurn(turn);
-
-
-
-
-
 
 //Create Functions CALLED////////////////////
 
@@ -404,6 +411,7 @@ function movePlayer(tile, sprite) {
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
+        damageMorale(unit.parent, targetUnit.unit.troops);
         tile.animations.play('redden');
         turnSwitch = true;
       } else {
@@ -475,6 +483,14 @@ function unitRangeTile(unit) {
 ///Menu Function//////////////////////////////////////////////////////
 
 function mainMenu () {
-  console.log('Main Menu');
+  menu = game.add.image(0, 0, 'menu');
+  menu.inputEnabled = true;
+  menu.events.onInputDown.add(startGame, this);
+}
+
+function startGame() {
+  menu.destroy();
+  createMoraleBars();
+  playerTurn(turn);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
