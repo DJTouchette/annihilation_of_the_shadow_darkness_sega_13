@@ -371,7 +371,7 @@ function playerTurn (i) {
     if (unit.unit.dead === true){
       turnSwitch = true;
     }
-    makeUnitBar(unit);
+    makeUnitBar(unit, startingMoraleUp, startingMoraleBottom);
     mover.x = unit.x;
     mover.y = unit.y;
     // mover.anchor.setTo(0.5, 0.5);
