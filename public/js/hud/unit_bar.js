@@ -1,34 +1,19 @@
 // var socket = io();
 
 function makeUnitBar (unit) {
-
   makeBorder();
   firstFrame(unitStats(unit));
   unitStats(unit);
   makeSecondFrame(terrain(unit));
   title();
-  endBtn = game.add.sprite(829, 550, 'end');
+  var endBtn = game.add.sprite(829, 550, 'end');
   endBtn.scale.setTo(0.9);
   endBtn.inputEnabled = true;
   endBtn.input.useHandCursor = true;
   endBtn.events.onInputDown.add(click);
-
-
-  // console.log("i ran");
-  // socket.emit('bottomSide');
-
 }
 
 function endTurn (cb) {
-  // console.log('inside endTurn lastGroup: ', lastGroupCalled)
-  // console.log('inside endTurn currentGroup: ', currentGroup)
-  // endBtn = game.add.sprite(829, 550, 'end');
-  // endBtn = game.add.sprite(829, 550, 'waiting')
-  // endBtn.scale.setTo(0.9);
-  // endBtn.inputEnabled = true;
-  // endBtn.input.useHandCursor = true;
-  // Make button clickable add(this.function, this)
-  // endBtn.events.onInputDown.add(click);
 }
 
 function disableBtn () {
@@ -44,6 +29,7 @@ function enableBtn() {
   endBtn.input.useHandCursor = true;
   console.log('Enabled');
 }
+
 
 function waiting () {
 
@@ -124,6 +110,20 @@ function terrain (unit) {
 
   // Other stat or marale
   game.add.text(935, position[2],['Spd', unit.unit.spd - unit.unit.ogSpd].join('  '), styleUnit );
+
+}
+
+function over (endBtn) {
+
+  endBtn.loadTexture('endGlow');
+
+
+}
+
+function out (endBtn) {
+
+  endBtn.loadTexture('end');
+
 
 }
 

@@ -30,16 +30,28 @@ socket.on('turnChange', function (currentPlayer, currentGroup) {
       enableBtn();
     }
     else if(currentPlayer === 2 && currentGroup === 'topside'){
-      disableBtn();
+      alert('not your turn')
     }
     else if (currentPlayer === 2 && currentGroup === 'bottomside'){
-      enableBtn();
+      disableBtn();
     }
 });
 
 socket.on('waiting', function () {
 
   var msg = waiting();
+
+});
+
+socket.on('win', function() {
+
+  victoryScreen();
+
+});
+
+socket.on('lose', function(){
+
+  defeatScreen();
 
 });
 
@@ -58,5 +70,17 @@ socket.on ('spriteClass', function (unit) {
 
   turnSwitch = true;
 
+
+});
+
+socket.on ('setBar', function (params) {
+
+  setBarPercent(game, allUnits[params[0]], params[1]);
+
+});
+
+socket.on ('setMorale', function (params) {
+
+  damageMorale(allUnits[params[0]].parent, params[1]);
 
 });

@@ -4,9 +4,8 @@ h1 {
 }
 
 #game_div {
-    width: 400px;
-    margin: auto;
-    margin-top: 50px;
+
+  border: solid red 10px;
 }
 
 .cursor {

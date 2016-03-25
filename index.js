@@ -62,6 +62,32 @@ app.get('/', function(req, res){
       console.log('USER IS: ' + socket.user);
       socket.in('game').emit('thisUser', socket.user)
     });
+    socket.on('victory', function() {
+
+      socket.in('game').emit('win');
+
+    });
+
+    socket.on('defeat', function() {
+
+      socket.in('game').emit('lose');
+
+    });
+
+    socket.on('barChange', function (params) {
+
+      socket.in('game').emit('setBar', params);
+      console.log(params);
+
+    });
+
+    socket.on('moraleChange', function (params) {
+
+      socket.in('game').emit('setMorale', params);
+      console.log(params);
+
+    });
+
 
   });
 
