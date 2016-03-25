@@ -17,6 +17,6 @@ function setBarIndividual(game, newWidth, getGraph){
 
 // Get original width / overall total morale
 function getWidth(sprite) {
-  const initialWidth = sprite.getChildAt(0).width;
+  const initialWidth = sprite.width;
   return initialWidth;
 }

@@ -71,6 +71,19 @@ app.get('/', function(req, res){
 
     });
 
+    socket.on('barChange', function (params) {
+
+      socket.in('game').emit('setBar', params);
+      console.log(params);
+
+    });
+
+    socket.on('moraleChange', function (params) {
+
+      socket.in('game').emit('setMorale', params);
+      console.log(params);
+
+    });
 
 
   });
