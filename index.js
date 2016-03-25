@@ -66,6 +66,13 @@ app.get('/', function(req, res){
 
     });
 
+    socket.on('moraleChange', function (params) {
+
+      socket.in('game').emit('setMorale', params);
+      console.log(params);
+
+    });
+
 
 
 

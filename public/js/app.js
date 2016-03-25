@@ -25,8 +25,10 @@ var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.pn
  {position: 'background', path: 'assets/border/paper.png'},
  {position: 'box', path: 'assets/border/box.png'},
  {position: 'start', path: 'assets/start_turn.png'},
- {position: 'end', path: 'assets/end_turn.png'}
+ {position: 'end', path: 'assets/end-turn.png'},
+ {position: 'endGlow', path: 'assets/End-glow.png'}
  ];
+
 var hpBarTop;
 var barConfigTop = {
   width: 100,
@@ -149,12 +151,11 @@ playerTurn(turn);
 }
 
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function update(){
+function update(endBtn){
   if (turnSwitch) {
     // mover.kill();
     allUnits[turn].unit.tileCheck();
     allUnits[turn].unit.moraleBuff();
-
     turnSwitch = false;
     if (turn < 19) {
       turn += 1;
@@ -261,7 +262,7 @@ function createTroopBar(sprite){
 // accept group bottomside or topside
 function damageMorale(group, enemyTroops){
   // group argument is the attacking group
-  var moralValue = 50; 
+  var moralValue = 50;
   console.log("Troops destroyed:", 100 - enemyTroops);
   var totalUnit = group.children.length;
   var unitLife = moralValue / totalUnit; //each unit contributes 5 morale, so total 50 morale for each army
@@ -310,7 +311,7 @@ function damageMorale(group, enemyTroops){
 }
 
 // ***
-// Troop checker if troop is 0, 
+// Troop checker if troop is 0,
 //   then change morale is 5 which is equal to 1 sprite
 //   50 morale = 10 units
 // If changeMorale is 5, then 1 sprite was previously killed
@@ -335,7 +336,7 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
     if(group === "bottomside"){
       console.log("enter 3 bottomside");
       troopMoralDestroyed -= previousMoraleUp;
-      previousMoraleUp = before
+      previousMoraleUp = before;
     }
 
     if(group === "topside"){
@@ -343,7 +344,7 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
       troopMoralDestroyed -= previousMoraleBottom;
       previousMoraleBottom = before;
     }
-    
+
     changeMorale = Math.abs(troopMoralDestroyed);
     console.log("enter 3 ends");
   }
@@ -399,7 +400,7 @@ function movePlayer(tile, sprite) {
         unit.unit.attack(targetUnit.unit);
         setBarPercent(game, targetUnit, targetUnit.unit.troops);
         damageMorale(unit.parent, targetUnit.unit.troops);
-        window.socket.emit('moraleChange', unit.unit.index );
+        window.socket.emit('moraleChange', [unit.unit.index, targetUnit.unit.troops]  );
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)

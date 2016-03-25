@@ -16,16 +16,19 @@ function makeUnitBar (unit) {
 
 function endTurn (cb) {
 
-  var endBtn = game.add.sprite(829, 550, 'end');
+  var endBtn = game.add.sprite(808, 545, 'end');
   endBtn.inputEnabled = true;
-  endBtn.scale.setTo(0.9);
+  endBtn.scale.setTo(1.3);
   endBtn.inputEnabled = true;
   endBtn.input.useHandCursor = true;
+  endBtn.events.onInputOver.add(function () {over (endBtn);}, this);
+  endBtn.events.onInputOut.add(function () {out (endBtn);}, this);
   // Make button clickable add(this.function, this)
   endBtn.events.onInputDown.add(click);
 
 
 }
+
 
 function waiting () {
 
@@ -106,6 +109,20 @@ function terrain (unit) {
 
   // Other stat or marale
   game.add.text(935, position[2],['Spd', unit.unit.spd - unit.unit.ogSpd].join('  '), styleUnit );
+
+}
+
+function over (endBtn) {
+
+  endBtn.loadTexture('endGlow');
+
+
+}
+
+function out (endBtn) {
+
+  endBtn.loadTexture('end');
+
 
 }
 
