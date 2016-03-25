@@ -1,6 +1,7 @@
 //VARIABLES START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, mainMenu: mainMenu, create: create, update: update, render: render });
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, "game_div", { preload: preload, mainMenu: mainMenu, create: create, update: update, render: render });
+
 var map;
 var tileGroup;
 var music;
