@@ -34,9 +34,11 @@ app.get('/', function(req, res){
     });
 
     socket.on('pop', function() {
+
       // socket.broadcast.emit("SOMEONE_POPPED");
       socket.in('game').emit('SOMEONE_POPPED');
       console.log("haaaay");
+
     });
 
     socket.on('endTurn', function (currentGroup) {
@@ -91,32 +93,16 @@ app.get('/', function(req, res){
 
     });
 
-    // socket.on('topWins', function () {
 
-    //   currentPlayer = socket.user;
-    //   if (currentPlayer === 1) {
-    //     socket.in('game').emit('lose');
-    //   } else {
-    //     socket.in('game').emit('win');
-    //   }
+    socket.on('chat message', function(msg){
 
-    // });
+      var deliver = ["Player " ,socket.user ,  ": ", msg];
+      io.in('game').emit('chat message', deliver );
+      console.log(msg);
 
-    // socket.on('bottomWins', function() {
-
-    //   currentPlayer = socket.user;
-    //   if (currentPlayer === 2) {
-    //     socket.in('game').emit('lose');
-    //   } else {
-    //     socket.in('game').emit('win');
-    //   }
-
-    // });
-
+    });
 
   });
-
-
 
 
 

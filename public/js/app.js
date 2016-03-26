@@ -1,5 +1,6 @@
 //VARIABLES START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, "game_div", { preload: preload, mainMenu: mainMenu, create: create, update: update, render: render });
 
 var map;
@@ -130,6 +131,7 @@ function create() {
   mover = game.add.tileSprite(20, 20, 48, 48, 'movetile', 1);
   mover.animations.add('redden', [0, 1], 3, false);
   mover.inputEnabled = true;
+  mover.input.priorityID = 1;
   mover.input.enableDrag(true);
   mover.input.enableSnap(48, 48, true, true);
   // mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
@@ -483,7 +485,7 @@ function movePlayer(tile, sprite) {
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
-        damageMorale(unit.parent, targetUnit.unit.troops);
+        // damageMorale(unit.parent, targetUnit.unit.troops);
         tile.animations.play('redden');
 
         turnSwitch = true;
