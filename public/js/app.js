@@ -1,5 +1,6 @@
 //VARIABLES START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, "game_div", { preload: preload, mainMenu: mainMenu, create: create, update: update, render: render });
 
 var map;
@@ -469,7 +470,7 @@ function movePlayer(tile, sprite) {
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
-        damageMorale(unit.parent, targetUnit.unit.troops);
+        // damageMorale(unit.parent, targetUnit.unit.troops);
         tile.animations.play('redden');
 
         turnSwitch = true;

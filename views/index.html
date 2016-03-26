@@ -6,6 +6,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='/assets/css/app.css' />
+    <script src="/js/style.js"></script>
     <script src="/js/globalVariables.js"></script>
     <script src="/js/sockets.js"></script>
     <script src="/js/phaser.js"></script>
@@ -19,15 +20,28 @@
     <script src="/js/HealthBar.standalone.js"></script>
     <script src="/js/moral_bar_individual.js"></script>
 
-    <title>Annihilation Of The Shadow Darkness Sega 13  </title>
+    <title>Annihilation Of The Shadow Darkness Sega 13</title>
   </head>
   <body>
 
-    <h1>Annihilation Of The Shadow Darkness Sega 13</h1>
-
-    <div id="game_div">
-      <script src="/js/app.js"></script>
+  <div class="main-container">
+    <div class="flex-container">
+      <div id="game_div">
+        <script src="/js/app.js"></script>
     </div>
+      </div>
+
+    <div class="chat-container">
+        <img class='img-title'src='/assets/main-title.png'></>
+        <!-- <div class="chat"> -->
+          <ul id="messages"></ul>
+          <div class="InputAddOn">
+            <input class="msg-input" class="InputAddOn-field">
+            <button class="InputAddOn-item">Send</button>
+          </div>
+    </div>
+  </div>
+
 
   </body>
 </html>
