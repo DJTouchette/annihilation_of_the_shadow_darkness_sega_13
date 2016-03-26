@@ -32,25 +32,25 @@ body {
 
 .msg-input {
 
-  width: 73%;
+  width: 60%;
   height: 40px;
   border: 3px solid #9C7752;
   font-size: 20px;
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-top: 10px;
+  background: rgba(54, 25, 25, .6);
 
 }
 
 .InputAddOn-field {
 
   width: 90%;
-  /*height: 50px;*/
-  border: 3px solid #9C7752;
 
 }
 
 .InputAddOn-item {
 
-  background: #581205;
+  background: rgba(54, 25, 25, .6);
   border: none;
   border-radius: 0 2px 2px 0;
   border: 1px solid rgba(147,128,108,.25);
@@ -95,7 +95,7 @@ body {
 #messages {
 
   /*border: 5px solid red;*/
-  height: 65%;
+  height: 60%;
   width: 100%;
   -webkit-box-shadow: 7px 10px 97px 26px rgba(0,0,0,0.75);
   -moz-box-shadow: 7px 10px 97px 26px rgba(0,0,0,0.75);
@@ -111,6 +111,10 @@ body {
 
   width: 20%;
   height: 600px;
+
+  -webkit-justify-content: right;
+          justify-content: right;
+
   /*margin 0 auto;*/
 
 }
