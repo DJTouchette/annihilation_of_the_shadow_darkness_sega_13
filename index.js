@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 
 var user = [];
 var id = 0;
+var currentPlayer;
 
 app.get('/', function(req, res){
   res.sendfile('views/index.html');
@@ -39,7 +40,7 @@ app.get('/', function(req, res){
 
     socket.on('endTurn', function (currentGroup) {
       console.log('endTurn started by User ' + socket.user)
-      var currentPlayer = socket.user
+      currentPlayer = socket.user
       socket.in('game').emit('turnChange', currentPlayer, currentGroup);
 
     });
@@ -62,6 +63,7 @@ app.get('/', function(req, res){
       console.log('USER IS: ' + socket.user);
       socket.in('game').emit('thisUser', socket.user)
     });
+    
     socket.on('victory', function() {
 
       socket.in('game').emit('win');
@@ -87,6 +89,28 @@ app.get('/', function(req, res){
       console.log(params);
 
     });
+
+    // socket.on('topWins', function () {
+
+    //   currentPlayer = socket.user;
+    //   if (currentPlayer === 1) {
+    //     socket.in('game').emit('lose');
+    //   } else {
+    //     socket.in('game').emit('win');
+    //   }
+
+    // });
+
+    // socket.on('bottomWins', function() {
+
+    //   currentPlayer = socket.user;
+    //   if (currentPlayer === 2) {
+    //     socket.in('game').emit('lose');
+    //   } else {
+    //     socket.in('game').emit('win');
+    //   }
+
+    // });
 
 
   });

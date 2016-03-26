@@ -20,6 +20,7 @@ var specialTile;
 var inGrass;
 var rangeTile;
 var currentGroup;
+var currentPlayer;
 ///Test///
 var endGame;
 var redWins;
@@ -204,14 +205,21 @@ function update(endBtn){
   //   turnSwitch = true;
   // }
 
-  if (blueWins && allUnits[turn].parent.name === 'topside') {
+  if (blueWins && currentGroup === 'bottomside') {
     victoryScreen();
     window.socket.emit('defeat');
+  } else if (blueWins && currentGroup === 'topside') {
+    defeatScreen();
+    window.socket.emit('victory');
   }
-  if (redWins && allUnits[turn].parent.name === 'bottomside') {
+  if (redWins && currentGroup === 'topside') {
     victoryScreen();
     window.socket.emit('defeat');
+  } else if (redWins && currentGroup === 'bottomside') {
+    defeatScreen();
+    window.socket.emit('victory');
   }
+
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -333,9 +341,8 @@ function damageMorale(group, enemyTroops){
     if(startingMoraleBottom >= 100){
       startingMoraleBottom = 100;
       console.log("Blue wins");
-      gameEnd = true;
+      // window.socket.emit("bottomWins");
       blueWins = true;
-      redWins = false;
     }
     hpBarTop.setPercent(startingMoraleUp);
     console.log("after bottom attacked, up morale now:", startingMoraleUp);
@@ -355,9 +362,8 @@ function damageMorale(group, enemyTroops){
     if(startingMoraleUp >= 100){
       startingMoraleUp = 100;
       console.log("Red wins");
-      gameEnd = true;
+      // window.socket.emit("topWins");
       redWins = true;
-      blueWins = false;
     }
     hpBarTop.setPercent(startingMoraleUp);
     console.log("after up attacked, bottom morale now:", startingMoraleBottom);
@@ -414,6 +420,8 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
 function playerTurn (i) {
     unit = allUnits[i];
+    console.log(currentPlayer);
+    console.log('group is: ' + currentGroup);
     makeUnitBar(unit);
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;

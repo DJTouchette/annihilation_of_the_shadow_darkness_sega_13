@@ -26,7 +26,7 @@ socket.on('turnChange', function (currentPlayer, currentGroup) {
     console.log('Current Group is :' + currentGroup)
     if (currentPlayer === 1 && currentGroup === 'bottomside'){
       disableBtn();
-    }else if (currentPlayer === 1 && currentGroup === 'topside'){
+    } else if (currentPlayer === 1 && currentGroup === 'topside'){
       enableBtn();
     }
     else if(currentPlayer === 2 && currentGroup === 'topside'){
@@ -52,6 +52,7 @@ socket.on('win', function() {
 socket.on('lose', function(){
 
   defeatScreen();
+  // socket.in('game').emit('win');
 
 });
 
