@@ -137,6 +137,7 @@ function create() {
   mover = game.add.tileSprite(20, 20, 48, 48, 'movetile', 1);
   mover.animations.add('redden', [0, 1], 3, false);
   mover.inputEnabled = true;
+  mover.input.priorityID = 1;
   mover.input.enableDrag(true);
   mover.input.enableSnap(48, 48, true, true);
   // mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
