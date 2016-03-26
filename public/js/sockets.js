@@ -1,25 +1,6 @@
 var socket = io();
 
 
-$(function() {
-
-$('body').on('click', function () {
-    socket.emit('pop');
-    socket.emit('turnChange');
-});
-
-socket.on('SOMEONE_POPPED', function () {
-  $('h1').css('color', 'red');
-  console.log('bang');
-});
-
-});
-
-function changeShit () {
-  $('h1').css('color', 'red');
-}
-
-
 socket.on('turnChange', function () {
 
     updateUnit = [];
@@ -48,6 +29,16 @@ socket.on ('spriteClass', function (unit) {
 
   turnSwitch = true;
 
+
+});
+
+socket.on('chat message', function(deliver){
+
+  $('#messages').append($('<li>').text(deliver.join('')));
+  var lastMessage = $('#messages');
+  var height = lastMessage[0].scrollHeight;
+  lastMessage.scrollTop(height);
+  console.log(msg);
 
 });
 
