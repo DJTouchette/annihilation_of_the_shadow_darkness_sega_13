@@ -20,6 +20,7 @@ var specialTile;
 var inGrass;
 var rangeTile;
 var currentGroup;
+var currentPlayer;
 ///Test///
 var endGame;
 var redWins;
@@ -196,14 +197,21 @@ function update(endBtn){
   //   turnSwitch = true;
   // }
 
-  if (blueWins && allUnits[turn].parent.name === 'topside') {
+  if (blueWins && currentGroup === 'bottomside') {
     victoryScreen();
     window.socket.emit('defeat');
+  } else if (blueWins && currentGroup === 'topside') {
+    defeatScreen();
+    window.socket.emit('victory');
   }
-  if (redWins && allUnits[turn].parent.name === 'bottomside') {
+  if (redWins && currentGroup === 'topside') {
     victoryScreen();
     window.socket.emit('defeat');
+  } else if (redWins && currentGroup === 'bottomside') {
+    defeatScreen();
+    window.socket.emit('victory');
   }
+
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -223,63 +231,62 @@ function createSide(x, y, group, sprite, frame_pos) {
     soldier = group.create((144 + x) + (48 * i), y, sprite);
     soldier.unit = new Footman();
     soldier.unit.dead = false;
-    soldier.anchor.setTo(0.1, 0.3);
+    soldier.animations.add('attack', [0, 1, 2], 10)
+    soldier.anchor.setTo(-0.3, 0);
+    soldier.scale.setTo(0.8, 0.8);
     soldier.tint = 0xFC001D;
     if (group === bottomSide){
       soldier.tint = 0x7FA5FD;
     }
     soldier.inputEnabled = true;
-    soldier.frame = 0;
     createTroopBar(soldier);
     allUnits.push(soldier);
   }
   for (var j = 0; j < 2; j++) {
     archer = group.create((x + 96) + (j * 240), y, sprite);
     archer.unit = new Archer();
-    archer.loadTexture('archer');
+    archer.unit.dead = false;
+    archer.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 9], 10);
+    archer.anchor.setTo(-0.3, -0.2);
+    archer.scale.setTo(0.8, 0.8);
     archer.tint = 0xFC001D;
+    archer.loadTexture('archer');
     if (group === bottomSide){
       archer.tint = 0x7FA5FD;
     }
-    archer.anchor.setTo(0, 0.1);
-    archer.unit.dead = false;
     archer.inputEnabled = true;
-    archer.frame = 0;
-    // archer.animations.add('attackLeft', [8, 9, 10, 11, 12, 13], 10, true);
     createTroopBar(archer);
     allUnits.push(archer);
   }
   for (var f = 0; f < 2; f++) {
     armored = group.create((48 + x) + (f * 336), y, sprite);
     armored.unit = new Armored();
-    armored.scale.setTo(0.5, 0.6);
-    armored.loadTexture('armored');
+    armored.unit.dead = false;
+    armored.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0], 10)
+    armored.anchor.setTo(-0.25, 0);
+    armored.scale.setTo(0.5, 0.5);
     armored.tint = 0xFC001D;
+    armored.loadTexture('armored');
     if (group === bottomSide){
       armored.tint = 0x7FA5FD;
     }
-    armored.unit.dead = false;
-    armored.anchor.setTo(-0.25, 0);
     armored.inputEnabled = true;
-    armored.frame = 0;
     createTroopBar(armored);
     allUnits.push(armored);
   }
   for (var e = 0; e < 2; e++) {
     horseman = group.create(x + (e * 432), y, sprite);
     horseman.unit = new Horseman();
+    horseman.unit.dead = false;
+    horseman.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0], 10)
+    horseman.anchor.setTo(0, 0);
     horseman.scale.setTo(0.4, 0.4)
-    horseman.loadTexture('horseman');
     horseman.tint = 0xFC001D;
+    horseman.loadTexture('horseman');
     if (group === bottomSide){
       horseman.tint = 0x7FA5FD;
-      horseman.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0], 10, false);
     }
-    horseman.unit.dead = false;
-    horseman.anchor.setTo(0, 0);
     horseman.inputEnabled = true;
-    horseman.frame = 0;
-
     createTroopBar(horseman);
     allUnits.push(horseman);
   }
@@ -349,9 +356,8 @@ function damageMorale(group, enemyTroops){
     if(startingMoraleBottom >= 100){
       startingMoraleBottom = 100;
       console.log("Blue wins");
-      gameEnd = true;
+      // window.socket.emit("bottomWins");
       blueWins = true;
-      redWins = false;
     }
     hpBarTop.setPercent(startingMoraleUp);
     console.log("after bottom attacked, up morale now:", startingMoraleUp);
@@ -371,9 +377,8 @@ function damageMorale(group, enemyTroops){
     if(startingMoraleUp >= 100){
       startingMoraleUp = 100;
       console.log("Red wins");
-      gameEnd = true;
+      // window.socket.emit("topWins");
       redWins = true;
-      blueWins = false;
     }
     hpBarTop.setPercent(startingMoraleUp);
     console.log("after up attacked, bottom morale now:", startingMoraleBottom);
@@ -430,6 +435,8 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
 function playerTurn (i) {
     unit = allUnits[i];
+    console.log(currentPlayer);
+    console.log('group is: ' + currentGroup);
     makeUnitBar(unit);
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;

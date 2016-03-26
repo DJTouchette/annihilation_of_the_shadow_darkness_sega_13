@@ -28,8 +28,7 @@ socket.on('turnChange', function (currentPlayer, currentGroup) {
       endTurn('play');
     }else if (currentPlayer === 1 && currentGroup === 'topside'){
       endTurn();
-    }
-    else if(currentPlayer === 2 && currentGroup === 'topside'){
+    }else if(currentPlayer === 2 && currentGroup === 'topside'){
       endTurn('play');
     }
     else if (currentPlayer === 2 && currentGroup === 'bottomside'){
@@ -52,6 +51,7 @@ socket.on('win', function() {
 socket.on('lose', function(){
 
   defeatScreen();
+  // socket.in('game').emit('win');
 
 });
 
