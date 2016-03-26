@@ -19,8 +19,9 @@ app.get('/', function(req, res){
       socket.user = id;
       user.push(socket.user);
       socket.join('game');
-
-      // socket.in('game').emit('turnChange', id);
+      if (id > 1){
+        socket.in('game').emit('turnChange', id, 'topside');
+      }
       console.log('a user connected' + ' ' + 'Id:' + ' ' + socket.user);
     } else {
       socket.disconnect(socket);

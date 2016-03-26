@@ -25,15 +25,15 @@ socket.on('turnChange', function (currentPlayer, currentGroup) {
     console.log('turnChange started by User ' + currentPlayer)
     console.log('Current Group is :' + currentGroup)
     if (currentPlayer === 1 && currentGroup === 'bottomside'){
-      disableBtn();
+      endTurn('play');
     }else if (currentPlayer === 1 && currentGroup === 'topside'){
-      enableBtn();
+      endTurn();
     }
     else if(currentPlayer === 2 && currentGroup === 'topside'){
-      alert('not your turn')
+      endTurn('play');
     }
     else if (currentPlayer === 2 && currentGroup === 'bottomside'){
-      disableBtn();
+      endTurn();
     }
 });
 

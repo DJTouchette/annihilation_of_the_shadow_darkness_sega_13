@@ -1,0 +1,108 @@
+{"frames": {
+
+"00.png":
+{
+	"frame": {"x":0,"y":0,"w":70,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":100},
+	"sourceSize": {"w":70,"h":100}
+},
+"01.png":
+{
+	"frame": {"x":70,"y":0,"w":73,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":98},
+	"sourceSize": {"w":73,"h":98}
+},
+"02.png":
+{
+	"frame": {"x":143,"y":0,"w":73,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":98},
+	"sourceSize": {"w":73,"h":98}
+},
+"03.png":
+{
+	"frame": {"x":216,"y":0,"w":73,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":98},
+	"sourceSize": {"w":73,"h":98}
+},
+"04.png":
+{
+	"frame": {"x":289,"y":0,"w":73,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":98},
+	"sourceSize": {"w":73,"h":98}
+},
+"05.png":
+{
+	"frame": {"x":362,"y":0,"w":73,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":98},
+	"sourceSize": {"w":73,"h":98}
+},
+"06.png":
+{
+	"frame": {"x":435,"y":0,"w":86,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":86,"h":98},
+	"sourceSize": {"w":86,"h":98}
+},
+"07.png":
+{
+	"frame": {"x":521,"y":0,"w":86,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":86,"h":98},
+	"sourceSize": {"w":86,"h":98}
+},
+"08.png":
+{
+	"frame": {"x":607,"y":0,"w":86,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":86,"h":98},
+	"sourceSize": {"w":86,"h":98}
+},
+"09.png":
+{
+	"frame": {"x":693,"y":0,"w":86,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":86,"h":98},
+	"sourceSize": {"w":86,"h":98}
+},
+"10.png":
+{
+	"frame": {"x":779,"y":0,"w":86,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":86,"h":98},
+	"sourceSize": {"w":86,"h":98}
+},
+"11.png":
+{
+	"frame": {"x":865,"y":0,"w":86,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":86,"h":98},
+	"sourceSize": {"w":86,"h":98}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "redArmored.png",
+	"format": "RGBA8888",
+	"size": {"w":951,"h":100},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:34b74914c5d70733af99e2d01fe37c19:926ea5aabcc1409e12722ae00c891434:f75a5bb856cbf384eca5adf404fcd4b7$"
+}
+}

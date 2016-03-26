@@ -1,35 +1,37 @@
 // var socket = io();
 
 function makeUnitBar (unit) {
+
   makeBorder();
   firstFrame(unitStats(unit));
   unitStats(unit);
   makeSecondFrame(terrain(unit));
   title();
-  var endBtn = game.add.sprite(829, 550, 'end');
-  endBtn.scale.setTo(0.9);
-  endBtn.inputEnabled = true;
-  endBtn.input.useHandCursor = true;
-  endBtn.events.onInputDown.add(click);
+
+  // console.log("i ran");
+  // socket.emit('bottomSide');
+
 }
 
 function endTurn (cb) {
-}
+  var endBtn = game.add.sprite(808, 545, 'end');
+  if (cb === 'play'){
+    endBtn.inputEnabled = true;
+    endBtn.scale.setTo(1.3);
+    endBtn.inputEnabled = true;
+    endBtn.input.useHandCursor = true;
+    endBtn.events.onInputOver.add(function () {over (endBtn);}, this);
+    endBtn.events.onInputOut.add(function () {out (endBtn);}, this);
+    // Make button clickable add(this.function, this)
+    endBtn.events.onInputDown.add(click);
+    console.log('Enabled');
+  }else{
+    endBtn.loadTexture('waiting');
+    console.log('Disabled');
+  }
 
-function disableBtn () {
-  endBtn.loadTexture('waiting');
-  endBtn.inputEnabled = false;
-  endBtn.input.useHandCursor = false;
-  console.log('Disabled');
-}
 
-function enableBtn() {
-  endBtn.loadTexture('end');
-  endBtn.inputEnabled = true;
-  endBtn.input.useHandCursor = true;
-  console.log('Enabled');
 }
-
 
 function waiting () {
 

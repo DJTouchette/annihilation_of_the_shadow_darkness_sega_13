@@ -70,9 +70,11 @@ function preload() {
   game.load.image('defeat', 'assets/defeat.png');
 ////////////////////////////////////////////////////////
 //Units///////////////////////////////////////////////////
-  game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
-  game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
-  game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
+  game.load.atlasJSONHash('footman', 'assets/units/footman.png', 'assets/units/footman.json');
+  game.load.atlasJSONHash('archer', 'assets/units/archer.png', 'assets/units/archer.json');
+  game.load.atlasJSONHash('horseman', 'assets/units/horseman.png', 'assets/units/horseman.json');
+  game.load.atlasJSONHash('armored', 'assets/units/armored.png', 'assets/units/armored.json');
+  game.load.image('grave', 'assets/units/grave.png', 46, 46);
 //////////////////////////////////////////////////////////
 //Tiles///////////////////////////////////////////////////
 
@@ -81,15 +83,6 @@ function preload() {
   game.load.image('move', 'assets/move.png');
   game.load.image('cantmove', 'assets/cantmove.png');
 //////////////////////////////////////////////////////////
-
-//Units///////////////////////////////////////////////////
-  game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
-  game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
-  game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
-  game.load.image('grave', 'assets/units/grave.png', 46, 46);
-//////////////////////////////////////////////////////////
-
-
 //Music///////////////////////////////////////////////////
   game.load.audio('battle', 'assets/battle.mp3');
 //////////////////////////////////////////////////////////
@@ -153,9 +146,8 @@ function create() {
 //OTHER SPRITES END////////////////////////////
 //Call Create Functions HERE//////////////////
 mainMenu();
-createSide(144, 528, bottomSide, 'soldier', 4);
-
-createSide(144, 48, topSide, 'camus', 10);
+createSide(144, 528, bottomSide, 'footman', 6);
+createSide(144, 48, topSide, 'footman', 7);
 sortUnits();
 playerTurn(turn);
 
@@ -231,39 +223,63 @@ function createSide(x, y, group, sprite, frame_pos) {
     soldier = group.create((144 + x) + (48 * i), y, sprite);
     soldier.unit = new Footman();
     soldier.unit.dead = false;
-    soldier.anchor.setTo(-0.25, 0);
+    soldier.anchor.setTo(0.1, 0.3);
+    soldier.tint = 0xFC001D;
+    if (group === bottomSide){
+      soldier.tint = 0x7FA5FD;
+    }
     soldier.inputEnabled = true;
-    soldier.frame = frame_pos;
+    soldier.frame = 0;
     createTroopBar(soldier);
     allUnits.push(soldier);
   }
   for (var j = 0; j < 2; j++) {
     archer = group.create((x + 96) + (j * 240), y, sprite);
     archer.unit = new Archer();
+    archer.loadTexture('archer');
+    archer.tint = 0xFC001D;
+    if (group === bottomSide){
+      archer.tint = 0x7FA5FD;
+    }
+    archer.anchor.setTo(0, 0.1);
     archer.unit.dead = false;
-    archer.anchor.setTo(-0.25, 0);
     archer.inputEnabled = true;
-    archer.frame = frame_pos;
+    archer.frame = 0;
+    // archer.animations.add('attackLeft', [8, 9, 10, 11, 12, 13], 10, true);
     createTroopBar(archer);
     allUnits.push(archer);
   }
   for (var f = 0; f < 2; f++) {
     armored = group.create((48 + x) + (f * 336), y, sprite);
     armored.unit = new Armored();
+    armored.scale.setTo(0.5, 0.6);
+    armored.loadTexture('armored');
+    armored.tint = 0xFC001D;
+    if (group === bottomSide){
+      armored.tint = 0x7FA5FD;
+    }
     armored.unit.dead = false;
     armored.anchor.setTo(-0.25, 0);
     armored.inputEnabled = true;
-    armored.frame = frame_pos;
+    armored.frame = 0;
     createTroopBar(armored);
     allUnits.push(armored);
   }
   for (var e = 0; e < 2; e++) {
     horseman = group.create(x + (e * 432), y, sprite);
     horseman.unit = new Horseman();
+    horseman.scale.setTo(0.4, 0.4)
+    horseman.loadTexture('horseman');
+    horseman.tint = 0xFC001D;
+    if (group === bottomSide){
+      horseman.tint = 0x7FA5FD;
+      horseman.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0], 10, false);
+    }
     horseman.unit.dead = false;
-    horseman.anchor.setTo(-0.25, 0);
+    horseman.anchor.setTo(0, 0);
     horseman.inputEnabled = true;
-    horseman.frame = frame_pos;
+    horseman.frame = 0;
+
     createTroopBar(horseman);
     allUnits.push(horseman);
   }
@@ -471,6 +487,7 @@ function movePlayer(tile, sprite) {
     } else {
       targetUnit = false;
       tile.animations.play('redden');
+      unit.animations.play('attack');
       tile.x = unit.x;
       tile.y = unit.y;
 
