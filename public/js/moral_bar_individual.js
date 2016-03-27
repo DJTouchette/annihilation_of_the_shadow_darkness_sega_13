@@ -6,6 +6,7 @@ function setBarPercent(game, sprite, troopCount){
     sprite.unit.dead = true;
   }
   newWidth = (troopCount / 100);
+  console.log(newWidth);
   getGraph = sprite.getChildAt(0);
   setBarIndividual(game, newWidth, getGraph);
 }

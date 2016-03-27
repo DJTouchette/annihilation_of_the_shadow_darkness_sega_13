@@ -4,6 +4,8 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, mainM
 var map;
 var tileGroup;
 var music;
+var pause_label;
+var playStopImage;
 var allUnits = [];
 var mover;
 var unit;
@@ -85,6 +87,8 @@ function preload() {
 
 //Music///////////////////////////////////////////////////
   game.load.audio('battle', 'assets/battle.mp3');
+  game.load.image('play', 'assets/play.png');
+  game.load.image('stop', 'assets/stop.png');
 //////////////////////////////////////////////////////////
 //Menu///////////////////////////////////////////////////
   game.load.spritesheet('title', 'assets/title.png');
@@ -105,8 +109,8 @@ function create() {
   var graphics;
 
 // MUSIC START////////////////////////////////////
-  // music = game.add.audio('battle');
-  // music.play();
+  music = game.add.audio('battle');
+  music.play();
 // MUSIC END//////////////////////////////////////
 //MAP START///////////////////////////////////////
   game.physics.startSystem(Phaser.Physics.P2JS);
@@ -155,6 +159,15 @@ playerTurn(turn);
 //Create Functions CALLED////////////////////
 
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // pause_label = game.add.text(600, 0, 'Pause Sound', {font: '24px Arial', fill: '#fff'});
+  // pause_label.inputEnabled = true;
+  // pause_label.events.onInputDown.add(playStopSound, this);
+
+  playStopImage = game.add.sprite(600, 0, 'play');
+  playStopImage.inputEnabled = true;
+  playStopImage.scale.setTo(0.04, 0.04);
+  playStopImage.events.onInputDown.add(playStopSound, this);
+
 }
 
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -184,6 +197,17 @@ function render () {
 //FUNCTIONS///////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 //Create Sides//////////////////////////////////////////////////////
+function playStopSound(){
+  if(music.paused == true){
+    music.resume();
+    playStopImage.loadTexture('play');
+  }
+  else{
+    music.pause();
+    playStopImage.loadTexture('stop');
+  }
+}
+
 
 function createSide(x, y, group, sprite, frame_pos) {
   for (var i = 0; i < 4; i ++) {
@@ -260,7 +284,7 @@ function createMoraleBars(){
 
 function createTroopBar(sprite){
   graphics = this.game.add.graphics(1, -11);
-  graphics.beginFill(0X00FF00);
+  graphics.beginFill(0x00FF00);
   graphics.drawRect(0, 0, 46, 10);
   sprite.addChild(graphics);
 }
@@ -411,7 +435,7 @@ function movePlayer(tile, sprite) {
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
-        damageMorale(unit.parent, targetUnit.unit.troops);
+        // damageMorale(unit.parent, targetUnit.unit.troops);
         tile.animations.play('redden');
         turnSwitch = true;
       } else {
