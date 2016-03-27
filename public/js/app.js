@@ -22,6 +22,7 @@ var inGrass;
 var rangeTile;
 var currentGroup;
 var currentPlayer;
+var moveRange;
 ///Test///
 var endGame;
 var redWins;
@@ -67,6 +68,10 @@ function preload() {
 //Map///////////////////////////////////////////////////
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
+  game.load.image('horseman_range', 'assets/horseman_range.png');
+  game.load.image('footman_range', 'assets/footman_range.png');
+  game.load.image('archer_range', 'assets/archer_range.png');
+  game.load.image('armored_range', 'assets/armored_range.png');
   game.load.image('menu', 'assets/background_image.png');
   game.load.image('victory', 'assets/victory.png');
   game.load.image('defeat', 'assets/defeat.png');
@@ -118,6 +123,7 @@ function create() {
   // music.play();
 // MUSIC END//////////////////////////////////////
 //MAP START///////////////////////////////////////
+  
   game.physics.startSystem(Phaser.Physics.P2JS);
   game.physics.p2.setImpactEvents(true);
   map = game.add.tilemap('testMap');
@@ -135,6 +141,10 @@ function create() {
   map.createFromTiles([1, 2, 4, 5, 7], null, 'wall', backgroundOL, specialTile);
   map.createFromTiles([8], null, 'cantmove', backgroundOL, rangeTile);
   game.physics.arcade.enable(tileGroup);
+
+  moveRange = game.add.image(0, 0, 'horseman_range');
+  moveRange.anchor.setTo(0.465, 0.465);
+
   mover = game.add.tileSprite(20, 20, 48, 48, 'movetile', 1);
   mover.animations.add('redden', [0, 1], 3, false);
   mover.inputEnabled = true;
@@ -422,6 +432,7 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
 function playerTurn (i) {
     unit = allUnits[i];
+
     console.log(currentPlayer);
     console.log('group is: ' + currentGroup);
     makeUnitBar(unit);
@@ -431,6 +442,20 @@ function playerTurn (i) {
     currentGroup = unit.parent.name
     mover.x = unit.x;
     mover.y = unit.y;
+    moveRange.x = unit.x;
+    moveRange.y = unit.y
+    if (unit.unit.constructor.name === 'Horseman') {
+      moveRange.loadTexture('horseman_range');
+    }
+    if (unit.unit.constructor.name === 'Footman') {
+      moveRange.loadTexture('footman_range');
+    }
+    if (unit.unit.constructor.name === 'Archer') {
+      moveRange.loadTexture('archer_range');
+    }
+    if (unit.unit.constructor.name === 'Armored') {
+      moveRange.loadTexture('armored_range');
+    }
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
     limitY = unit.y;
@@ -448,7 +473,7 @@ function playerTurnComputer (i) {
 
 function movePlayer(tile, sprite) {
   unitCollision(tile);
-  // unit.unit.rangeTileCheck();
+  unit.unit.rangeTileCheck();
   if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
