@@ -185,6 +185,18 @@ body {
   padding-bottom: 5px;
 
 
+
+}
+
+  @media (max-width: 1452px) {
+
+    .chat-container {
+
+      display: none;
+
+  }
+
+
 }
 
 * {

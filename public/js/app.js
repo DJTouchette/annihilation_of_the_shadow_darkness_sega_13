@@ -20,6 +20,12 @@ var unitColliding;
 var specialTile;
 var inGrass;
 var rangeTile;
+var currentGroup;
+var currentPlayer;
+///Test///
+var endGame;
+var redWins;
+var blueWins;
 var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.png'}, {position: 'bottomLeft', path: 'assets/border/bottom_left.png'},
  {position: 'bottomRight', path: 'assets/border/bottom_right.png'},
  {position: 'topRight', path: 'assets/border/top_right.png'},
@@ -31,7 +37,6 @@ var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.pn
  {position: 'end', path: 'assets/end-turn.png'},
  {position: 'endGlow', path: 'assets/End-glow.png'}
  ];
-
 var hpBarTop;
 var barConfigTop = {
   width: 100,
@@ -63,10 +68,12 @@ function preload() {
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
   game.load.image('menu', 'assets/background_image.png');
+  game.load.image('victory', 'assets/victory.png');
+  game.load.image('defeat', 'assets/defeat.png');
 ////////////////////////////////////////////////////////
 //Units///////////////////////////////////////////////////
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
-  game.load.atlasJSONHash('camus', 'assets/units/red.png', 'assets/units/red.json');
+  game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
   game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
 //////////////////////////////////////////////////////////
 //Tiles///////////////////////////////////////////////////
@@ -81,7 +88,7 @@ function preload() {
   game.load.atlasJSONHash('soldier', 'assets/units/soldier.png', 'assets/units/soldier.json');
   game.load.atlasJSONHash('camus', 'assets/units/camus.png', 'assets/units/camus.json');
   game.load.atlasJSONHash('cavalry', 'assets/units/cavalry.png', 'assets/units/cavalry.json');
-  game.load.spritesheet('grave', 'assets/units/grave.png', 46, 46);
+  game.load.image('grave', 'assets/units/grave.png', 46, 46);
 //////////////////////////////////////////////////////////
 
 
@@ -90,6 +97,7 @@ function preload() {
 //////////////////////////////////////////////////////////
 //Menu///////////////////////////////////////////////////
   game.load.spritesheet('title', 'assets/title.png');
+  game.load.image('waiting', 'assets/waiting.png');
   // Loads all border assets (/public/js/hud/border.js)
   loadBorder(spritesBorder);
   // Loads Unit frame assets (/public/js/hud/units.js)
@@ -105,7 +113,6 @@ function preload() {
 function create() {
   //Variables
   var graphics;
-
 // MUSIC START////////////////////////////////////
   // music = game.add.audio('battle');
   // music.play();
@@ -131,6 +138,7 @@ function create() {
   mover = game.add.tileSprite(20, 20, 48, 48, 'movetile', 1);
   mover.animations.add('redden', [0, 1], 3, false);
   mover.inputEnabled = true;
+  mover.input.priorityID = 1;
   mover.input.enableDrag(true);
   mover.input.enableSnap(48, 48, true, true);
   // mover.events.onDragStart.add(unit.unit.tileCheck, unit.unit);
@@ -142,6 +150,8 @@ function create() {
   bottomSide.name = 'bottomside';
   topSide = game.add.group();
   topSide.name = 'topside';
+  topSide.player = 2;
+  bottomSide.player = 1;
 
   createMoraleBars();
 
@@ -154,13 +164,14 @@ createSide(144, 48, topSide, 'camus', 10);
 sortUnits();
 playerTurn(turn);
 
+
 //Create Functions CALLED////////////////////
 
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function update(endBtn){
+function update(){
   if (turnSwitch) {
     // mover.kill();
     allUnits[turn].unit.tileCheck();
@@ -173,6 +184,47 @@ function update(endBtn){
     }
     playerTurn(turn);
   }
+
+  // switch (endGame) {
+  //   case "red":
+  //     if (allUnits[turn].parent.name === 'topside') {
+  //       victoryScreen();
+  //       window.socket.emit('defeat');
+  //     } else {
+  //       defeatScreen();
+  //       window.socket.emit('victory');
+  //     }
+  //     break;
+  //   case "blue":
+  //     if (allUnits[turn].parent.name === 'bottomside') {
+  //       victorScreen();
+  //       window.socket.emit('defeat');
+  //     } else {
+  //       defeatScreen();
+  //       window.socket.emit('victory');
+  //     }
+  //   break;
+
+  // }
+  // if (allUnits[turn].unit.dead === true){
+  //   turnSwitch = true;
+  // }
+
+  if (blueWins && currentGroup === 'bottomside') {
+    victoryScreen();
+    window.socket.emit('defeat');
+  } else if (blueWins && currentGroup === 'topside') {
+    defeatScreen();
+    window.socket.emit('victory');
+  }
+  if (redWins && currentGroup === 'topside') {
+    victoryScreen();
+    window.socket.emit('defeat');
+  } else if (redWins && currentGroup === 'bottomside') {
+    defeatScreen();
+    window.socket.emit('victory');
+  }
+
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -294,6 +346,8 @@ function damageMorale(group, enemyTroops){
     if(startingMoraleBottom >= 100){
       startingMoraleBottom = 100;
       console.log("Blue wins");
+      // window.socket.emit("bottomWins");
+      blueWins = true;
     }
     hpBarTop.setPercent(startingMoraleUp);
     console.log("after bottom attacked, up morale now:", startingMoraleUp);
@@ -313,6 +367,8 @@ function damageMorale(group, enemyTroops){
     if(startingMoraleUp >= 100){
       startingMoraleUp = 100;
       console.log("Red wins");
+      // window.socket.emit("topWins");
+      redWins = true;
     }
     hpBarTop.setPercent(startingMoraleUp);
     console.log("after up attacked, bottom morale now:", startingMoraleBottom);
@@ -368,14 +424,16 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 ///Move Functions//////////////////////////////////////////////////////
 
 function playerTurn (i) {
-
     unit = allUnits[i];
-    if (unit.unit.dead === true){
+    makeUnitBar(unit);
+    if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
     }
-    makeUnitBar(unit);
+
     mover.x = unit.x;
     mover.y = unit.y;
+    window.socket.emit('groupTurn', unit.parent.name );
+    window.socket.emit('tileMoved', [mover.x, mover.y, i]);
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
     limitY = unit.y;
@@ -393,8 +451,9 @@ function playerTurnComputer (i) {
 
 function movePlayer(tile, sprite) {
   unitCollision(tile);
+  // socket.emit('tileMoved', tile);
   // unit.unit.rangeTileCheck();
-  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= unit.unit.spd ) && !tileCollision(tile) && (unitColliding === false)) {
+  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
     unit.unit.x = unit.x;
@@ -404,17 +463,20 @@ function movePlayer(tile, sprite) {
     targetUnit = false;
   } else {
     if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= unit.unit.rng )) {
-      if (targetUnit.parent !== unit.parent) {
+      if (targetUnit.parent.name !== unit.parent.name) {
         canAttack = true;
         unit.unit.attack(targetUnit.unit);
-        setBarPercent(game, targetUnit, targetUnit.unit.troops);
+        if (!targetUnit.unit.dead) {
+          setBarPercent(game, targetUnit, targetUnit.unit.troops);
+        }
         damageMorale(unit.parent, targetUnit.unit.troops);
         window.socket.emit('moraleChange', [unit.unit.index, targetUnit.unit.troops]  );
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
         // console.log('target unit :', targetUnit);
         // console.log('target troops:', targetUnit.unit.troops)
-        damageMorale(unit.parent, targetUnit.unit.troops);
+        // damageMorale(unit.parent, targetUnit.unit.troops);
         tile.animations.play('redden');
+
         turnSwitch = true;
       } else {
       tile.animations.play('redden');
@@ -490,9 +552,32 @@ function mainMenu () {
   menu.events.onInputDown.add(startGame, this);
 }
 
+function victoryScreen() {
+  // hpBarTop.kill();
+  mover.kill();
+  winScreen = game.add.image(0, 0, 'victory');
+  winScreen.inputEnabled = true;
+  winScreen.events.onInputDown.add(restartGame, this);
+}
+
+function defeatScreen() {
+  // hpBarTop.destroy();
+  mover.kill();
+  loseScreen = game.add.image(0, 0, 'defeat');
+  loseScreen.inputEnabled = true;
+  loseScreen.events.onInputDown.add(restartGame, this);
+}
+
 function startGame() {
+
   menu.destroy();
   createMoraleBars();
   playerTurn(turn);
+  window.socket.emit('startGame');
+
+}
+
+function restartGame() {
+  window.location.reload(false);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
