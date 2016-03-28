@@ -181,6 +181,8 @@ playerTurn(turn);
 function update(endBtn){
   if (turnSwitch) {
     // mover.kill();
+    endBtn.inputEnabled = true;
+    mover.inputEnabled = true;
     allUnits[turn].unit.tileCheck();
     allUnits[turn].unit.moraleBuff();
     turnSwitch = false;
@@ -188,6 +190,9 @@ function update(endBtn){
       turn += 1;
     } else if (turn === 19) {
       turn = 0;
+    }
+    if (allUnits[turn].parent.name === currentGroup) {
+      window.socket.emit('disableOther', currentGroup);
     }
     playerTurn(turn);
   }
@@ -432,7 +437,7 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
 function playerTurn (i) {
     unit = allUnits[i];
-
+    currentPlayer = window.socket.user
     console.log(currentPlayer);
     console.log('group is: ' + currentGroup);
     makeUnitBar(unit);
@@ -474,7 +479,7 @@ function playerTurnComputer (i) {
 function movePlayer(tile, sprite) {
   unitCollision(tile);
   unit.unit.rangeTileCheck();
-  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false)) {
+  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false) && !unitPathing(tile)) {
     unit.x = tile.x;
     unit.y = tile.y;
     unit.unit.x = unit.x;
@@ -512,6 +517,7 @@ function movePlayer(tile, sprite) {
     }
 
   }
+  console.log(unitPathing);
 }
 
 
@@ -550,7 +556,15 @@ function unitSpecialTile(unit) {
   }
 }
 
-
+function unitPathing(tile) {
+  for (var i = 0; i < rangeTile.children.length; i++) {
+    var a = mover.getBounds();
+    var b = rangeTile.children[i].getBounds();
+    if (Phaser.Rectangle.intersects(a, b) && limitY <= rangeTile.children[i].y) {
+      return true;
+    }
+  }
+}
 
 function unitRangeTile(unit) {
   if (unit.unit.constructor.name === 'Archer') {

@@ -131,5 +131,5 @@ function click() {
   console.log('Current Group: ', currentGroup);
   console.log('clicked');
   turnSwitch = true;
-  window.socket.emit('endTurn', currentGroup);
+  // window.socket.emit('endTurn', currentGroup);
 }

@@ -101,6 +101,13 @@ app.get('/', function(req, res){
 
     });
 
+    socket.on('disableOther', function(currentGroup){
+
+      currentPlayer = socket.user;
+      socket.in('game').emit('lockInput', currentPlayer, currentGroup);
+
+    });
+
   });
 
 

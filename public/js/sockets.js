@@ -18,6 +18,17 @@ socket.on('turnChange', function (currentPlayer, currentGroup) {
     }
 });
 
+socket.on('lockInput', function(currentGroup, currentPlayer) {
+  if (currentPlayer === 1 && currentGroup === 'bottomside') {
+    endBtn.inputEnabled = false;
+    mover.inputEnabled = false;
+  } else if (currentPlayer === 2 && currentGroup === 'topside') {
+    endBit.inputEnabled = false;
+    mover.inputEnabled = false;
+  }
+  turnSwitch = true;
+});
+
 socket.on('waiting', function () {
 
   var msg = waiting();
