@@ -1,13 +1,11 @@
 //The graphic to change the bar to represent the troop value
 function setBarPercent(game, sprite, troopCount){
   if(troopCount <= 0) {
-    // sprite.unit.troops = 0;
-    // setBarIndividual(game, 0, getGraph);
+    sprite.unit.troops = 0;
     sprite.removeChildAt(0);
-    sprite.loadTexture('grave');
     sprite.unit.dead = true;
-    // mover.dragEnabled = true;
-
+    game.add.sprite(sprite.x, sprite.y, 'grave')    
+    sprite.kill();
   } else {
     newWidth = (troopCount / 100);
     getGraph = sprite.getChildAt(0);

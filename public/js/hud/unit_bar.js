@@ -15,7 +15,6 @@ function makeUnitBar (unit) {
 
 function endTurn (cb) {
   var endBtn = game.add.sprite(808, 545, 'end');
-  if (cb === 'play'){
     endBtn.inputEnabled = true;
     endBtn.scale.setTo(1.3);
     endBtn.inputEnabled = true;
@@ -24,13 +23,6 @@ function endTurn (cb) {
     endBtn.events.onInputOut.add(function () {out (endBtn);}, this);
     // Make button clickable add(this.function, this)
     endBtn.events.onInputDown.add(click);
-    console.log('Enabled');
-  }else{
-    endBtn.loadTexture('waiting');
-    console.log('Disabled');
-  }
-
-
 }
 
 function waiting () {

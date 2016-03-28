@@ -160,7 +160,7 @@ playerTurn(turn);
 }
 
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function update(endBtn){
+function update(){
   if (turnSwitch) {
     // mover.kill();
     allUnits[turn].unit.tileCheck();
@@ -172,6 +172,8 @@ function update(endBtn){
       turn = 0;
     }
     playerTurn(turn);
+    window.socket.emit('change', currentGroup);
+    console.log('At the end of Update: ', currentGroup)
   }
 
   // switch (endGame) {
@@ -233,7 +235,7 @@ function createSide(x, y, group, sprite, frame_pos) {
     soldier = group.create((144 + x) + (48 * i), y, sprite);
     soldier.unit = new Footman();
     soldier.unit.dead = false;
-    soldier.animations.add('attack', [0, 1, 2], 10)
+    soldier.animations.add('attack', [0, 1, 2, 0], 4)
     soldier.anchor.setTo(-0.3, 0);
     soldier.scale.setTo(0.8, 0.8);
     soldier.tint = 0xFC001D;
@@ -241,14 +243,14 @@ function createSide(x, y, group, sprite, frame_pos) {
       soldier.tint = 0x7FA5FD;
     }
     soldier.inputEnabled = true;
-    createTroopBar(soldier);
+    createTroopBar(soldier, 46, 10, 1, -11);
     allUnits.push(soldier);
   }
   for (var j = 0; j < 2; j++) {
     archer = group.create((x + 96) + (j * 240), y, sprite);
     archer.unit = new Archer();
     archer.unit.dead = false;
-    archer.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 9], 10);
+    archer.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0], 3);
     archer.anchor.setTo(-0.3, -0.2);
     archer.scale.setTo(0.8, 0.8);
     archer.tint = 0xFC001D;
@@ -257,14 +259,14 @@ function createSide(x, y, group, sprite, frame_pos) {
       archer.tint = 0x7FA5FD;
     }
     archer.inputEnabled = true;
-    createTroopBar(archer);
+    createTroopBar(archer, 46, 10, 1, -11);
     allUnits.push(archer);
   }
   for (var f = 0; f < 2; f++) {
     armored = group.create((48 + x) + (f * 336), y, sprite);
     armored.unit = new Armored();
     armored.unit.dead = false;
-    armored.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0], 10)
+    armored.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0], 5)
     armored.anchor.setTo(-0.25, 0);
     armored.scale.setTo(0.5, 0.5);
     armored.tint = 0xFC001D;
@@ -273,14 +275,14 @@ function createSide(x, y, group, sprite, frame_pos) {
       armored.tint = 0x7FA5FD;
     }
     armored.inputEnabled = true;
-    createTroopBar(armored);
+    createTroopBar(armored, 80, 15, 2, -18);
     allUnits.push(armored);
   }
   for (var e = 0; e < 2; e++) {
     horseman = group.create(x + (e * 432), y, sprite);
     horseman.unit = new Horseman();
     horseman.unit.dead = false;
-    horseman.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0], 10)
+    horseman.animations.add('attack', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0], 4)
     horseman.anchor.setTo(0, 0);
     horseman.scale.setTo(0.4, 0.4)
     horseman.tint = 0xFC001D;
@@ -289,7 +291,7 @@ function createSide(x, y, group, sprite, frame_pos) {
       horseman.tint = 0x7FA5FD;
     }
     horseman.inputEnabled = true;
-    createTroopBar(horseman);
+    createTroopBar(horseman, 100, 20, 2, -21);
     allUnits.push(horseman);
   }
 }
@@ -324,10 +326,10 @@ function createMoraleBars(){
   // hpBarBottom.setFixedToCamera(true);
 }
 
-function createTroopBar(sprite){
-  graphics = this.game.add.graphics(1, -11);
+function createTroopBar(sprite, width, height, positionx, positiony){
+  graphics = this.game.add.graphics(positionx, positiony);
   graphics.beginFill(0X00FF00);
-  graphics.drawRect(0, 0, 46, 10);
+  graphics.drawRect(0, 0, width, height);
   sprite.addChild(graphics);
 }
 
@@ -342,7 +344,6 @@ function damageMorale(group, enemyTroops){
   // more enemyTroops means more morale change
   var moraleCalculation = ((100 - enemyTroops) / 100) * unitLife;
   console.log("Enemy troops morale change:", moraleCalculation);
-
   if(group.name == "bottomside"){
     // bottomside attacks topside
     // change bar, bottom side should increase
@@ -437,8 +438,7 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
 function playerTurn (i) {
     unit = allUnits[i];
-    console.log(currentPlayer);
-    console.log('group is: ' + currentGroup);
+    console.log('Inside Player Turn group is: ' + currentGroup);
     makeUnitBar(unit);
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
@@ -462,6 +462,7 @@ function playerTurnComputer (i) {
 
 
 function movePlayer(tile, sprite) {
+  window.socket.emit('PlayerMoved', currentGroup)
   unitCollision(tile);
   // unit.unit.rangeTileCheck();
   if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false)) {
@@ -476,6 +477,7 @@ function movePlayer(tile, sprite) {
     if ((unitColliding === true) && (Math.abs(Math.floor(unit.x / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(unit.y / 48) - background.getTileY(tile.y)) <= unit.unit.rng )) {
       if (targetUnit.parent.name !== unit.parent.name) {
         canAttack = true;
+        unit.animations.play('attack');
         unit.unit.attack(targetUnit.unit);
         if (!targetUnit.unit.dead) {
           setBarPercent(game, targetUnit, targetUnit.unit.troops);
@@ -496,7 +498,6 @@ function movePlayer(tile, sprite) {
     } else {
       targetUnit = false;
       tile.animations.play('redden');
-      unit.animations.play('attack');
       tile.x = unit.x;
       tile.y = unit.y;
 

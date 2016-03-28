@@ -102,6 +102,19 @@ app.get('/', function(req, res){
 
     });
 
+    socket.on('PlayerMoved', function(group){
+      socket.in('game').emit('newGroup', group);
+      console.log('In PlayerMoved the group is:', group);
+    });
+
+    socket.on('currentGroup', function(group){
+      socket.in('game').emit('group', group);
+    })
+
+    socket.on('change', function(group){
+      socket.in('game').emit('groupNow', group);
+    })
+
   });
 
 
