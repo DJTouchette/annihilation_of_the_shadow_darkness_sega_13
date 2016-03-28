@@ -123,7 +123,7 @@ function create() {
   // music.play();
 // MUSIC END//////////////////////////////////////
 //MAP START///////////////////////////////////////
-  
+
   game.physics.startSystem(Phaser.Physics.P2JS);
   game.physics.p2.setImpactEvents(true);
   map = game.add.tilemap('testMap');
@@ -435,12 +435,6 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
 function playerTurn (i) {
     unit = allUnits[i];
-<<<<<<< HEAD
-=======
-
-    console.log(currentPlayer);
-    console.log('group is: ' + currentGroup);
->>>>>>> 3b5b3472dfbc4ace91a227566abab89316048087
     makeUnitBar(unit);
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
@@ -448,10 +442,10 @@ function playerTurn (i) {
 
     mover.x = unit.x;
     mover.y = unit.y;
-<<<<<<< HEAD
+
     window.socket.emit('groupTurn', unit.parent.name );
     window.socket.emit('tileMoved', [mover.x, mover.y, i]);
-=======
+
     moveRange.x = unit.x;
     moveRange.y = unit.y
     if (unit.unit.constructor.name === 'Horseman') {
@@ -466,7 +460,6 @@ function playerTurn (i) {
     if (unit.unit.constructor.name === 'Armored') {
       moveRange.loadTexture('armored_range');
     }
->>>>>>> 3b5b3472dfbc4ace91a227566abab89316048087
     // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
     limitY = unit.y;
@@ -484,12 +477,8 @@ function playerTurnComputer (i) {
 
 function movePlayer(tile, sprite) {
   unitCollision(tile);
-<<<<<<< HEAD
-  // socket.emit('tileMoved', tile);
-  // unit.unit.rangeTileCheck();
-=======
   unit.unit.rangeTileCheck();
->>>>>>> 3b5b3472dfbc4ace91a227566abab89316048087
+
   if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false)) {
     unit.x = tile.x;
     unit.y = tile.y;
