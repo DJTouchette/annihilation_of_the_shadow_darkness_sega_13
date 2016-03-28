@@ -1,4 +1,4 @@
-// var socket = io();
+
 
 function makeUnitBar (unit, moraleUp, moraleBottom) {
 
@@ -8,21 +8,33 @@ function makeUnitBar (unit, moraleUp, moraleBottom) {
   makeSecondFrame(terrain(unit, moraleUp, moraleBottom));
   title();
 
-  // console.log("i ran");
-  // socket.emit('bottomSide');
-
 }
 
-function endTurn (cb) {
-  var endBtn = game.add.sprite(808, 545, 'end');
-    endBtn.inputEnabled = true;
-    endBtn.scale.setTo(1.3);
-    endBtn.inputEnabled = true;
-    endBtn.input.useHandCursor = true;
-    endBtn.events.onInputOver.add(function () {over (endBtn);}, this);
-    endBtn.events.onInputOut.add(function () {out (endBtn);}, this);
-    // Make button clickable add(this.function, this)
-    endBtn.events.onInputDown.add(click);
+
+function endTurn () {
+
+  var endBtn = game.add.sprite(829, 550, 'end');
+  endBtn.scale.setTo(0.9);
+  endBtn.inputEnabled = true;
+  endBtn.input.useHandCursor = true;
+  endBtn.events.onInputDown.add(click);
+
+}
+//**
+function disableBtn () {
+
+  endBtn.loadTexture('waiting');
+  endBtn.inputEnabled = false;
+  endBtn.input.useHandCursor = false;
+
+}
+//**
+function enableBtn() {
+
+  endBtn.loadTexture('end');
+  endBtn.inputEnabled = true;
+  endBtn.input.useHandCursor = true;
+
 }
 
 function waiting () {
@@ -44,7 +56,6 @@ function title () {
 }
 
 function unitStats (unit) {
-// debugger;
 var styleTitle = { font: "18px Arial", fill: "#ffffff" };
 
 if (unit.unit.constructor.name === 'Footman' || unit.unit.constructor.name === 'Horseman' || unit.unit.constructor.name === 'Armored' ) {
@@ -88,13 +99,9 @@ function terrain (unit,  moraleUp, moraleBottom) {
 
   var headerTxt = game.add.text(865, 248, 'Stat Changes', styleHeader);
 
-  // var title = game.add.text(890, 310, 'oponent', styleTitle);
-
   var styleUnit = { font: "15px Indie", fill: "#FFFB00" };
 
   var position = [340, 370, 400, 430];
-
-
 
   game.add.text(840, position[0], 'Grass', styleUnit);
   game.add.text(935, position[0], unit.unit.tile, styleUnit);
@@ -124,12 +131,11 @@ function out (endBtn) {
 
   endBtn.loadTexture('end');
 
-
 }
 
 function click() {
-  console.log('Current Group: ', currentGroup);
-  console.log('clicked');
+ 
   turnSwitch = true;
-  window.socket.emit('endTurn', currentGroup);
+  window.socket.emit('flickTheSwitch');
+
 }

@@ -11,7 +11,7 @@ app.get('/', function(req, res){
   res.sendfile('views/index.html');
 });
 
-  io.on('connection', function(socket){
+io.on('connection', function(socket){
     id += 1;
 
     console.log(user.length);
@@ -20,34 +20,26 @@ app.get('/', function(req, res){
       socket.user = id;
       user.push(socket.user);
       socket.join('game');
-      if (id > 1){
-        socket.in('game').emit('turnChange', id, 'topside');
-      }
       console.log('a user connected' + ' ' + 'Id:' + ' ' + socket.user);
     } else {
+
       socket.disconnect(socket);
       console.log('fuck off');
+
     }
 
     socket.on('disconnect', function(msg){
+
       console.log('user disconnected');
+
     });
 
     socket.on('pop', function() {
 
-      // socket.broadcast.emit("SOMEONE_POPPED");
       socket.in('game').emit('SOMEONE_POPPED');
       console.log("haaaay");
 
     });
-
-    socket.on('endTurn', function (currentGroup) {
-      console.log('endTurn started by User ' + socket.user)
-      currentPlayer = socket.user
-      socket.in('game').emit('turnChange', currentPlayer, currentGroup);
-
-    });
-
 
     socket.on('spriteMoved', function (unit) {
 
@@ -63,10 +55,11 @@ app.get('/', function(req, res){
     });
 
     socket.on('checkUser', function() {
-      console.log('USER IS: ' + socket.user);
-      socket.in('game').emit('thisUser', socket.user)
+
+      socket.in('game').emit('thisUser', socket.user);
+
     });
-    
+
     socket.on('victory', function() {
 
       socket.in('game').emit('win');
@@ -82,7 +75,6 @@ app.get('/', function(req, res){
     socket.on('barChange', function (params) {
 
       socket.in('game').emit('setBar', params);
-      console.log(params);
 
     });
 
@@ -102,20 +94,48 @@ app.get('/', function(req, res){
 
     });
 
-    socket.on('PlayerMoved', function(group){
-      socket.in('game').emit('newGroup', group);
-      console.log('In PlayerMoved the group is:', group);
+    socket.on('startGame', function () {
+
+      if (socket.user === 1) {
+
+        socket.emit('user1');
+
+      }
+
+      if (socket.user === 2) {
+
+        socket.emit('user2');
+
+      }
+
     });
 
-    socket.on('currentGroup', function(group){
-      socket.in('game').emit('group', group);
-    })
+    socket.on('groupTurn', function (group) {
+
+      socket.in('game').emit('groupIs', [group, socket.user]);
+
+    });
+
 
     socket.on('change', function(group){
-      socket.in('game').emit('groupNow', group);
-    })
+
+    socket.in('game').emit('groupNow', group);
 
   });
+
+  socket.on('switchIt', function () {
+
+    socket.in('game').emit('turnIt');
+
+  });
+
+  socket.on('flickTheSwitch', function () {
+
+    socket.in('game').emit('turnIt');
+
+  });
+
+});
 
 
 

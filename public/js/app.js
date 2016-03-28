@@ -24,10 +24,13 @@ var inGrass;
 var rangeTile;
 var currentGroup;
 var currentPlayer;
+var moveRange;
 ///Test///
 var endGame;
 var redWins;
 var blueWins;
+var turnCount = 0;
+var sideSwitch = true;
 var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.png'}, {position: 'bottomLeft', path: 'assets/border/bottom_left.png'},
  {position: 'bottomRight', path: 'assets/border/bottom_right.png'},
  {position: 'topRight', path: 'assets/border/top_right.png'},
@@ -69,6 +72,10 @@ function preload() {
 //Map///////////////////////////////////////////////////
   game.load.tilemap('testMap', 'assets/testmap.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('test_map', 'assets/test_map.png');
+  game.load.image('horseman_range', 'assets/horseman_range.png');
+  game.load.image('footman_range', 'assets/footman_range.png');
+  game.load.image('archer_range', 'assets/archer_range.png');
+  game.load.image('armored_range', 'assets/armored_range.png');
   game.load.image('menu', 'assets/background_image.png');
   game.load.image('victory', 'assets/victory.png');
   game.load.image('defeat', 'assets/defeat.png');
@@ -94,13 +101,13 @@ function preload() {
 //////////////////////////////////////////////////////////
 //Menu///////////////////////////////////////////////////
   game.load.spritesheet('title', 'assets/title.png');
-  game.load.image('waiting', 'assets/waiting.png')
+  game.load.image('waiting', 'assets/waiting.png');
   // Loads all border assets (/public/js/hud/border.js)
   loadBorder(spritesBorder);
   // Loads Unit frame assets (/public/js/hud/units.js)
   loadUnitFrame();
   //Loads start round btn (/public/js/hud/startrnd.js)
-  loadBtn();
+  // loadBtn();
 //////////////////////////////////////////////////////////
 //PRELOAD END//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -115,6 +122,7 @@ function create() {
   music.play();
 // MUSIC END//////////////////////////////////////
 //MAP START///////////////////////////////////////
+
   game.physics.startSystem(Phaser.Physics.P2JS);
   game.physics.p2.setImpactEvents(true);
   map = game.add.tilemap('testMap');
@@ -132,6 +140,10 @@ function create() {
   map.createFromTiles([1, 2, 4, 5, 7], null, 'wall', backgroundOL, specialTile);
   map.createFromTiles([8], null, 'cantmove', backgroundOL, rangeTile);
   game.physics.arcade.enable(tileGroup);
+
+  moveRange = game.add.image(0, 0, 'horseman_range');
+  moveRange.anchor.setTo(0.465, 0.465);
+
   mover = game.add.tileSprite(20, 20, 48, 48, 'movetile', 1);
   mover.animations.add('redden', [0, 1], 3, false);
   mover.inputEnabled = true;
@@ -147,6 +159,8 @@ function create() {
   bottomSide.name = 'bottomside';
   topSide = game.add.group();
   topSide.name = 'topside';
+  topSide.player = 2;
+  bottomSide.player = 1;
 
   createMoraleBars();
 
@@ -157,6 +171,7 @@ createSide(144, 528, bottomSide, 'footman', 6);
 createSide(144, 48, topSide, 'footman', 7);
 sortUnits();
 playerTurn(turn);
+
 
 //Create Functions CALLED////////////////////
 
@@ -184,35 +199,12 @@ function update(){
     } else if (turn === 19) {
       turn = 0;
     }
+    if (allUnits[turn].parent.name === currentGroup) {
+      window.socket.emit('disableOther', currentGroup);
+    }
     playerTurn(turn);
-    window.socket.emit('change', currentGroup);
-    console.log('At the end of Update: ', currentGroup)
+    turnCount += 1;
   }
-
-  // switch (endGame) {
-  //   case "red":
-  //     if (allUnits[turn].parent.name === 'topside') {
-  //       victoryScreen();
-  //       window.socket.emit('defeat');
-  //     } else {
-  //       defeatScreen();
-  //       window.socket.emit('victory');
-  //     }
-  //     break;
-  //   case "blue":
-  //     if (allUnits[turn].parent.name === 'bottomside') {
-  //       victorScreen();
-  //       window.socket.emit('defeat');
-  //     } else {
-  //       defeatScreen();
-  //       window.socket.emit('victory');
-  //     }
-  //   break;
-    
-  // }
-  // if (allUnits[turn].unit.dead === true){
-  //   turnSwitch = true;
-  // }
 
   if (blueWins && currentGroup === 'bottomside') {
     victoryScreen();
@@ -345,9 +337,6 @@ function createMoraleBars(){
   hpBarTop.setFixedToCamera(true);
   // Set the push and pull morale bar in 50% (start from the middle)
   hpBarTop.setPercent(50);
-  // hpBarTop.bringToTop();brings to top but erases the menu
-  // hpBarBottom = new HealthBar(this.game, barConfigBottom);
-  // hpBarBottom.setFixedToCamera(true);
 }
 
 function createTroopBar(sprite, width, height, positionx, positiony){
@@ -462,14 +451,34 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
 function playerTurn (i) {
     unit = allUnits[i];
-    console.log('Inside Player Turn group is: ' + currentGroup);
+    currentGroup = unit.parent.name;
     makeUnitBar(unit, startingMoraleUp, startingMoraleBottom);
+
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
     }
-    currentGroup = unit.parent.name
+
     mover.x = unit.x;
     mover.y = unit.y;
+
+    window.socket.emit('groupTurn', unit.parent.name );
+    window.socket.emit('tileMoved', [mover.x, mover.y, i]);
+
+    moveRange.x = unit.x;
+    moveRange.y = unit.y;
+    if (unit.unit.constructor.name === 'Horseman') {
+      moveRange.loadTexture('horseman_range');
+    }
+    if (unit.unit.constructor.name === 'Footman') {
+      moveRange.loadTexture('footman_range');
+    }
+    if (unit.unit.constructor.name === 'Archer') {
+      moveRange.loadTexture('archer_range');
+    }
+    if (unit.unit.constructor.name === 'Armored') {
+      moveRange.loadTexture('armored_range');
+    }
+
     limitX = unit.x;
     limitY = unit.y;
 }
@@ -485,8 +494,9 @@ function playerTurnComputer (i) {
 function movePlayer(tile, sprite) {
   window.socket.emit('PlayerMoved', currentGroup)
   unitCollision(tile);
-  // unit.unit.rangeTileCheck();
-  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false)) {
+  unit.unit.rangeTileCheck();
+
+  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false) && !unitPathing(tile)) {
     unit.x = tile.x;
     unit.y = tile.y;
     unit.unit.x = unit.x;
@@ -506,12 +516,10 @@ function movePlayer(tile, sprite) {
         damageMorale(unit.parent, targetUnit.unit.troops);
         window.socket.emit('moraleChange', [unit.unit.index, targetUnit.unit.troops]  );
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
-        // console.log('target unit :', targetUnit);
-        // console.log('target troops:', targetUnit.unit.troops)
-        // damageMorale(unit.parent, targetUnit.unit.troops);
         tile.animations.play('redden');
 
         turnSwitch = true;
+        window.socket.emit('flickTheSwitch');
       } else {
       tile.animations.play('redden');
       targetUnit = false;
@@ -525,6 +533,7 @@ function movePlayer(tile, sprite) {
     }
 
   }
+  console.log(unitPathing);
 }
 
 
@@ -563,7 +572,15 @@ function unitSpecialTile(unit) {
   }
 }
 
-
+function unitPathing(tile) {
+  for (var i = 0; i < rangeTile.children.length; i++) {
+    var a = mover.getBounds();
+    var b = rangeTile.children[i].getBounds();
+    if (Phaser.Rectangle.intersects(a, b) && limitY <= rangeTile.children[i].y) {
+      return true;
+    }
+  }
+}
 
 function unitRangeTile(unit) {
   if (unit.unit.constructor.name === 'Archer') {
@@ -584,10 +601,11 @@ function mainMenu () {
   menu = game.add.image(0, 0, 'menu');
   menu.inputEnabled = true;
   menu.events.onInputDown.add(startGame, this);
+  window.socket.emit('startGame');
+
 }
 
 function victoryScreen() {
-  // hpBarTop.kill();
   mover.kill();
   winScreen = game.add.image(0, 0, 'victory');
   winScreen.inputEnabled = true;
@@ -595,7 +613,6 @@ function victoryScreen() {
 }
 
 function defeatScreen() {
-  // hpBarTop.destroy();
   mover.kill();
   loseScreen = game.add.image(0, 0, 'defeat');
   loseScreen.inputEnabled = true;
@@ -603,9 +620,12 @@ function defeatScreen() {
 }
 
 function startGame() {
+
   menu.destroy();
   createMoraleBars();
   playerTurn(turn);
+  window.socket.emit('startGame');
+
 }
 
 function restartGame() {

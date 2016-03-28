@@ -1,8 +1,11 @@
 body {
 
   padding-top: 200px;
-  background: url("/assets/background.jpg");
-  background-size: 100%;
+  background: url("/assets/background.jpg") no-repeat 50% 50% fixed;
+  background-size: cover;
+ -moz-background-size: cover;
+ -o-background-size: cover;
+ -webkit-background-size: cover;
 
 }
 
@@ -116,6 +119,16 @@ body {
           justify-content: right;
 
   /*margin 0 auto;*/
+
+}
+
+@media (max-width: 1452px) {
+
+  .chat-container {
+
+    display: none;
+
+  }
 
 }
 

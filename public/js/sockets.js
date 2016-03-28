@@ -2,27 +2,21 @@ var socket = io();
 
 socket.on('turnChange', function (currentPlayer, currentGroup) {
 
-    updateUnit = [];
-    // console.log('turnChange started by User ' + currentPlayer)
-    // console.log('Current Group is :' + currentGroup)
-    // if (currentPlayer === 1 && currentGroup === 'bottomside'){
-    //   endTurn('play');
-    // }else if (currentPlayer === 1 && currentGroup === 'topside'){
-    //   endTurn();
-    // }else if(currentPlayer === 2 && currentGroup === 'topside'){
-    //   endTurn('play');
-    // }
-    // else if (currentPlayer === 2 && currentGroup === 'bottomside'){
-    //   endTurn();
-    // }
+  endTurn();
+  updateUnit = [];
+
 });
 
-socket.on('groupNow', function(group){
-  if (group != currentGroup){
-    console.log('It Works!');
-    turnSwitch = true;
+socket.on('lockInput', function(currentGroup, currentPlayer) {
+  if (currentPlayer === 1 && currentGroup === 'bottomside') {
+    endBtn.inputEnabled = false;
+    mover.inputEnabled = false;
+  } else if (currentPlayer === 2 && currentGroup === 'topside') {
+    endBit.inputEnabled = false;
+    mover.inputEnabled = false;
   }
-})
+  turnSwitch = true;
+});
 
 socket.on('waiting', function () {
 
@@ -44,20 +38,14 @@ socket.on('lose', function(){
 });
 
 socket.on ('spriteClass', function (unit) {
-  var UnitArr = allUnits[unit.index];
-  // unit.index = unit.index -1;
-  // console.log('this is turn:' + turn);
-  console.log(unit);
 
+  var UnitArr = allUnits[unit.index];
   UnitArr.x = unit.x;
   UnitArr.y = unit.y;
   UnitArr.atk = unit.atk;
   UnitArr.def = unit.def;
   UnitArr.spd = unit.spd;
   UnitArr.troops = unit.troops;
-
-  turnSwitch = true;
-
 
 });
 
@@ -67,7 +55,6 @@ socket.on('chat message', function(deliver){
   var lastMessage = $('#messages');
   var height = lastMessage[0].scrollHeight;
   lastMessage.scrollTop(height);
-  console.log(msg);
 
 });
 
@@ -83,18 +70,33 @@ socket.on ('setMorale', function (params) {
 
 });
 
-socket.on('PlayerMoved', function(group){
-  console.log('This is the new group: ', group);
-  if (group !== currentGroup){
-    console.log('Yatta!');
+socket.on ('user1', function () {
+
+  endTurn();
+
+});
+
+socket.on ('user2', function () {
+
+//??
+
+});
+
+socket.on('groupNow', function(group){
+
+  if (group[0] != currentGroup){
+
+    socket.emit('switchIt');
+    sideSwitch = false;
+    turnSwitch = true;
+
   }
 
 });
 
-socket.on('group', function(group){
-  console.log('group socekt ran!' + group + ' ' + lastGroup);
-  if (group !== lastGroup){
-    console.log('Yatta!')
-  };
-  var lastGroup = group;
+socket.on("turnIt", function () {
+
+  turnSwitch = true;
+  endTurn();
+
 });
