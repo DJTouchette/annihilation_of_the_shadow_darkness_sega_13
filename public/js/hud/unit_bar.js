@@ -99,13 +99,9 @@ function terrain (unit) {
 
   var headerTxt = game.add.text(865, 248, 'Stat Changes', styleHeader);
 
-  // var title = game.add.text(890, 310, 'oponent', styleTitle);
-
   var styleUnit = { font: "15px Indie", fill: "#FFFB00" };
 
   var position = [340, 370, 400];
-
-
 
   game.add.text(840, position[0], 'Grass', styleUnit);
   game.add.text(935, position[0], unit.unit.tile, styleUnit);
@@ -137,6 +133,6 @@ function click() {
   // console.log('Current Group: ', currentGroup);
   // console.log('clicked');
   turnSwitch = true;
-  // window.socket.emit('endTurn', currentGroup);
+  window.socket.emit('flickTheSwitch');
 
 }

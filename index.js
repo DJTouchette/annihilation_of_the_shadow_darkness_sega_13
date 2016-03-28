@@ -23,30 +23,24 @@ app.get('/', function(req, res){
 
       console.log('a user connected' + ' ' + 'Id:' + ' ' + socket.user);
     } else {
+
       socket.disconnect(socket);
       console.log('fuck off');
+
     }
 
     socket.on('disconnect', function(msg){
+
       console.log('user disconnected');
+
     });
 
     socket.on('pop', function() {
 
-      // socket.broadcast.emit("SOMEONE_POPPED");
       socket.in('game').emit('SOMEONE_POPPED');
       console.log("haaaay");
 
     });
-
-    // socket.on('endTurn', function (currentGroup) {
-    //
-    //   console.log('endTurn started by User ' + socket.user);
-    //   currentPlayer = socket.user;
-    //   socket.in('game').emit('turnChange', currentPlayer, currentGroup);
-    //
-    // });
-
 
     socket.on('spriteMoved', function (unit) {
 
@@ -122,12 +116,32 @@ app.get('/', function(req, res){
       socket.in('game').emit('groupIs', [group, socket.user]);
 
     });
+    //
+    // socket.on('tileMoved', function (tile) {
+    //
+    //   socket.in('game').emit('newTilePosition', tile);
+    //
+    // });
 
-    socket.on('tileMoved', function (tile) {
+    socket.on('change', function(group){
 
-      socket.in('game').emit('newTilePosition', tile);
+    socket.in('game').emit('groupNow', group);
 
-    });
+  });
+
+  socket.on('switchIt', function () {
+
+    socket.in('game').emit('turnIt');
+
+  });
+
+  socket.on('flickTheSwitch', function () {
+
+    socket.in('game').emit('turnIt');
+
+  });
+
+
 
   });
 

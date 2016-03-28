@@ -27,6 +27,8 @@ var moveRange;
 var endGame;
 var redWins;
 var blueWins;
+var turnCount = 0;
+var sideSwitch = true;
 var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.png'}, {position: 'bottomLeft', path: 'assets/border/bottom_left.png'},
  {position: 'bottomRight', path: 'assets/border/bottom_right.png'},
  {position: 'topRight', path: 'assets/border/top_right.png'},
@@ -108,7 +110,7 @@ function preload() {
   // Loads Unit frame assets (/public/js/hud/units.js)
   loadUnitFrame();
   //Loads start round btn (/public/js/hud/startrnd.js)
-  loadBtn();
+  // loadBtn();
 //////////////////////////////////////////////////////////
 //PRELOAD END//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -193,7 +195,15 @@ function update(){
       turn = 0;
     }
     playerTurn(turn);
+    turnCount += 1;
+    // if (sideSwitch) {
+    //
+    //   window.socket.emit('change', [currentGroup, turnCount]);
+    //   console.log('At the end of Update: ', currentGroup);
+    //   sideSwitch = true;
+    // }
   }
+
 
   // switch (endGame) {
   //   case "red":
@@ -435,6 +445,8 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 
 function playerTurn (i) {
     unit = allUnits[i];
+    currentGroup = unit.parent.name;
+    console.log("Player turn   " + currentGroup);
     makeUnitBar(unit);
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
@@ -447,7 +459,7 @@ function playerTurn (i) {
     window.socket.emit('tileMoved', [mover.x, mover.y, i]);
 
     moveRange.x = unit.x;
-    moveRange.y = unit.y
+    moveRange.y = unit.y;
     if (unit.unit.constructor.name === 'Horseman') {
       moveRange.loadTexture('horseman_range');
     }
@@ -504,6 +516,7 @@ function movePlayer(tile, sprite) {
         tile.animations.play('redden');
 
         turnSwitch = true;
+        window.socket.emit('flickTheSwitch');
       } else {
       tile.animations.play('redden');
       targetUnit = false;
@@ -576,6 +589,8 @@ function mainMenu () {
   menu = game.add.image(0, 0, 'menu');
   menu.inputEnabled = true;
   menu.events.onInputDown.add(startGame, this);
+  window.socket.emit('startGame');
+
 }
 
 function victoryScreen() {

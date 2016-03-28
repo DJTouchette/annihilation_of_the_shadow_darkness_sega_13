@@ -74,36 +74,58 @@ socket.on ('user1', function () {
 
 socket.on ('user2', function () {
 
-  turnSwitch = true;
+  // turnSwitch = true;
 
 
 });
 
-socket.on ('groupIs', function (group) {
+// socket.on ('groupIs', function (group) {
+//
+//   if (group[0] === 'bottomside' && group[1] === 1) {
+//
+//     // click();
+//
+//   } else if (group[0] === 'topside' && group[1] === 2 ) {
+//
+//     // click();
+//
+//   } else if (group[0] === 'topside' && group[1] === 1 ) {
+//
+//     endTurn();
+//
+//   } else if (group[0] === 'bottomside' && group[1] === 2 ) {
+//
+//     endTurn();
+//
+//   }
+//
+//
+// });
 
-  if (group[0] === 'bottomside' && group[1] === 1) {
+// socket.on('newTilePosition', function (tile) {
+//
+//   // click();
+//
+// });
 
-    click();
+socket.on('groupNow', function(group){
 
-  } else if (group[0] === 'topside' && group[1] === 2 ) {
+  if (group[0] != currentGroup){
 
-    click();
-
-  } else if (group[0] === 'topside' && group[1] === 1 ) {
-
-    endTurn();
-
-  } else if (group[0] === 'bottomside' && group[1] === 2 ) {
-
-    endTurn();
+    socket.emit('switchIt');
+    // console.log('It Works!');
+    // endTurn();
+    sideSwitch = false;
+    console.log('It Works!');
+    turnSwitch = true;
 
   }
 
+    });
 
-});
+  socket.on("turnIt", function () {
 
-socket.on('newTilePosition', function (tile) {
+    turnSwitch = true;
+    endTurn();
 
-  // click();
-
-});
+  });
