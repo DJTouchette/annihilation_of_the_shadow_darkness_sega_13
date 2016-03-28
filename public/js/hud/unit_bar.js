@@ -1,11 +1,11 @@
 // var socket = io();
 
-function makeUnitBar (unit) {
+function makeUnitBar (unit, moraleUp, moraleBottom) {
 
   makeBorder();
   firstFrame(unitStats(unit));
   unitStats(unit);
-  makeSecondFrame(terrain(unit));
+  makeSecondFrame(terrain(unit, moraleUp, moraleBottom));
   title();
 
   // console.log("i ran");
@@ -74,9 +74,10 @@ game.add.text(970, position[2], unit.unit.def, styleUnit);
 game.add.text(840, position[3], 'Spd', styleUnit);
 game.add.text(975, position[3], unit.unit.spd, styleUnit);
 
+
 }
 
-function terrain (unit) {
+function terrain (unit,  moraleUp, moraleBottom) {
 
   unit.unit.moraleBuff();
   var styleTitle = { font: "18px Indie", fill: "#ffffff" };
@@ -91,7 +92,7 @@ function terrain (unit) {
 
   var styleUnit = { font: "15px Indie", fill: "#FFFB00" };
 
-  var position = [340, 370, 400];
+  var position = [340, 370, 400, 430];
 
 
 
@@ -103,7 +104,12 @@ function terrain (unit) {
   game.add.text(935, position[1],['Def', unit.unit.def - unit.unit.ogDef].join('   '), styleUnit );
 
   // Other stat or marale
-  game.add.text(935, position[2],['Spd', unit.unit.spd - unit.unit.ogSpd].join('  '), styleUnit );
+  // game.add.text(935, position[2],['Spd', unit.unit.spd - unit.unit.ogSpd].join('  '), styleUnit );
+  game.add.text(840, position[2], 'Red Morale', styleUnit);
+  game.add.text(935, position[2], moraleUp, styleUnit);
+
+  game.add.text(840, position[3], 'Blue Morale', styleUnit);
+  game.add.text(935, position[3], moraleBottom, styleUnit);
 
 }
 

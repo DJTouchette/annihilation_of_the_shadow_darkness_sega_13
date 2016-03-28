@@ -6,6 +6,8 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, "game_div", { preload: preloa
 var map;
 var tileGroup;
 var music;
+var pause_label;
+var playStopImage;
 var allUnits = [];
 var mover;
 var unit;
@@ -87,6 +89,8 @@ function preload() {
 //////////////////////////////////////////////////////////
 //Music///////////////////////////////////////////////////
   game.load.audio('battle', 'assets/battle.mp3');
+  game.load.image('play', 'assets/play.png');
+  game.load.image('stop', 'assets/stop.png');
 //////////////////////////////////////////////////////////
 //Menu///////////////////////////////////////////////////
   game.load.spritesheet('title', 'assets/title.png');
@@ -107,8 +111,8 @@ function create() {
   //Variables
   var graphics;
 // MUSIC START////////////////////////////////////
-  // music = game.add.audio('battle');
-  // music.play();
+  music = game.add.audio('battle');
+  music.play();
 // MUSIC END//////////////////////////////////////
 //MAP START///////////////////////////////////////
   game.physics.startSystem(Phaser.Physics.P2JS);
@@ -157,6 +161,15 @@ playerTurn(turn);
 //Create Functions CALLED////////////////////
 
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // pause_label = game.add.text(600, 0, 'Pause Sound', {font: '24px Arial', fill: '#fff'});
+  // pause_label.inputEnabled = true;
+  // pause_label.events.onInputDown.add(playStopSound, this);
+
+  playStopImage = game.add.sprite(600, 0, 'play');
+  playStopImage.inputEnabled = true;
+  playStopImage.scale.setTo(0.04, 0.04);
+  playStopImage.events.onInputDown.add(playStopSound, this);
+
 }
 
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -229,6 +242,17 @@ function render () {
 //FUNCTIONS///////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 //Create Sides//////////////////////////////////////////////////////
+function playStopSound(){
+  if(music.paused == true){
+    music.resume();
+    playStopImage.loadTexture('play');
+  }
+  else{
+    music.pause();
+    playStopImage.loadTexture('stop');
+  }
+}
+
 
 function createSide(x, y, group, sprite, frame_pos) {
   for (var i = 0; i < 4; i ++) {
@@ -439,18 +463,15 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
 function playerTurn (i) {
     unit = allUnits[i];
     console.log('Inside Player Turn group is: ' + currentGroup);
-    makeUnitBar(unit);
+    makeUnitBar(unit, startingMoraleUp, startingMoraleBottom);
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
     }
     currentGroup = unit.parent.name
     mover.x = unit.x;
     mover.y = unit.y;
-    // mover.anchor.setTo(0.5, 0.5);
     limitX = unit.x;
     limitY = unit.y;
-    // window.socket.emit('spriteMoved', unit.unit);
-
 }
 
 function playerTurnComputer (i) {
