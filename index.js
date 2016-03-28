@@ -95,6 +95,7 @@ app.get('/', function(req, res){
 
     });
 
+
     socket.on('startGame', function () {
 
       if (socket.user === 1) {
@@ -140,8 +141,6 @@ app.get('/', function(req, res){
     socket.in('game').emit('turnIt');
 
   });
-
-
 
   });
 
