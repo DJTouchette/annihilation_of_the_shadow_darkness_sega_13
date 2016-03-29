@@ -3,14 +3,14 @@ function createMoraleBars(){
   hpBarTop.setFixedToCamera(true);
   // Set the push and pull morale bar in 50% (start from the middle)
   hpBarTop.setPercent(50);
-};
+}
 
 function createTroopBar(sprite, width, height, positionx, positiony){
   graphics = this.game.add.graphics(positionx, positiony);
   graphics.beginFill(0X00FF00);
   graphics.drawRect(0, 0, width, height);
   sprite.addChild(graphics);
-};
+}
 
 // accept group bottomside or topside
 function damageMorale(group, enemyTroops){
@@ -35,7 +35,7 @@ function damageMorale(group, enemyTroops){
       // console.log("Blue wins");
       // window.socket.emit("bottomWins");
       blueWins = true;
-    };
+    }
     hpBarTop.setPercent(startingMoraleUp);
   }else if(group.name == "topside"){
     // topside attacks bottom
@@ -50,11 +50,11 @@ function damageMorale(group, enemyTroops){
       // console.log("Red wins");
       // window.socket.emit("topWins");
       redWins = true;
-    };
+    }
     hpBarTop.setPercent(startingMoraleUp);
     // console.log("after up attacked, bottom morale now:", startingMoraleBottom);
-  };
-};
+  }
+}
 
 // Troop checker if troop is 0,
 //   then change morale is 5 which is equal to 1 sprite
@@ -66,8 +66,8 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
   if(changeMorale === 0 || changeMorale >= 5){
     // make morale up equal to morale calculation
     changeMorale = troopMoralDestroyed;
-    if(group === "bottomside") {previousMoraleUp = troopMoralDestroyed};
-    if(group === "topside") {previousMoraleBottom = troopMoralDestroyed};
+    if(group === "bottomside") {previousMoraleUp = troopMoralDestroyed;}
+    if(group === "topside") {previousMoraleBottom = troopMoralDestroyed;}
   }else{
     // save the previous morale
     var before = troopMoralDestroyed;
@@ -75,19 +75,19 @@ function troopMoraleCalc(enemyTroops, troopMoralDestroyed, changeMorale, group){
       // console.log("enter 3 bottomside");
       troopMoralDestroyed -= previousMoraleUp;
       previousMoraleUp = before;
-    };
+    }
     if(group === "topside"){
       // console.log("enter 3 topside");
       troopMoralDestroyed -= previousMoraleBottom;
       previousMoraleBottom = before;
-    };
+    }
     changeMorale = Math.abs(troopMoralDestroyed);
     // console.log("enter 3 ends");
-  };
+  }
   // bonus morale if kill a unit????
   if(enemyTroops === 0) {
     changeMorale += 5;
     // console.log("enter 2");
-  };
+  }
   return changeMorale;
-};
+}

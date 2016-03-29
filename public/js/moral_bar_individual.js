@@ -4,22 +4,22 @@ function setBarPercent(game, sprite, troopCount){
     sprite.unit.troops = 0;
     sprite.removeChildAt(0);
     sprite.unit.dead = true;
-    game.add.sprite(sprite.x, sprite.y, 'grave')    
+    game.add.sprite(sprite.x, sprite.y, 'grave');
     sprite.kill();
   } else {
     newWidth = (troopCount / 100);
     getGraph = sprite.getChildAt(0);
     setBarIndividual(game, newWidth, getGraph);
-    };
-};
+    }
+}
 
 // // The graphics transition
 function setBarIndividual(game, newWidth, getGraph){
   game.add.tween(getGraph).to( { width: newWidth }, 200, Phaser.Easing.Linear.None, true);
-};
+}
 
 // Get original width / overall total morale
 function getWidth(sprite) {
   const initialWidth = sprite.width;
   return initialWidth;
-};
+}

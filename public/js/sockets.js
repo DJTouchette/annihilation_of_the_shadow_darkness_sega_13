@@ -87,7 +87,7 @@ socket.on('groupNow', function(group){
     socket.emit('switchIt');
     sideSwitch = false;
     turnSwitch = true;
-  };
+  }
 
 });
 
