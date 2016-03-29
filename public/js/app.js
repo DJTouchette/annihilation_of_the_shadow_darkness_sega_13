@@ -27,16 +27,18 @@ var redWins;
 var blueWins;
 var turnCount = 0;
 var sideSwitch = true;
-var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.png'}, {position: 'bottomLeft', path: 'assets/border/bottom_left.png'},
- {position: 'bottomRight', path: 'assets/border/bottom_right.png'},
- {position: 'topRight', path: 'assets/border/top_right.png'},
- {position: 'topLeft', path: 'assets/border/top_left.png'},
- {position: 'vertical', path: 'assets/border/vertical.png'},
- {position: 'background', path: 'assets/border/paper.png'},
- {position: 'box', path: 'assets/border/box.png'},
- {position: 'start', path: 'assets/start_turn.png'},
- {position: 'end', path: 'assets/end-turn.png'},
- {position: 'endGlow', path: 'assets/End-glow.png'}
+var spritesBorder = [
+  {position: 'horizontal', path: 'assets/border/horizontal.png'},
+  {position: 'bottomLeft', path: 'assets/border/bottom_left.png'},
+  {position: 'bottomRight', path: 'assets/border/bottom_right.png'},
+  {position: 'topRight', path: 'assets/border/top_right.png'},
+  {position: 'topLeft', path: 'assets/border/top_left.png'},
+  {position: 'vertical', path: 'assets/border/vertical.png'},
+  {position: 'background', path: 'assets/border/paper.png'},
+  {position: 'box', path: 'assets/border/box.png'},
+  {position: 'start', path: 'assets/start_turn.png'},
+  {position: 'end', path: 'assets/end-turn.png'},
+  {position: 'endGlow', path: 'assets/End-glow.png'}
  ];
 var hpBarTop;
 var barConfigTop = {
@@ -44,12 +46,8 @@ var barConfigTop = {
   height: 45,
   x: 407,
   y: 0,
-  bg: {
-    color: '#0047b3'
-    },
-  bar: {
-    color: '#ff3300'
-  },
+  bg: {color: '#0047b3'},
+  bar: {color: '#ff3300'},
 };
 
 // starting morale is overall morale (100) divided by 2. Each side is worth 50.
