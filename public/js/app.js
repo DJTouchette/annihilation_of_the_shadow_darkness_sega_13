@@ -177,10 +177,6 @@ function create() {
   playerTurn(turn);
 
 //Create Functions CALLED////////////////////
-
-  // fullScreenLabel = game.add.text(700, 200, "Full Screen");
-  // fullScreenLabel.inputEnabled = true;
-  // fullScreenLabel.events.onInputDown.add(fullScreenMode, this);
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -201,7 +197,7 @@ function update(){
     if (allUnits[turn].parent.name === currentGroup) {
       window.socket.emit('disableOther', currentGroup);
     }
-    stats(allUnits[turn], startingMoraleBottom, startingMoraleUp);
+    stats(allUnits[turn], startingMoraleUp, startingMoraleBottom);
     playerTurn(turn);
     turnCount += 1;
   }

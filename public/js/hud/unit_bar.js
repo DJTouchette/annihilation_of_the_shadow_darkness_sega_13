@@ -108,6 +108,8 @@ function unitStats (unit) {
 function terrain (unit,  moraleUp, moraleBottom) {
 
   unit.unit.moraleBuff();
+  moraleUp = moraleUp.toFixed(2);
+  moraleBottom = moraleBottom.toFixed(2);
 
   if (menuChangeGrass !== undefined) {
 
