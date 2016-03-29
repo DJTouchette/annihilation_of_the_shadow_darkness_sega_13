@@ -191,8 +191,8 @@ playerTurn(turn);
 function update(){
   if (turnSwitch) {
     // mover.kill();
+    surroundings(allUnits[turn]);
     allUnits[turn].unit.tileCheck();
-    allUnits[turn].unit.moraleBuff();
     turnSwitch = false;
     if (turn < 19) {
       turn += 1;
@@ -453,6 +453,8 @@ function playerTurn (i) {
     unit = allUnits[i];
     currentGroup = unit.parent.name;
     makeUnitBar(unit, startingMoraleUp, startingMoraleBottom);
+    surroundings(unit);
+    // console.log(surroundings(unit));
 
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
@@ -496,7 +498,7 @@ function movePlayer(tile, sprite) {
   unitCollision(tile);
   unit.unit.rangeTileCheck();
 
-  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= 20 ) && !tileCollision(tile) && (unitColliding === false) && !unitPathing(tile)) {
+  if ( (Math.abs(Math.floor(limitX / 48) - background.getTileX(tile.x)) + Math.abs(Math.floor(limitY / 48) - background.getTileY(tile.y)) <= unit.unit.spd ) && !tileCollision(tile) && (unitColliding === false) && !unitPathing(tile)) {
     unit.x = tile.x;
     unit.y = tile.y;
     unit.unit.x = unit.x;
@@ -533,7 +535,6 @@ function movePlayer(tile, sprite) {
     }
 
   }
-  console.log(unitPathing);
 }
 
 
@@ -551,7 +552,7 @@ function tileCollision(tile) {
 function unitCollision(tile) {
   for (var i = 0; i < allUnits.length; i++) {
     var a = tile.getBounds();
-    var b = allUnits[i].getBounds().inflate(0, -4);
+    var b = allUnits[i].getBounds().inflate(-5, -5);
     if (Phaser.Rectangle.intersects(a, b)) {
       unitColliding = true;
       targetUnit = allUnits[i];
@@ -564,7 +565,7 @@ function unitCollision(tile) {
 
 function unitSpecialTile(unit) {
   for (var j = 0; j < specialTile.children.length; j++) {
-    var a = unit.getBounds();
+    var a = unit.getBounds().inflate(-5, -5);
     var b = specialTile.children[j].getBounds().inflate(-4, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
       return true;
@@ -585,7 +586,7 @@ function unitPathing(tile) {
 function unitRangeTile(unit) {
   if (unit.unit.constructor.name === 'Archer') {
     for (var i = 0; i < rangeTile.children.length; i++) {
-      var a = unit.getBounds();
+      var a = unit.getBounds().inflate(-5, -5);
       var b = rangeTile.children[i].getBounds();
       if (Phaser.Rectangle.intersects(a, b)) {
         return true;
@@ -594,6 +595,26 @@ function unitRangeTile(unit) {
   } else {
     return false;
   }
+}
+
+function surroundings(unit) {
+
+  unit.unit.moraleBuff();
+  for (var i = 0; i < allUnits.length; i++) {
+    if (((Math.abs(background.getTileX(unit.x) - background.getTileX(allUnits[i].x))) === 1) && (Math.abs(background.getTileY(unit.y) - background.getTileY(allUnits[i].y)) === 0) || ((Math.abs(background.getTileY(unit.y) - background.getTileY(allUnits[i].y))) === 1) && (Math.abs(background.getTileX(unit.x) - background.getTileX(allUnits[i].x) === 0))) {
+      if (unit.parent.name === allUnits[i].parent.name) {
+        unit.unit.atk += 5;
+        unit.unit.def += 1;
+        return true;
+      } else if (unit.parent.name !== allUnits[i].parent.name) {
+        unit.unit.atk -= 5;
+        unit.unit.def -= 1;
+        unit.unit.spd = 1;
+        return true;
+      }
+    }
+  }
+
 }
 ///Menu Function//////////////////////////////////////////////////////
 

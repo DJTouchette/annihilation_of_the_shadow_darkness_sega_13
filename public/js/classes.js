@@ -64,24 +64,24 @@ class Unit {
   // Takes in a enemy and does the battle logic, then calls take dmg on the enemy
   attack (enemy) {
 
-    // this.moraleBuff ();
+    this.moraleBuff ();
 
-    // var atkRoll = this.atk * Math.random();
-    // var defRoll = enemy.def * Math.random();
-    // var dmg = (atkRoll - defRoll);
+    var atkRoll = this.atk * Math.random();
+    var defRoll = enemy.def * Math.random();
+    var dmg = (atkRoll - defRoll);
 
-    // if (dmg > 0) {
+    if (dmg > 0) {
 
-    //   this.armyMorale(3);
-    //   enemy.takeDmg(Math.floor (dmg) );
-    //   return 1;
+      this.armyMorale(3);
+      enemy.takeDmg(Math.floor (dmg) );
+      return 1;
 
-    // } else {
-    //   console.log('Swing and a miss, morale bar will not change');
-    //   return 0;
+    } else {
+      console.log('Swing and a miss, morale bar will not change');
+      return 0;
 
-    // }
-    enemy.troops -= 100;
+    }
+    // enemy.troops -= 100;
 
   }
 
