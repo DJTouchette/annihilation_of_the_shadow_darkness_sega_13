@@ -49,6 +49,7 @@ var barConfigTop = {
   bg: {color: '#0047b3'},
   bar: {color: '#ff3300'},
 };
+var endBtn;
 
 // starting morale is overall morale (100) divided by 2. Each side is worth 50.
 var startingMoraleBottom = 50; //should create starting morale for each group
@@ -57,6 +58,15 @@ var previousMoraleUp = 0;
 var previousMoraleBottom = 0;
 var changeMoraleUp = 0;
 var changeMoraleBottom = 0;
+
+var menuMorale;
+var menuAtk;
+var menuDef;
+var menuSpd;
+var menuChangeGrass;
+var menuChangeMorale;
+var menuChangeRm;
+var menuChangeBm;
 //VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -99,7 +109,7 @@ function preload() {
   // Loads Unit frame assets (/public/js/hud/units.js)
   loadUnitFrame();
   //Loads start round btn (/public/js/hud/startrnd.js)
-  game.load.image('full_screen', 'assets/full_screen.gif');
+  game.load.image('full_screen', 'assets/full_screen.png');
   game.load.image('full_screen_exit', 'assets/full_screen_exit.png');
 
 //////////////////////////////////////////////////////////
@@ -165,12 +175,9 @@ function create() {
   createSide(144, 48, topSide, 'footman', 7);
   sortUnits();
   playerTurn(turn);
+
 //Create Functions CALLED////////////////////
-  game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-  fullScreen = game.add.sprite(762, 22, 'full_screen');
-  fullScreen.inputEnabled = true;
-  fullScreen.scale.setTo(0.15, 0.15);
-  fullScreen.events.onInputDown.add(fullScreenMode, this);
+
   // fullScreenLabel = game.add.text(700, 200, "Full Screen");
   // fullScreenLabel.inputEnabled = true;
   // fullScreenLabel.events.onInputDown.add(fullScreenMode, this);
@@ -181,6 +188,7 @@ function create() {
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update(){
   if (turnSwitch) {
+    window.socket.emit('change', currentGroup);
     allUnits[turn].unit.tileCheck();
     allUnits[turn].unit.moraleBuff();
     turnSwitch = false;
@@ -192,6 +200,7 @@ function update(){
     if (allUnits[turn].parent.name === currentGroup) {
       window.socket.emit('disableOther', currentGroup);
     }
+    stats(allUnits[turn], startingMoraleBottom, startingMoraleUp);
     playerTurn(turn);
     turnCount += 1;
   }

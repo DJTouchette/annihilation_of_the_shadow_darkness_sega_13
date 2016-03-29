@@ -81,19 +81,41 @@ socket.on ('user2', function () {
 
 });
 
-socket.on('groupNow', function(group){
+socket.on('groupNow', function(group, user){
 
-  if (group[0] != currentGroup){
+  console.log('user is :' + user);
+  // group = 'bottomSide';
+  console.log('Sent group: ' + group);
+  console.log('Current Group: ' + currentGroup);
+
+  if (group !== currentGroup){
+    console.log('group change')
     socket.emit('switchIt');
-    sideSwitch = false;
-    turnSwitch = true;
+    socket.emit('destroyBtn');
+    // sideSwitch = false;
+    endTurn();
+    // turnSwitch = true;
+  }else if(group === 'topSide' && user === 1){
+    console.log('player1 turn')
+    endTurn();
+    socket.emit('destroyBtn');
+  }else if (group === 'bottomSide' && user === 2){
+    console.log('player2 turn')
+    endTurn();
+    socket.emit('destroyBtn');
   }
 
 });
 
 socket.on("turnIt", function () {
+  console.log('Turnt');
 
   turnSwitch = true;
-  endTurn();
+  // endTurn();
 
+});
+
+socket.on('btnDestroyed', function(){
+  // endBtn.kill();
+  console.log(endBtn)
 });

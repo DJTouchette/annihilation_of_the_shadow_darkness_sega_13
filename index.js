@@ -119,7 +119,7 @@ io.on('connection', function(socket){
 
     socket.on('change', function(group){
 
-    socket.in('game').emit('groupNow', group);
+    socket.in('game').emit('groupNow', group, socket.user);
 
   });
 
@@ -134,6 +134,11 @@ io.on('connection', function(socket){
     socket.in('game').emit('turnIt');
 
   });
+
+  socket.on('destroyBtn', function() {
+    socket.in('game').emit('btnDestroyed');
+
+  })
 
 });
 
