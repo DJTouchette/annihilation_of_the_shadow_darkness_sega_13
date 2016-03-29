@@ -30,8 +30,9 @@ function damageMorale(group, enemyTroops){
     changeMoraleUp = troopMoraleCalc(enemyTroops, moraleCalculation, changeMoraleUp, "bottomside");
     startingMoraleUp -= changeMoraleUp;
     startingMoraleBottom += changeMoraleUp;
-    if(startingMoraleBottom >= 100){
-      startingMoraleBottom = 100;
+    if(startingMoraleBottom >= 80){
+      startingMoraleBottom = 80;
+      startingMoraleUp = 20;
       // console.log("Blue wins");
       // window.socket.emit("bottomWins");
       blueWins = true;
@@ -45,8 +46,9 @@ function damageMorale(group, enemyTroops){
     changeMoraleBottom = troopMoraleCalc(enemyTroops, moraleCalculation, changeMoraleBottom, "topside");
     startingMoraleBottom -= changeMoraleBottom;
     startingMoraleUp += changeMoraleBottom;
-    if(startingMoraleUp >= 100){
-      startingMoraleUp = 100;
+    if(startingMoraleUp >= 80){
+      startingMoraleUp = 80;
+      startingMoraleBottom = 20;
       // console.log("Red wins");
       // window.socket.emit("topWins");
       redWins = true;
