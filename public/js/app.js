@@ -3,7 +3,7 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, "game_div", { preload: preloa
 var map;
 var tileGroup;
 var music;
-var pause_label;
+var fullScreen;
 var playStopImage;
 var allUnits = [];
 var mover;
@@ -99,6 +99,9 @@ function preload() {
   // Loads Unit frame assets (/public/js/hud/units.js)
   loadUnitFrame();
   //Loads start round btn (/public/js/hud/startrnd.js)
+  game.load.image('full_screen', 'assets/full_screen.gif');
+  game.load.image('full_screen_exit', 'assets/full_screen_exit.png');
+
 //////////////////////////////////////////////////////////
 //PRELOAD END//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -142,7 +145,7 @@ function create() {
   mover.events.onDragStop.add(movePlayer, this);
 //MOVEMENT RANGE END////////////////////////////////
 //SOUND BUTTONS////////////////////////////////////
-  playStopImage = game.add.sprite(792, 35, 'play');
+  playStopImage = game.add.sprite(792, 20, 'play');
   playStopImage.inputEnabled = true;
   playStopImage.scale.setTo(0.04, 0.04);
   playStopImage.events.onInputDown.add(playStopSound, this);
@@ -163,8 +166,16 @@ function create() {
   sortUnits();
   playerTurn(turn);
 //Create Functions CALLED////////////////////
+  game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+  fullScreen = game.add.sprite(762, 22, 'full_screen');
+  fullScreen.inputEnabled = true;
+  fullScreen.scale.setTo(0.15, 0.15);
+  fullScreen.events.onInputDown.add(fullScreenMode, this);
+  // fullScreenLabel = game.add.text(700, 200, "Full Screen");
+  // fullScreenLabel.inputEnabled = true;
+  // fullScreenLabel.events.onInputDown.add(fullScreenMode, this);
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-};
+}
 
 
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,13 +188,13 @@ function update(){
       turn += 1;
     } else if (turn === 19) {
       turn = 0;
-    };
+    }
     if (allUnits[turn].parent.name === currentGroup) {
       window.socket.emit('disableOther', currentGroup);
-    };
+    }
     playerTurn(turn);
     turnCount += 1;
-  };
+  }
 
   if (blueWins && currentGroup === 'bottomside') {
     victoryScreen();
@@ -198,10 +209,10 @@ function update(){
   } else if (redWins && currentGroup === 'bottomside') {
     defeatScreen();
     window.socket.emit('victory');
-  };
+  }
 
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-};
+}
 
 
 //RENDER START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,7 +220,7 @@ function render () {
   game.debug.text('Tile X: ' + collisionLayer.getTileX(game.input.activePointer.worldX), 48, 69, 'rgb(0,0,0)');
   game.debug.text('Tile Y: ' + collisionLayer.getTileY(game.input.activePointer.worldY), 48, 48, 'rgb(0,0,0)');
 //RENDER END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-};
+}
 
 
 //FUNCTIONS///////////////////////////////////////////////////////////
@@ -220,5 +231,16 @@ function playStopSound(){
   }else{
     music.pause();
     playStopImage.loadTexture('stop');
-  };
-};
+  }
+}
+
+function fullScreenMode(){
+  if (game.scale.isFullScreen) {
+    game.scale.stopFullScreen();
+    fullScreen.loadTexture('full_screen');
+  }
+  else {
+    game.scale.startFullScreen(false);
+    fullScreen.loadTexture('full_screen_exit');
+  }  
+}

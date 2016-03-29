@@ -4,7 +4,7 @@ function playerTurn (i) {
     makeUnitBar(unit, startingMoraleUp, startingMoraleBottom);
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
-    };
+    }
     mover.x = unit.x;
     mover.y = unit.y;
     window.socket.emit('groupTurn', unit.parent.name );
@@ -13,19 +13,19 @@ function playerTurn (i) {
     moveRange.y = unit.y;
     if (unit.unit.constructor.name === 'Horseman') {
       moveRange.loadTexture('horseman_range');
-    };
+    }
     if (unit.unit.constructor.name === 'Footman') {
       moveRange.loadTexture('footman_range');
-    };
+    }
     if (unit.unit.constructor.name === 'Archer') {
       moveRange.loadTexture('archer_range');
-    };
+    }
     if (unit.unit.constructor.name === 'Armored') {
       moveRange.loadTexture('armored_range');
-    };
+    }
     limitX = unit.x;
     limitY = unit.y;
-};
+}
 
 function movePlayer(tile, sprite) {
   window.socket.emit('PlayerMoved', currentGroup);
@@ -46,7 +46,7 @@ function movePlayer(tile, sprite) {
         unit.unit.attack(targetUnit.unit);
         if (!targetUnit.unit.dead) {
           setBarPercent(game, targetUnit, targetUnit.unit.troops);
-        };
+        }
         damageMorale(unit.parent, targetUnit.unit.troops);
         window.socket.emit('moraleChange', [unit.unit.index, targetUnit.unit.troops]  );
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
@@ -56,16 +56,16 @@ function movePlayer(tile, sprite) {
       } else {
       tile.animations.play('redden');
       targetUnit = false;
-      };
+      }
     } else {
       targetUnit = false;
       tile.animations.play('redden');
       tile.x = unit.x;
       tile.y = unit.y;
-    };
-  };
+    }
+  }
   // console.log(unitPathing);
-};
+}
 
 function tileCollision(tile) {
   for (var i = 0; i < tileGroup.children.length; i++) {
@@ -73,9 +73,9 @@ function tileCollision(tile) {
     var b = tileGroup.children[i].getBounds().inflate(-4, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
       return true;
-    };
-  };
-};
+    }
+  }
+}
 
 function unitCollision(tile) {
   for (var i = 0; i < allUnits.length; i++) {
@@ -87,9 +87,9 @@ function unitCollision(tile) {
       return allUnits[i];
     } else {
       unitColliding = false;
-    };
-  };
-};
+    }
+  }
+}
 
 function unitSpecialTile(unit) {
   for (var j = 0; j < specialTile.children.length; j++) {
@@ -97,9 +97,9 @@ function unitSpecialTile(unit) {
     var b = specialTile.children[j].getBounds().inflate(-4, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
       return true;
-    };
-  };
-};
+    }
+  }
+}
 
 function unitPathing(tile) {
   for (var i = 0; i < rangeTile.children.length; i++) {
@@ -107,9 +107,9 @@ function unitPathing(tile) {
     var b = rangeTile.children[i].getBounds();
     if (Phaser.Rectangle.intersects(a, b) && limitY <= rangeTile.children[i].y) {
       return true;
-    };
-  };
-};
+    }
+  }
+}
 
 function unitRangeTile(unit) {
   if (unit.unit.constructor.name === 'Archer') {
@@ -118,9 +118,9 @@ function unitRangeTile(unit) {
       var b = rangeTile.children[i].getBounds();
       if (Phaser.Rectangle.intersects(a, b)) {
         return true;
-      };
-    };
+      }
+    }
   } else {
     return false;
-  };
-};
+  }
+}

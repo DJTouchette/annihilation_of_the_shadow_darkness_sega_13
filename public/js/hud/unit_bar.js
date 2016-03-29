@@ -4,7 +4,7 @@ function makeUnitBar (unit, moraleUp, moraleBottom) {
   unitStats(unit);
   makeSecondFrame(terrain(unit, moraleUp, moraleBottom));
   title();
-};
+}
 
 function endTurn () {
   var endBtn = game.add.sprite(829, 550, 'end');
@@ -12,12 +12,12 @@ function endTurn () {
   endBtn.inputEnabled = true;
   endBtn.input.useHandCursor = true;
   endBtn.events.onInputDown.add(click);
-};
+}
 
 function waiting () {
     var msg = game.add.sprite(829, 550, 'title');
     return msg;
-};
+}
 
 function title () {
   var title = game.add.sprite(814, 8, 'title');
@@ -25,7 +25,7 @@ function title () {
   var style = { font: "20px Indie", fill: "#A0A2A3",  align: "center" };
   var stats = game.add.text(890, 15, 'Stats', style);
   title.scale.setTo(0.67);
-};
+}
 
 function unitStats (unit) {
 var styleTitle = { font: "18px Arial", fill: "#ffffff" };
@@ -33,7 +33,7 @@ if (unit.unit.constructor.name === 'Footman' || unit.unit.constructor.name === '
       game.add.text(868, 60, unit.unit.constructor.name , styleTitle);
   } else if (unit.unit.constructor.name === 'Archer'){
       game.add.text(883, 60, unit.unit.constructor.name, styleTitle);
-  };
+  }
 
 var styleUnit = { font: "15px Arial", fill: "#FFFB00" };
 var position = [90, 120, 150, 180];
@@ -49,7 +49,7 @@ game.add.text(970, position[2], unit.unit.def, styleUnit);
 
 game.add.text(840, position[3], 'Spd', styleUnit);
 game.add.text(975, position[3], unit.unit.spd, styleUnit);
-};
+}
 
 function terrain (unit,  moraleUp, moraleBottom) {
   unit.unit.moraleBuff();
@@ -75,17 +75,17 @@ function terrain (unit,  moraleUp, moraleBottom) {
 
   game.add.text(840, position[3], 'Blue Morale', styleUnit);
   game.add.text(935, position[3], moraleBottom, styleUnit);
-};
+}
 
 function over (endBtn) {
   endBtn.loadTexture('endGlow');
-};
+}
 
 function out (endBtn) {
   endBtn.loadTexture('end');
-};
+}
 
 function click() {
   turnSwitch = true;
   window.socket.emit('flickTheSwitch');
-};
+}
