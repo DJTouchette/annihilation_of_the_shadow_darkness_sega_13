@@ -27,12 +27,14 @@ socket.on('waiting', function () {
 socket.on('win', function() {
 
   victoryScreen();
+  socket.emit('defeat');
 
 });
 
 socket.on('lose', function(){
 
   defeatScreen();
+  socket.emit('victory');
 
 });
 
