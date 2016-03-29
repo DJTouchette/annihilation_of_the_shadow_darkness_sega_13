@@ -41,8 +41,6 @@ class Unit {
 
     if (this.troops <= 0) {
       this.troops = 0;
-      //function that deletes sprite
-      console.log('Im deaadd blaaahhh');
     }
 
   }
@@ -193,24 +191,3 @@ class Armored extends Unit {
   }
 
 }
-
-
-// var footmanStats = {
-//
-//   atk: 50,
-//   spd: 4,
-//   def: 10,
-//   rng: 1,
-//   tile:0
-//
-// };
-//
-// var archerStats = {
-//
-//   atk: 50,
-//   spd: 4,
-//   def: 10,
-//   rng: 1,
-//   tile:0
-//
-// };

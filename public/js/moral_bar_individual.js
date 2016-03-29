@@ -4,7 +4,7 @@ function setBarPercent(game, sprite, troopCount){
     sprite.unit.troops = 0;
     sprite.removeChildAt(0);
     sprite.unit.dead = true;
-    game.add.sprite(sprite.x, sprite.y, 'grave')    
+    game.add.sprite(sprite.x, sprite.y, 'grave');
     sprite.kill();
   } else {
     newWidth = (troopCount / 100);

@@ -1,5 +1,3 @@
-
-
 $(function () {
 
   $('.InputAddOn-item').on('click', function () {
@@ -17,14 +15,8 @@ $(function () {
 
     $('.InputAddOn-item').click();
     return false;
+    }
 
-  }
-
-});
-
-
-
-
+  });
   console.log('Ready');
-
 });

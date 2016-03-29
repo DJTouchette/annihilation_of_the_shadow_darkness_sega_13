@@ -33,7 +33,6 @@ socket.on('win', function() {
 socket.on('lose', function(){
 
   defeatScreen();
-  // socket.in('game').emit('win');
 
 });
 
@@ -78,18 +77,16 @@ socket.on ('user1', function () {
 
 socket.on ('user2', function () {
 
-//??
+//Supposed to do nil
 
 });
 
 socket.on('groupNow', function(group){
 
   if (group[0] != currentGroup){
-
     socket.emit('switchIt');
     sideSwitch = false;
     turnSwitch = true;
-
   }
 
 });
