@@ -166,7 +166,7 @@ function create() {
   playerTurn(turn);
 //Create Functions CALLED////////////////////
 //CREATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-};
+}
 
 
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,13 +179,13 @@ function update(){
       turn += 1;
     } else if (turn === 19) {
       turn = 0;
-    };
+    }
     if (allUnits[turn].parent.name === currentGroup) {
       window.socket.emit('disableOther', currentGroup);
-    };
+    }
     playerTurn(turn);
     turnCount += 1;
-  };
+  }
 
   if (blueWins && currentGroup === 'bottomside') {
     victoryScreen();
@@ -200,10 +200,10 @@ function update(){
   } else if (redWins && currentGroup === 'bottomside') {
     defeatScreen();
     window.socket.emit('victory');
-  };
+  }
 
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-};
+}
 
 
 //RENDER START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -211,7 +211,7 @@ function render () {
   game.debug.text('Tile X: ' + collisionLayer.getTileX(game.input.activePointer.worldX), 48, 69, 'rgb(0,0,0)');
   game.debug.text('Tile Y: ' + collisionLayer.getTileY(game.input.activePointer.worldY), 48, 48, 'rgb(0,0,0)');
 //RENDER END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-};
+}
 
 
 //FUNCTIONS///////////////////////////////////////////////////////////
@@ -222,5 +222,5 @@ function playStopSound(){
   }else{
     music.pause();
     playStopImage.loadTexture('stop');
-  };
-};
+  }
+}
