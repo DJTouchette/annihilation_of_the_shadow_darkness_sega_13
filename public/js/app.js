@@ -40,10 +40,10 @@ var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.pn
  ];
 var hpBarTop;
 var barConfigTop = {
-  width: 100,
-  height: 30,
-  x: 60,
-  y: 20,
+  width: 813,
+  height: 45,
+  x: 407,
+  y: 0,
   bg: {
     color: '#0047b3'
     },
@@ -144,7 +144,7 @@ function create() {
   mover.events.onDragStop.add(movePlayer, this);
 //MOVEMENT RANGE END////////////////////////////////
 //SOUND BUTTONS////////////////////////////////////
-  playStopImage = game.add.sprite(600, 0, 'play');
+  playStopImage = game.add.sprite(792, 35, 'play');
   playStopImage.inputEnabled = true;
   playStopImage.scale.setTo(0.04, 0.04);
   playStopImage.events.onInputDown.add(playStopSound, this);
