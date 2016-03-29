@@ -30,7 +30,7 @@ class Unit {
     this.ogDef = def;
     this.ogRng = rng;
 
-  }
+  };
 
   // take damage method.
   takeDmg (dmg) {
@@ -41,11 +41,9 @@ class Unit {
 
     if (this.troops <= 0) {
       this.troops = 0;
-      //function that deletes sprite
-      console.log('Im deaadd blaaahhh');
-    }
+    };
 
-  }
+  };
 
   // Takes in a positive or negative interger that effectivly lowers or highers
   // army morale.
@@ -55,35 +53,18 @@ class Unit {
 
       return morale;
 
-    }
+    };
 
     return morale += num;
 
-  }
+  };
 
   // Takes in a enemy and does the battle logic, then calls take dmg on the enemy
   attack (enemy) {
 
-    // this.moraleBuff ();
-
-    // var atkRoll = this.atk * Math.random();
-    // var defRoll = enemy.def * Math.random();
-    // var dmg = (atkRoll - defRoll);
-
-    // if (dmg > 0) {
-
-    //   this.armyMorale(3);
-    //   enemy.takeDmg(Math.floor (dmg) );
-    //   return 1;
-
-    // } else {
-    //   console.log('Swing and a miss, morale bar will not change');
-    //   return 0;
-
-    // }
     enemy.troops -= 100;
 
-  }
+  };
 
   // Resets stats to base and buffs them.
   moraleBuff () {
@@ -115,17 +96,17 @@ class Unit {
       this.atk -= 4;
       this.spd += 1;
 
-    }
+    };
     this.spd += this.tile;
-  }
+  };
 
   tileCheck() {
     if (unitSpecialTile(unit)) {
       this.tile = -2;
     } else {
       this.tile = 0;
-    }
-  }
+    };
+  };
 
   // Reset stats used by moraleBuff();
   statReset () {
@@ -135,7 +116,7 @@ class Unit {
     this.spd = this.ogSpd;
     this.rng = this.ogRng;
 
-  }
+  };
 
   rangeTileCheck() {
     if (unitRangeTile(unit)) {
@@ -146,9 +127,9 @@ class Unit {
     // console.log(unit.unit.spd);
     console.log(this.rng);
     console.log(unitRangeTile(unit));
-  }
+  };
 
-}
+};
 
 //Creates a footman class that inherits from unit
 class Footman extends Unit {
@@ -157,9 +138,9 @@ class Footman extends Unit {
 
     super(50, 4, 10, 1, tile);
 
-  }
+  };
 
-}
+};
 
 //Creates a archer class that inherits from unit
 class Archer extends Unit {
@@ -168,9 +149,9 @@ class Archer extends Unit {
 
     super(45, 3, 7, 3, tile);
 
-  }
+  };
 
-}
+};
 
 //Creates a Horseman class that inherits from unit
 class Horseman extends Unit {
@@ -179,9 +160,9 @@ class Horseman extends Unit {
 
     super(60, 6, 5, 1, tile);
 
-  }
+  };
 
-}
+};
 
 //Creates a Armored class that inherits from unit
 class Armored extends Unit {
@@ -190,27 +171,6 @@ class Armored extends Unit {
 
     super(45, 2, 15, 1, tile);
 
-  }
+  };
 
-}
-
-
-// var footmanStats = {
-//
-//   atk: 50,
-//   spd: 4,
-//   def: 10,
-//   rng: 1,
-//   tile:0
-//
-// };
-//
-// var archerStats = {
-//
-//   atk: 50,
-//   spd: 4,
-//   def: 10,
-//   rng: 1,
-//   tile:0
-//
-// };
+};

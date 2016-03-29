@@ -10,16 +10,16 @@ function setBarPercent(game, sprite, troopCount){
     newWidth = (troopCount / 100);
     getGraph = sprite.getChildAt(0);
     setBarIndividual(game, newWidth, getGraph);
-    }
-}
+    };
+};
 
 // // The graphics transition
 function setBarIndividual(game, newWidth, getGraph){
   game.add.tween(getGraph).to( { width: newWidth }, 200, Phaser.Easing.Linear.None, true);
-}
+};
 
 // Get original width / overall total morale
 function getWidth(sprite) {
   const initialWidth = sprite.width;
   return initialWidth;
-}
+};
