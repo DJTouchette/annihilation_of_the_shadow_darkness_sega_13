@@ -80,7 +80,7 @@ function tileCollision(tile) {
 function unitCollision(tile) {
   for (var i = 0; i < allUnits.length; i++) {
     var a = tile.getBounds();
-    var b = allUnits[i].getBounds().inflate(0, -4);
+    var b = allUnits[i].getBounds().inflate(-4, -4);
     if (Phaser.Rectangle.intersects(a, b)) {
       unitColliding = true;
       targetUnit = allUnits[i];
