@@ -119,14 +119,14 @@ io.on('connection', function(socket){
 
     socket.on('change', function(group){
 
-    socket.in('game').emit('groupNow', group);
+    socket.in('game').emit('groupNow', group, socket.user);
 
   });
 
   socket.on('switchIt', function () {
 
-    socket.in('game').emit('turnIt');
-
+    // socket.in('game').emit('turnIt');  
+    socket.in('game').emit('user1');
   });
 
   socket.on('flickTheSwitch', function () {
@@ -134,6 +134,11 @@ io.on('connection', function(socket){
     socket.in('game').emit('turnIt');
 
   });
+
+  socket.on('destroyBtn', function() {
+    socket.in('game').emit('btnDestroyed');
+
+  })
 
 });
 

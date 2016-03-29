@@ -27,16 +27,18 @@ var redWins;
 var blueWins;
 var turnCount = 0;
 var sideSwitch = true;
-var spritesBorder = [{position: 'horizontal', path: 'assets/border/horizontal.png'}, {position: 'bottomLeft', path: 'assets/border/bottom_left.png'},
- {position: 'bottomRight', path: 'assets/border/bottom_right.png'},
- {position: 'topRight', path: 'assets/border/top_right.png'},
- {position: 'topLeft', path: 'assets/border/top_left.png'},
- {position: 'vertical', path: 'assets/border/vertical.png'},
- {position: 'background', path: 'assets/border/paper.png'},
- {position: 'box', path: 'assets/border/box.png'},
- {position: 'start', path: 'assets/start_turn.png'},
- {position: 'end', path: 'assets/end-turn.png'},
- {position: 'endGlow', path: 'assets/End-glow.png'}
+var spritesBorder = [
+  {position: 'horizontal', path: 'assets/border/horizontal.png'},
+  {position: 'bottomLeft', path: 'assets/border/bottom_left.png'},
+  {position: 'bottomRight', path: 'assets/border/bottom_right.png'},
+  {position: 'topRight', path: 'assets/border/top_right.png'},
+  {position: 'topLeft', path: 'assets/border/top_left.png'},
+  {position: 'vertical', path: 'assets/border/vertical.png'},
+  {position: 'background', path: 'assets/border/paper.png'},
+  {position: 'box', path: 'assets/border/box.png'},
+  {position: 'start', path: 'assets/start_turn.png'},
+  {position: 'end', path: 'assets/end-turn.png'},
+  {position: 'endGlow', path: 'assets/End-glow.png'}
  ];
 var hpBarTop;
 var barConfigTop = {
@@ -44,13 +46,10 @@ var barConfigTop = {
   height: 45,
   x: 407,
   y: 0,
-  bg: {
-    color: '#0047b3'
-    },
-  bar: {
-    color: '#ff3300'
-  },
+  bg: {color: '#0047b3'},
+  bar: {color: '#ff3300'},
 };
+var endBtn;
 
 // starting morale is overall morale (100) divided by 2. Each side is worth 50.
 var startingMoraleBottom = 50; //should create starting morale for each group
@@ -59,6 +58,15 @@ var previousMoraleUp = 0;
 var previousMoraleBottom = 0;
 var changeMoraleUp = 0;
 var changeMoraleBottom = 0;
+
+var menuMorale;
+var menuAtk;
+var menuDef;
+var menuSpd;
+var menuChangeGrass;
+var menuChangeMorale;
+var menuChangeRm;
+var menuChangeBm;
 //VARIABLES END/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -101,7 +109,7 @@ function preload() {
   // Loads Unit frame assets (/public/js/hud/units.js)
   loadUnitFrame();
   //Loads start round btn (/public/js/hud/startrnd.js)
-  game.load.image('full_screen', 'assets/full_screen.gif');
+  game.load.image('full_screen', 'assets/full_screen.png');
   game.load.image('full_screen_exit', 'assets/full_screen_exit.png');
 
 //////////////////////////////////////////////////////////
@@ -167,12 +175,9 @@ function create() {
   createSide(144, 48, topSide, 'footman', 7);
   sortUnits();
   playerTurn(turn);
+
 //Create Functions CALLED////////////////////
-  game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-  fullScreen = game.add.sprite(762, 22, 'full_screen');
-  fullScreen.inputEnabled = true;
-  fullScreen.scale.setTo(0.15, 0.15);
-  fullScreen.events.onInputDown.add(fullScreenMode, this);
+
   // fullScreenLabel = game.add.text(700, 200, "Full Screen");
   // fullScreenLabel.inputEnabled = true;
   // fullScreenLabel.events.onInputDown.add(fullScreenMode, this);
@@ -183,8 +188,9 @@ function create() {
 //UPDATE START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update(){
   if (turnSwitch) {
-    // mover.kill();
+
     surroundings(allUnits[turn]);
+    window.socket.emit('change', currentGroup);
     allUnits[turn].unit.tileCheck();
     turnSwitch = false;
     if (turn < 19) {
@@ -195,6 +201,7 @@ function update(){
     if (allUnits[turn].parent.name === currentGroup) {
       window.socket.emit('disableOther', currentGroup);
     }
+    stats(allUnits[turn], startingMoraleBottom, startingMoraleUp);
     playerTurn(turn);
     turnCount += 1;
   }
@@ -228,7 +235,7 @@ function render () {
 
 //FUNCTIONS///////////////////////////////////////////////////////////
 function playStopSound(){
-  if(music.paused == true){
+  if(music.paused === true){
     music.resume();
     playStopImage.loadTexture('play');
   }else{
@@ -245,6 +252,5 @@ function fullScreenMode(){
   else {
     game.scale.startFullScreen(false);
     fullScreen.loadTexture('full_screen_exit');
-  }  
+  }
 }
-

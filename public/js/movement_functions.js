@@ -1,7 +1,7 @@
 function playerTurn (i) {
     unit = allUnits[i];
     currentGroup = unit.parent.name;
-    makeUnitBar(unit, startingMoraleUp, startingMoraleBottom);
+    // makeUnitBar(unit, startingMoraleUp, startingMoraleBottom);
     if (allUnits[turn].unit.dead === true){
       turnSwitch = true;
     }

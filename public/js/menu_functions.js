@@ -21,13 +21,26 @@ function defeatScreen() {
 
 function startGame() {
   menu.destroy();
+  makeUnitBar();
+  title();
   createMoraleBars();
+
   window.socket.emit('startGame');
   for (var i = 0; i < allUnits.length; i++) {
     surroundings(allUnits[i]);
     allUnits[i].unit.tileCheck();
   }
+
   playerTurn(turn);
+  stats(allUnits[0], startingMoraleBottom, startingMoraleUp);
+  window.socket.emit('startGame');
+  game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+  fullScreen = game.add.sprite(762, 22, 'full_screen');
+  fullScreen.inputEnabled = true;
+  fullScreen.scale.setTo(0.15, 0.15);
+  fullScreen.events.onInputDown.add(fullScreenMode, this);
+
+
 }
 
 function restartGame() {
