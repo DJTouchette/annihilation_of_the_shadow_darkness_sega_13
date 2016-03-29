@@ -124,3 +124,26 @@ function unitRangeTile(unit) {
     return false;
   }
 }
+
+function surroundings(unit) {
+
+  unit.unit.moraleBuff();
+  for (var i = 0; i < allUnits.length; i++) {
+    if (((Math.abs(background.getTileX(unit.x) - background.getTileX(allUnits[i].x))) === 1) && (Math.abs(background.getTileY(unit.y) - background.getTileY(allUnits[i].y)) === 0) || ((Math.abs(background.getTileY(unit.y) - background.getTileY(allUnits[i].y))) === 1) && (Math.abs(background.getTileX(unit.x) - background.getTileX(allUnits[i].x) === 0))) {
+      if (unit.parent.name === allUnits[i].parent.name) {
+        unit.unit.atk += 5;
+        unit.unit.def += 1;
+        return true;
+      } else if (unit.parent.name !== allUnits[i].parent.name) {
+        unit.unit.atk -= 5;
+        unit.unit.def -= 1;
+        unit.unit.spd = 1;
+        return true;
+      }
+    }
+  }
+
+}
+
+
+

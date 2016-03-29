@@ -237,7 +237,6 @@ function playStopSound(){
   }
 }
 
-
 function fullScreenMode(){
   if (game.scale.isFullScreen) {
     game.scale.stopFullScreen();

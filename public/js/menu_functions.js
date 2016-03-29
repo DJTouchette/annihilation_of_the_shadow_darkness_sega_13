@@ -22,8 +22,12 @@ function defeatScreen() {
 function startGame() {
   menu.destroy();
   createMoraleBars();
-  playerTurn(turn);
   window.socket.emit('startGame');
+  for (var i = 0; i < allUnits.length; i++) {
+    surroundings(allUnits[i]);
+    allUnits[i].unit.tileCheck();
+  }
+  playerTurn(turn);
 }
 
 function restartGame() {
