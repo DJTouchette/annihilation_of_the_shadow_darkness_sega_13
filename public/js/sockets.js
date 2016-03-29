@@ -91,18 +91,21 @@ socket.on('groupNow', function(group, user){
   if (group !== currentGroup){
     console.log('group change')
     socket.emit('switchIt');
-    socket.emit('destroyBtn');
+    endBtn.kill();
+    // socket.emit('destroyBtn');
     // sideSwitch = false;
-    endTurn();
+    // endTurn();
     // turnSwitch = true;
-  }else if(group === 'topSide' && user === 1){
+  }
+
+  if(group === 'topSide' && user === 1){
     console.log('player1 turn')
     endTurn();
-    socket.emit('destroyBtn');
+    // socket.emit('destroyBtn');
   }else if (group === 'bottomSide' && user === 2){
     console.log('player2 turn')
     endTurn();
-    socket.emit('destroyBtn');
+    // socket.emit('destroyBtn');
   }
 
 });
