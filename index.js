@@ -126,7 +126,7 @@ io.on('connection', function(socket){
   socket.on('switchIt', function () {
 
     // socket.in('game').emit('turnIt');  
-    socket.in('game').emit('user1');
+    socket.in('game').emit('makeBtn');
   });
 
   socket.on('flickTheSwitch', function () {
@@ -135,10 +135,10 @@ io.on('connection', function(socket){
 
   });
 
-  socket.on('destroyBtn', function() {
-    socket.in('game').emit('btnDestroyed');
+  // socket.on('destroyBtn', function() {
+  //   socket.in('game').emit('btnDestroyed');
 
-  })
+  // })
 
 });
 

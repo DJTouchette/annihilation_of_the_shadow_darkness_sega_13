@@ -19,7 +19,7 @@ function stats (unit, moraleUp, moraleBottom) {
 
 
 function endTurn () {
-
+  console.log('endTurn ran!')
   endBtn = game.add.sprite(829, 550, 'end');
   endBtn.scale.setTo(0.9);
   endBtn.inputEnabled = true;
