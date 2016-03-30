@@ -50,10 +50,7 @@ socket.on ('spriteClass', function (unit) {
 
 socket.on('chat message', function(deliver){
 
-  $('#messages').append($('<li>').text(deliver.join('')));
-  var lastMessage = $('#messages');
-  var height = lastMessage[0].scrollHeight;
-  lastMessage.scrollTop(height);
+  sendMsg(deliver);
 
 });
 
@@ -122,3 +119,31 @@ socket.on('btnDestroyed', function(){
   // endBtn.kill();
   console.log(endBtn);
 });
+
+socket.on('systemMsg', function (msg) {
+
+  sendMsg(msg);
+  socket.emit('damageDone', msg);
+
+});
+
+socket.on('troopsKilled', function (msg) {
+
+  sendMsg(msg);
+
+});
+
+socket.on('miss', function (msg) {
+
+  sendMsg(msg);
+
+});
+
+function sendMsg(msg) {
+
+  $('#messages').append($('<li>').text(msg.join('')));
+  var lastMessage = $('#messages');
+  var height = lastMessage[0].scrollHeight;
+  lastMessage.scrollTop(height);
+
+}

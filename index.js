@@ -94,6 +94,29 @@ io.on('connection', function(socket){
 
     });
 
+    socket.on('attack', function (msg) {
+
+      var deliver = ['You lost ', msg, ' troops'];
+      socket.in('game').emit('systemMsg', deliver);
+
+
+    });
+
+    socket.on('damageDone', function (msg) {
+
+      var deliver = ['You took out ', msg[1], ' troops'];
+      console.log(deliver);
+      socket.in('game').emit('troopsKilled', deliver);
+
+    });
+
+    socket.on('attackMiss', function () {
+
+      var deliver = ['Swing and a miss!!'];
+      io.in('game').emit('miss', deliver);
+
+    });
+
     socket.on('startGame', function () {
 
       if (socket.user === 1) {
@@ -125,7 +148,7 @@ io.on('connection', function(socket){
 
   socket.on('switchIt', function () {
 
-    // socket.in('game').emit('turnIt');  
+    // socket.in('game').emit('turnIt');
     socket.in('game').emit('user1');
   });
 
@@ -138,7 +161,7 @@ io.on('connection', function(socket){
   socket.on('destroyBtn', function() {
     socket.in('game').emit('btnDestroyed');
 
-  })
+  });
 
 });
 
