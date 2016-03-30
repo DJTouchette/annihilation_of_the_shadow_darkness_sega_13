@@ -202,19 +202,10 @@ function update(){
     turnCount += 1;
   }
 
-  if (blueWins && currentGroup === 'bottomside') {
-    window.socket.emit('defeat');
-    victoryScreen();
-  } else if (blueWins && currentGroup === 'topside') {
-    window.socket.emit('victory');
-    defeatScreen();
-  }
-  if (redWins && currentGroup === 'topside') {
-    victoryScreen();
-    window.socket.emit('defeat');
-  } else if (redWins && currentGroup === 'bottomside') {
-    defeatScreen();
-    window.socket.emit('victory');
+  if (blueWins) {
+    window.socket.emit('blueWins');
+  } else if (redWins) {
+    window.socket.emit('redWins');
   }
 
 //UPDATE END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

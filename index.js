@@ -60,15 +60,34 @@ io.on('connection', function(socket){
 
     });
 
-    socket.on('victory', function() {
+    // socket.on('victory', function() {
 
-      socket.in('game').emit('win');
+    //   socket.in('game').emit('lose');
 
+    // });
+
+    // socket.on('defeat', function() {
+
+    //   socket.in('game').emit('lose');
+
+    // });
+
+    socket.on('redWins', function() {
+
+      if (socket.user === 1) {
+        socket.emit('win');
+      } else {
+        socket.emit('lose');
+      }
     });
 
-    socket.on('defeat', function() {
+    socket.on('blueWins', function(){
 
-      socket.in('game').emit('lose');
+      if (socket.user === 1) {
+        socket.emit('lose');
+      } else {
+        socket.emit('win');
+      }
 
     });
 
