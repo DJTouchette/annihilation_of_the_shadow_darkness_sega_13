@@ -116,8 +116,8 @@ socket.on("turnIt", function () {
 });
 
 socket.on('btnDestroyed', function(){
-  // endBtn.kill();
-  console.log(endBtn);
+  endBtn.kill();
+  // console.log(endBtn);
 });
 
 socket.on('systemMsg', function (msg) {
@@ -149,6 +149,7 @@ socket.on('readEm', function (rules) {
 
 });
 
+//Expects an array
 function sendMsg(msg) {
 
   $('#messages').append($('<li>').text(msg.join('')));

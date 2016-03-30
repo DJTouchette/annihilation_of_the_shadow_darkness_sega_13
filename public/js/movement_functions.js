@@ -52,8 +52,8 @@ function movePlayer(tile, sprite) {
         window.socket.emit('moraleChange', [unit.unit.index, targetUnit.unit.troops]  );
         window.socket.emit('barChange', [targetUnit.unit.index, targetUnit.unit.troops]);
         tile.animations.play('redden');
-        window.socket.emit('flickTheSwitch');
         turnSwitch = true;
+        window.socket.emit('flickTheSwitch');
       } else {
       tile.animations.play('redden');
       targetUnit = false;
