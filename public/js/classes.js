@@ -62,11 +62,11 @@ class Unit {
   // Takes in a enemy and does the battle logic, then calls take dmg on the enemy
   attack (enemy) {
 
-    this.moraleBuff ();
+    // this.moraleBuff ();
 
-    var atkRoll = this.atk * Math.random();
-    var defRoll = enemy.def * Math.random();
-    var dmg = (atkRoll - defRoll);
+    // var atkRoll = this.atk * Math.random();
+    // var defRoll = enemy.def * Math.random();
+    // var dmg = (atkRoll - defRoll);
 
     if (dmg > 0) {
       var rndDmg = Math.floor(dmg);
@@ -79,7 +79,6 @@ class Unit {
       window.socket.emit('attackMiss');
       console.log('Swing and a miss, morale bar will not change');
       return 0;
-
     }
     // enemy.troops -= 100;
 
