@@ -80,21 +80,28 @@ socket.on ('user2', function () {
 });
 
 socket.on ('makeBtn', function(){
+
   endTurn();
+  socket.emit('killBtn');
   mover.inputEnabled = true;
+  mover.input.priorityID = 1;
+
+});
+
+socket.on ('btnDestroyed', function () {
+
+  endBtn.kill();
+
 });
 
 socket.on('groupNow', function(group, user){
 
-  console.log('user is :' + user);
-  // group = 'bottomSide';
-  console.log('Sent group: ' + group);
-  console.log('Current Group: ' + currentGroup);
+
   if (group !== currentGroup){
-    console.log('group change');
+
     socket.emit('switchIt');
-    console.log(endBtn);
     endBtn.inputEnabled = false;
+    console.log('endBtn DIIIIEEEEE');
     endBtn.kill();
     mover.inputEnabled = false;
   }

@@ -190,14 +190,12 @@ io.on('connection', function(socket){
 
   });
 
-  // socket.on('destroyBtn', function() {
-  //   socket.in('game').emit('btnDestroyed');
+  socket.on('killBtn', function() {
+
+    socket.in('game').emit('btnDestroyed');
 
 
-  // })
-
-  // });
-
+  });
 
 });
 
