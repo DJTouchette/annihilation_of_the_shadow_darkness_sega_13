@@ -68,6 +68,7 @@ socket.on ('setBar', function (params) {
 socket.on ('setMorale', function (params) {
 
   damageMorale(allUnits[params[0]].parent, params[1]);
+  allUnits[params[0]].animations.play('attack');
 
 });
 
