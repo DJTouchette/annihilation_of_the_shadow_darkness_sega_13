@@ -27,12 +27,14 @@ socket.on('waiting', function () {
 socket.on('win', function() {
 
   victoryScreen();
+  socket.emit('defeat');
 
 });
 
 socket.on('lose', function(){
 
   defeatScreen();
+  socket.emit('victory');
 
 });
 
@@ -63,11 +65,12 @@ socket.on ('setBar', function (params) {
 socket.on ('setMorale', function (params) {
 
   damageMorale(allUnits[params[0]].parent, params[1]);
+  allUnits[params[0]].animations.play('attack');
 
 });
 
 socket.on ('user1', function () {
-
+  console.log('User1');
   endTurn();
 
 });
@@ -78,33 +81,23 @@ socket.on ('user2', function () {
 
 });
 
+socket.on ('makeBtn', function(){
+  endTurn();
+  // socket.emit('destroyBtn');
+});
+
 socket.on('groupNow', function(group, user){
 
   console.log('user is :' + user);
   // group = 'bottomSide';
   console.log('Sent group: ' + group);
   console.log('Current Group: ' + currentGroup);
-
   if (group !== currentGroup){
     console.log('group change');
     socket.emit('switchIt');
+    console.log(endBtn);
     endBtn.kill();
-    // socket.emit('destroyBtn');
-    // sideSwitch = false;
-    // endTurn();
-    // turnSwitch = true;
   }
-
-  if(group === 'topSide' && user === 1){
-    console.log('player1 turn');
-    endTurn();
-    // socket.emit('destroyBtn');
-  }else if (group === 'bottomSide' && user === 2){
-    console.log('player2 turn');
-    endTurn();
-    // socket.emit('destroyBtn');
-  }
-
 });
 
 socket.on("turnIt", function () {

@@ -203,11 +203,11 @@ function update(){
   }
 
   if (blueWins && currentGroup === 'bottomside') {
-    victoryScreen();
     window.socket.emit('defeat');
+    victoryScreen();
   } else if (blueWins && currentGroup === 'topside') {
-    defeatScreen();
     window.socket.emit('victory');
+    defeatScreen();
   }
   if (redWins && currentGroup === 'topside') {
     victoryScreen();
