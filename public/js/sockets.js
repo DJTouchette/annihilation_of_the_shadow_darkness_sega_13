@@ -1,11 +1,11 @@
 var socket = io();
 
-socket.on('turnChange', function (currentPlayer, currentGroup) {
+// socket.on('turnChange', function (currentPlayer, currentGroup) {
 
-  endTurn();
-  updateUnit = [];
+//   endTurn();
+//   updateUnit = [];
 
-});
+// });
 
 socket.on('lockInput', function(currentGroup, currentPlayer) {
   if (currentPlayer === 1 && currentGroup === 'bottomside') {
@@ -52,10 +52,7 @@ socket.on ('spriteClass', function (unit) {
 
 socket.on('chat message', function(deliver){
 
-  $('#messages').append($('<li>').text(deliver.join('')));
-  var lastMessage = $('#messages');
-  var height = lastMessage[0].scrollHeight;
-  lastMessage.scrollTop(height);
+  sendMsg(deliver);
 
 });
 
@@ -74,6 +71,7 @@ socket.on ('setMorale', function (params) {
 
 socket.on ('user1', function () {
 //supposed to do nil
+
 });
 
 socket.on ('user2', function () {
@@ -96,6 +94,7 @@ socket.on('groupNow', function(group, user){
     console.log('group change');
     socket.emit('switchIt');
     console.log(endBtn);
+    endBtn.inputEnabled = false;
     endBtn.kill();
     mover.inputEnabled = false;
   }
@@ -109,8 +108,35 @@ socket.on("turnIt", function () {
 
 });
 
-// socket.on('btnDestroyed', function(){
-//   console.log('grave');
-//   endBtn.loadTexture('grave');
-//   console.log(endBtn);
-// });
+socket.on('btnDestroyed', function(){
+  // endBtn.kill();
+  console.log(endBtn);
+});
+
+socket.on('systemMsg', function (msg) {
+
+  sendMsg(msg);
+  socket.emit('damageDone', msg);
+
+});
+
+socket.on('troopsKilled', function (msg) {
+
+  sendMsg(msg);
+
+});
+
+socket.on('miss', function (msg) {
+
+  sendMsg(msg);
+
+});
+
+function sendMsg(msg) {
+
+  $('#messages').append($('<li>').text(msg.join('')));
+  var lastMessage = $('#messages');
+  var height = lastMessage[0].scrollHeight;
+  lastMessage.scrollTop(height);
+
+}

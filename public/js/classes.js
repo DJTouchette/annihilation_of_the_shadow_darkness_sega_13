@@ -69,12 +69,14 @@ class Unit {
     var dmg = (atkRoll - defRoll);
 
     if (dmg > 0) {
-
+      var rndDmg = Math.floor(dmg);
+      window.socket.emit('attack', rndDmg);
       this.armyMorale(3);
-      enemy.takeDmg(Math.floor (dmg) );
+      enemy.takeDmg(rndDmg);
       return 1;
 
     } else {
+      window.socket.emit('attackMiss');
       console.log('Swing and a miss, morale bar will not change');
       return 0;
 

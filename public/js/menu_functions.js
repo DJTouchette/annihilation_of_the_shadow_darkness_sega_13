@@ -2,7 +2,7 @@ function mainMenu () {
   menu = game.add.image(0, 0, 'menu');
   menu.inputEnabled = true;
   menu.events.onInputDown.add(startGame, this);
-  window.socket.emit('startGame');
+  // window.socket.emit('startGame');
 }
 
 function victoryScreen() {
