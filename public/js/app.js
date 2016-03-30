@@ -1,5 +1,5 @@
 //VARIABLES START////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, "game_div", { preload: preload, mainMenu: mainMenu, create: create, update: update, render: render });
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, "game_div", { preload: preload, mainMenu: mainMenu, create: create, update: update });
 var map;
 var tileGroup;
 var music;
@@ -155,6 +155,8 @@ function create() {
   mover.events.onDragStop.add(movePlayer, this);
 //MOVEMENT RANGE END////////////////////////////////
 //SOUND BUTTONS////////////////////////////////////
+  key1 = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+  key1.onDown.add(click, this);
   playStopImage = game.add.sprite(792, 20, 'play');
   playStopImage.inputEnabled = true;
   playStopImage.scale.setTo(0.04, 0.04);
@@ -213,11 +215,11 @@ function update(){
 
 
 //RENDER START//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function render () {
-  game.debug.text('Tile X: ' + collisionLayer.getTileX(game.input.activePointer.worldX), 48, 69, 'rgb(0,0,0)');
-  game.debug.text('Tile Y: ' + collisionLayer.getTileY(game.input.activePointer.worldY), 48, 48, 'rgb(0,0,0)');
-//RENDER END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-}
+// function render () {
+//   // game.debug.text('Tile X: ' + collisionLayer.getTileX(game.input.activePointer.worldX), 48, 69, 'rgb(0,0,0)');
+//   // game.debug.text('Tile Y: ' + collisionLayer.getTileY(game.input.activePointer.worldY), 48, 48, 'rgb(0,0,0)');
+// //RENDER END////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// }
 
 
 //FUNCTIONS///////////////////////////////////////////////////////////

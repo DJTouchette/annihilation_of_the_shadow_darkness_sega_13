@@ -116,7 +116,9 @@ socket.on("turnIt", function () {
 });
 
 socket.on('btnDestroyed', function(){
-  endBtn.kill();
+
+    endBtn.kill();
+
   // console.log(endBtn);
 });
 

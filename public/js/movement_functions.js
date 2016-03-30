@@ -4,7 +4,7 @@ function playerTurn (i) {
     surroundings(unit);
     // makeUnitBar(unit, startingMoraleUp, startingMoraleBottom);
     if (allUnits[turn].unit.dead === true){
-      turnSwitch = true;
+      click();
     }
     mover.x = unit.x;
     mover.y = unit.y;
