@@ -6,6 +6,13 @@ var io = require('socket.io')(http);
 var user = [];
 var id = 0;
 var currentPlayer;
+var rules = 'How it works!';
+var rules1 = 'You and your opponent are pulling for the moral of your soldiers.';
+var rules2 = 'Get attacked, lose some moral.';
+var rules3 = 'Attack another soldier gain some moral....simple enough?';
+var rules4 = 'If you want more information about classes click here.';
+
+
 
 app.get('/', function(req, res){
   res.sendfile('views/index.html');
@@ -38,6 +45,12 @@ io.on('connection', function(socket){
 
       socket.in('game').emit('SOMEONE_POPPED');
       console.log("haaaay");
+
+    });
+
+    socket.on('ruleTime', function () {
+      var allRules = [[rules], [rules1], [rules2], [rules3], [rules4]];
+      io.in('game').emit('readEm', allRules);
 
     });
 

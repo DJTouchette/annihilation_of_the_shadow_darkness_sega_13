@@ -1,4 +1,5 @@
 function mainMenu () {
+  window.socket.emit('ruleTime');
   menu = game.add.image(0, 0, 'menu');
   menu.inputEnabled = true;
   menu.events.onInputDown.add(startGame, this);

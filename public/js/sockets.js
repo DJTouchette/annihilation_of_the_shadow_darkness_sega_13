@@ -82,7 +82,7 @@ socket.on ('user2', function () {
 socket.on ('makeBtn', function(){
   endTurn();
   mover.inputEnabled = true;
-})
+});
 
 socket.on('groupNow', function(group, user){
 
@@ -129,6 +129,16 @@ socket.on('troopsKilled', function (msg) {
 socket.on('miss', function (msg) {
 
   sendMsg(msg);
+
+});
+
+socket.on('readEm', function (rules) {
+
+    sendMsg(rules[0]);
+    sendMsg(rules[1]);
+    sendMsg(rules[2]);
+    sendMsg(rules[3]);
+    sendMsg(rules[4]);
 
 });
 
