@@ -103,7 +103,7 @@ io.on('connection', function(socket){
       }
 
       if (socket.user === 2) {
-
+        //on player 2 join emit button to player 1
         socket.emit('user2');
 
       }

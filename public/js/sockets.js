@@ -73,20 +73,17 @@ socket.on ('setMorale', function (params) {
 });
 
 socket.on ('user1', function () {
-  console.log('User1')
-  endTurn();
-
+//supposed to do nil
 });
 
 socket.on ('user2', function () {
-
-//Supposed to do nil
+  socket.emit('switchIt');
 
 });
 
 socket.on ('makeBtn', function(){
   endTurn();
-  // socket.emit('destroyBtn');
+  mover.inputEnabled = true;
 })
 
 socket.on('groupNow', function(group, user){
@@ -100,6 +97,7 @@ socket.on('groupNow', function(group, user){
     socket.emit('switchIt');
     console.log(endBtn);
     endBtn.kill();
+    mover.inputEnabled = false;
   }
 });
 
