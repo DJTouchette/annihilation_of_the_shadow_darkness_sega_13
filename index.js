@@ -31,7 +31,7 @@ io.on('connection', function(socket){
     } else {
 
       socket.disconnect(socket);
-      console.log('fuck off');
+      console.log('you are not allowed in!');
 
     }
 
