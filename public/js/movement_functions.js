@@ -4,8 +4,12 @@ function playerTurn (i) {
     surroundings(unit);
     // makeUnitBar(unit, startingMoraleUp, startingMoraleBottom);
     if (allUnits[turn].unit.dead === true){
-      click();
+      turnSwitch = true;
+      console.log('in the if ' + allUnits[turn].unit.dead);
+      return false;
     }
+    else if (allUnits[turn].unit.dead === false) {
+    console.log('else if   ' +  allUnits[turn].unit.dead);
     mover.x = unit.x;
     mover.y = unit.y;
     window.socket.emit('groupTurn', unit.parent.name );
@@ -26,6 +30,7 @@ function playerTurn (i) {
     }
     limitX = unit.x;
     limitY = unit.y;
+  }
 }
 
 function movePlayer(tile, sprite) {
