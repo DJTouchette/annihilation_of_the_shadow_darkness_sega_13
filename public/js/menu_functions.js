@@ -35,7 +35,7 @@ function startGame() {
   stats(allUnits[0], startingMoraleBottom, startingMoraleUp);
   // window.socket.emit('startGame');
   game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-  window.socket.emit('startGame');
+  // window.socket.emit('startGame');
   fullScreen = game.add.sprite(762, 22, 'full_screen');
   fullScreen.inputEnabled = true;
   fullScreen.scale.setTo(0.15, 0.15);

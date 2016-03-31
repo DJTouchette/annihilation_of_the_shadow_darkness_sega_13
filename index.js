@@ -49,8 +49,11 @@ io.on('connection', function(socket){
     });
 
     socket.on('ruleTime', function () {
-      var allRules = [[rules], [rules1], [rules2], [rules3], [rules4]];
-      io.in('game').emit('readEm', allRules);
+
+      if (socket.user === 2) {
+        var allRules = [[rules], [rules1], [rules2], [rules3], [rules4]];
+        io.in('game').emit('readEm', allRules);
+      }
 
     });
 
@@ -174,6 +177,7 @@ io.on('connection', function(socket){
 
     socket.on('change', function(group){
 
+    console.log('Side Change');
     socket.in('game').emit('groupNow', group, socket.user);
 
   });
@@ -185,17 +189,19 @@ io.on('connection', function(socket){
   });
 
   socket.on('flickTheSwitch', function () {
-
+    console.log('Switched flicked');
     socket.in('game').emit('turnIt');
 
   });
 
   socket.on('killBtn', function() {
 
+    console.log('Button b Gone');
     socket.in('game').emit('btnDestroyed');
 
 
   });
+
 
 });
 

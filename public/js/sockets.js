@@ -9,10 +9,10 @@ var socket = io();
 
 socket.on('lockInput', function(currentGroup, currentPlayer) {
   if (currentPlayer === 1 && currentGroup === 'bottomside') {
-    endBtn.inputEnabled = false;
+    // endBtn.inputEnabled = false;
     mover.inputEnabled = false;
   } else if (currentPlayer === 2 && currentGroup === 'topside') {
-    endBit.inputEnabled = false;
+    // endBit.inputEnabled = false;
     mover.inputEnabled = false;
   }
   turnSwitch = true;
@@ -75,16 +75,18 @@ socket.on ('user1', function () {
 });
 
 socket.on ('user2', function () {
+
   socket.emit('switchIt');
 
 });
 
 socket.on ('makeBtn', function(){
 
-  endTurn();
-  socket.emit('killBtn');
+  // endTurn();
+  // socket.emit('killBtn');
   mover.inputEnabled = true;
   mover.input.priorityID = 1;
+  systemMsg(['Your turn!']);
 
 });
 
@@ -104,7 +106,9 @@ socket.on('groupNow', function(group, user){
     console.log('endBtn DIIIIEEEEE');
     endBtn.kill();
     mover.inputEnabled = false;
+
   }
+
 });
 
 socket.on("turnIt", function () {
@@ -124,38 +128,54 @@ socket.on('btnDestroyed', function(){
 
 socket.on('systemMsg', function (msg) {
 
-  sendMsg(msg);
+  systemMsg(msg);
   socket.emit('damageDone', msg);
 
 });
 
 socket.on('troopsKilled', function (msg) {
 
-  sendMsg(msg);
+  systemMsg(msg);
 
 });
 
 socket.on('miss', function (msg) {
 
-  sendMsg(msg);
+  systemMsg(msg);
 
 });
 
 socket.on('readEm', function (rules) {
 
-    sendMsg(rules[0]);
-    sendMsg(rules[1]);
-    sendMsg(rules[2]);
-    sendMsg(rules[3]);
-    sendMsg(rules[4]);
+    systemMsg(rules[0]);
+    systemMsg(rules[1]);
+    systemMsg(rules[2]);
+    systemMsg(rules[3]);
+    systemMsg(rules[4]);
 
 });
+
 
 //Expects an array
 function sendMsg(msg) {
 
-  $('#messages').append($('<li>').text(msg.join('')));
   var lastMessage = $('#messages');
+  var list = $('<li>');
+  // list.css('color', '#cb4b16;');
+  lastMessage.append(list.text(msg.join('')));
+
+  var height = lastMessage[0].scrollHeight;
+  lastMessage.scrollTop(height);
+
+}
+
+function systemMsg(msg) {
+
+  var lastMessage = $('#messages');
+  var list = $('<li>');
+  list.css('color', '#cb4b16');
+  lastMessage.append(list.text(msg.join('')));
+
   var height = lastMessage[0].scrollHeight;
   lastMessage.scrollTop(height);
 

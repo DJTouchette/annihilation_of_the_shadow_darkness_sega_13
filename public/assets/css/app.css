@@ -42,6 +42,7 @@ body {
   margin-left: 10px;
   margin-top: 10px;
   background: rgba(54, 25, 25, .6);
+  color: white;
 
 }
 
@@ -201,4 +202,10 @@ body {
 
 * {
   /*border: 5px solid red;*/
+}
+
+.system-msg {
+
+  color: #cb4b16;
+
 }
