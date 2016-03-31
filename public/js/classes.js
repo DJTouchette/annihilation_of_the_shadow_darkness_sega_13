@@ -154,8 +154,7 @@ class Footman extends Unit {
 
   constructor (atk, spd, def, rng, tile) {
 
-    super(1000, 4, 10, 1, tile);
-    // 50
+    super(50, 4, 10, 1, tile);
 
   }
 
@@ -166,8 +165,7 @@ class Archer extends Unit {
 
   constructor (atk, spd, def, rng, tile) {
 
-    super(1000, 3, 7, 3, tile);
-    // 45
+    super(45, 3, 7, 3, tile);
 
   }
 
@@ -178,8 +176,7 @@ class Horseman extends Unit {
 
   constructor (atk, spd, def, rng, tile) {
 
-    super(1000, 6, 5, 1, tile);
-    // 60
+    super(60, 6, 5, 1, tile);
 
   }
 
